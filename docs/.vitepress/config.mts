@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "KevinDurantSite",
-  base: "/",
+  base: "/KevinDurantSite/",
   description: "You′re never a loser until you quit trying.",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
