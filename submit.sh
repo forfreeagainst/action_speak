@@ -5,5 +5,5 @@ set -e
 
 git pull origin main
 git add .
-git commit -m "fix: pages菜单项下选择GithubActions"
+git commit -m "fix: config.ts吧"
 git push origin main
