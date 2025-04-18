@@ -5,5 +5,5 @@ set -e
 
 git pull origin main
 git add .
-git commit -m "docs: 精细化的hooks+provider全局方法"
+git commit -m "docs: vite实测"
 git push origin main
