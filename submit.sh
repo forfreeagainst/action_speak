@@ -5,5 +5,5 @@ set -e
 
 git pull origin main
 git add .
-git commit -m "docs: vite实测"
+git commit -m "fix: pages菜单项下选择GithubActions"
 git push origin main
