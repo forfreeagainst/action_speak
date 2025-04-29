@@ -3,7 +3,7 @@
 layout: home
 
 hero:
-  name: "KevinDurantSite"
+  name: "action_speak"
   text: "You′re never a loser until you quit trying."
   tagline: 我想 接触 更高水平的 开发团队，体验一下 什么感觉
   # actions:
