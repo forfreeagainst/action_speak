@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "sdfasd",
+  title: "action_speak",
   description: "You′re never a loser until you quit trying.",
   base: process.env.NODE_ENV === 'production' ? '/action_speak/' : '/',
   themeConfig: {
