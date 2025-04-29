@@ -2,8 +2,9 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "KevinDurantSite",
+  title: "sdfasd",
   description: "You′re never a loser until you quit trying.",
+  base: process.env.NODE_ENV === 'production' ? '/your-repo-name/' : '/',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
