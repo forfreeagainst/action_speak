@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "submit": "bash submit.sh",
-    "docs:dev": "vitepress dev docs",
+    "docs:dev": "vitepress dev docs --open",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "deploy": "pnpm docs:build",
+    "dev": "pnpm docs:dev"
   }
 }
