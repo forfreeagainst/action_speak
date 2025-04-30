@@ -4,6 +4,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "Try",
   description: "You′re never a loser until you quit trying.",
+  base: process.env.NODE_ENV === 'production' ? '/action_speak/' : '/',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
