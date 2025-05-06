@@ -5,5 +5,5 @@ set -e
 
 git pull origin main
 git add .
-git commit -m "fix: config.ts吧"
+git commit -m "test: config.ts"
 git push origin main
