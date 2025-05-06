@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // bind, call ,apply
+    const fn = function () {
+      console.log(this, typeof this);
+    }
+    const obj = {
+      name: 'durant'
+    };
+    let num = 999;
+    fn(); // 打印window
+    fn.call(obj); //打印obj
+    console.log(typeof num)
+    fn.call(num); // num会从number变成 object
+
+    Function.prototype.myCall = function(obj, ...args) {
+      // console.log(this);
+      let fnSymbol = Symbol();
+      obj[fnSymbol] = this;
+      obj[fnSymbol](...args);
+      delete obj[fnSymbol];
+    }
+    // 补充：如果是undefined 或者 null ,指向window,
+    // 函数有返回值
+    fn.myCall(obj);
+  </script>
+</body>
+</html>
