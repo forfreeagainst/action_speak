@@ -22,3 +22,28 @@ features:
   - title: Feature C
     details: 大模型，AI。。。
 ---
+
+## 开发技巧
+
+* js{2-4} 2到4行会高亮
+* **Output** 加粗
+
+::: info
+This is an info box.
+:::
+
+::: tip
+This is a tip.
+:::
+
+::: warning
+This is a warning.
+:::
+
+::: danger
+This is a dangerous warning.
+:::
+
+::: details
+This is a details block.
+:::

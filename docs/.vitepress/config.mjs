@@ -10,20 +10,18 @@ export default defineConfig({
     nav: [
       { text: 'Home', link: '/' },
       { 
-        text: 'Examples', 
+        text: '面试题', 
         items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
+          { text: '浏览器', link: '/interview_question/browser.md' }
         ]
        }
     ],
 
     sidebar: [
       {
-        text: 'Examples',
+        text: '面试题',
         items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
+          { text: '浏览器', link: '/interview_question/browser.md' }
         ]
       }
     ],
