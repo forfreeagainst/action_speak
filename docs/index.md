@@ -20,5 +20,5 @@ features:
   - title: Feature B
     details: 还有一些小技能：自动化部署，静态资源站点、React应用层、设计模式、npm包、英文文章
   - title: Feature C
-    details: 大模型，AI
+    details: 大模型，AI。。。
 ---
