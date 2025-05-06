@@ -20,5 +20,5 @@ features:
   - title: Feature B
     details: 还有一些小技能：自动化部署，静态资源站点、React应用层、设计模式、npm包、英文文章
   - title: Feature C
-    details: AI ~ 太闲了，难点 - 翻墙，实际企业开发，怎么翻墙。一头雾水。
+    details: 大模型，AI
 ---
