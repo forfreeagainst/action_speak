@@ -12,6 +12,7 @@ export default defineConfig({
       { 
         text: '面试题', 
         items: [
+          { text: '手写题', link: '/interview_question/handwriting.md' },
           { text: '浏览器', link: '/interview_question/browser.md' }
         ]
        }
@@ -21,6 +22,7 @@ export default defineConfig({
       {
         text: '面试题',
         items: [
+          { text: '手写题', link: '/interview_question/handwriting.md' },
           { text: '浏览器', link: '/interview_question/browser.md' }
         ]
       }
