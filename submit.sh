@@ -5,5 +5,5 @@ set -e
 
 git pull origin main
 git add .
-git commit -m "test: config.ts"
+git commit -m "docs: 文档更新"
 git push origin main
