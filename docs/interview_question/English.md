@@ -11,6 +11,7 @@
 * apply,bind,new, Promise
 * instance of 
 * __proto__或Object.getPrototypeOf、prototype
+* Object.assign
 
 ### Vue
 

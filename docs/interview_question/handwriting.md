@@ -8,13 +8,20 @@ outline: deep
 
 ## 手写new
 
+### 实现原理
+
+::: details
+
 首先new 是关键字，我这里使用构造函数来实现
 
 * 创建一个空对象
 * 空对象的 隐式原型 指向 构造函数的显示原型
 * 执行构造函数，this指向空对象。
-* 构造函数的返回值如果是引用类型，就返回这个构造函数的返回值，否则就返回
-新的对象本身。
+* 构造函数的返回值如果是引用类型，就返回这个构造函数的返回值，否则就返回新的对象本身。
+
+:::
+
+### 实现
 
 ::: details
 
@@ -53,8 +60,8 @@ console.log(p2, p2.name);
 
 ```md
 绑定规则：
-(1). 默认绑定：严格模式下，this会绑定到undefined。非严格模式下，this会绑定到window。
-(2). 隐式绑定：this永远指向最后调用它的对象
+(1). 默认绑定：严格模式下，this会绑定到undefined。非严格模式下，this会绑定到window。eg: play(); // 直接调用 
+(2). 隐式绑定：this永远指向最后调用它的对象。eg: obj.play(); fn.bind(); // 通过对象进行调用
 (3). 显示绑定：call,apply,bind
 (4). new绑定
 优先级：new绑定优先级>显示绑定优先级> 隐式绑定优先级>默认绑定优先级。
@@ -118,24 +125,48 @@ Function.prototype.call2 = function(context, ...args) {
 
 ### bind
 
+#### 无new, 初始版
+
 ::: details
 
 ```js
-// 这样写不可以？
-Function.prototype.myBind = function(context, ...args) {
-  let fn = this;
-  // ??多次传参，不立即调用
-  return fn.apply(context, ...args);
-}
+Function.prototype.myBind = function(obj, ...args) {
+      const fn = this; // 属于方法的调用 play.myBind();
+      // return fn.call(obj, ...args);// 返回了 调用这个函数的返回值
+      return function(...resArgs) {
+          // console.log(this);// 直接调用 objBind();
+          return fn.call(obj, ...args, ...resArgs);
+      }
+  }
+  const obj = {
+      name: 'Brunson',
+      team: '尼克斯'
+  }
+  const play = function(coach, city) {
+      console.log(this.name, this.team, coach, city);
+      return 999;
+  }
+  // 改变this, 多次传参，不立即调用
+  const objBind = play.myBind(obj, '锡伯杜');
+  // console.log("🚀 ~ objBind:", objBind)
+  console.log(objBind('纽约'));
 ```
 
 :::
 
-(面试)[https://vue3js.cn/interview/JavaScript/pull_up_loading_pull_down_refresh.html#%E4%BA%8C%E3%80%81%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86]
+#### 手写bind
 
-(面试)[https://vue3js.cn/interview/vue/bind.html#%E4%BA%8C%E3%80%81%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E7%9A%84%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88]
+::: details
 
-### 手写Promise
+```js
+
+```
+
+:::
+
+### 使用函数的arguments
+
+## 手写Promise
 
 * 它有三个状态，pending, fulfilled, rejected
 * 状态不可逆。初始状态为pending,一旦变为fulfilled或者rejected,就不会再发生改变了。
@@ -151,3 +182,6 @@ Function.prototype.myBind = function(context, ...args) {
 ```
 
 :::
+
+
+
