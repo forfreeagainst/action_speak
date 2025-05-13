@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        Function.prototype.myBind = function(obj, ...args) {
+            const fn = this; // 属于方法的调用 play.myBind();
+            return function xxx(...resArgs) {
+                // 符合new的第三条：执行构造函数，this指向空对象
+                // console.log('里层', this, JSON.stringify(this) === "{}");
+                // if (Object.getPrototypeOf(this) === xxx.prototype) {
+                if (this instanceof xxx) {
+                    // return new fn(...args, ...resArgs);
+                    const obj = new Object();
+                    // obj.__proto = fn.prototype;
+                    Object.setPrototypeOf(obj, fn.prototype); 
+                    const data = fn.call(obj, ...args, ...resArgs);
+                    return typeof data === 'object' ? data: obj;
+                } else {
+                    return fn.call(obj, ...args, ...resArgs);
+                }
+            }
+        }
+        const obj = {
+            name: 'Brunson',
+            team: '尼克斯'
+        }
+        const play = function(coach, city) {
+            // 符合new的第三条：执行构造函数，this指向空对象。
+            console.log(this, JSON.stringify(this) === '{}', this.name, this.team, coach, city);
+            return 888;
+        }
+        // 改变this, 多次传参，不立即调用
+        const objBind = play.myBind(obj, '锡伯杜');
+        const result = new objBind('纽约');
+    </script>
+</body>
+</html>
