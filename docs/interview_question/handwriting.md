@@ -201,19 +201,55 @@ const result = new objBind('纽约');
 
 ### 实现目标
 
-* 它有三个状态，pending, fulfilled, rejected
-* 状态不可逆。初始状态为pending,一旦变为fulfilled或者rejected,就不会再发生改变了。
-* throw （死肉）就会变为rejected
-* then接受 两个参数，一个是成功的回调，一个是失败的回调，返回的仍然是一个Promise,
-这样才能继续链式调用。回调的数据类型，可以是函数，也可以不是函数
-* 什么时候会被认定是Promise.当它是一个函数的时候，或者是一个拥有then方法的对象
+::: details
 
-### 版本（三个状态）
+* Promise有三个状态，分别pending, fulfilled, rejected。初始状态为 pending,
+* 状态不可逆。一旦由pending转化为 fulfilled或 rejected后，状态就不会再发生改变了。
+* throw可以使Promise的状态，由pending变为rejected.
+* Promise.then本身也是个Promise(链式调用)，它接收两个参数，一个成功的回调，一个失败的回调。
+回调可以是函数，也可以不是函数（不是函数具有穿透效果）
+* 在PromiseA+规范里，判定为函数或者具有then方法的对象，就会被认为是Promise.([Promises/A+](https://promisesaplus.com/))
+* **`Promise.then` 的回调函数是作为微任务执行的**
+* **Promise 构造函数是同步执行的**（当你调用 `new Promise(executor)` 时，传入的 `executor` 函数会立即同步执行）
+
+:::
+
+### 版本（三个状态，不可逆）
 
 ::: details
 
 ```js
-
+const PENDING = 'pending';
+const FULFILLED = 'fulfilled';
+const REJECTED = 'rejected';
+class MyPromise{
+    // 私有属性（通过实例，无法直接访问内部属性）
+    #promiseState = PENDING;
+    #promiseResult = null;
+    constructor(executor) {
+        // 你需要熟悉this的指向。（类默认是严格模式）
+        // executor(this.resolve, this.reject);
+        executor(this.resolve.bind(this), this.reject.bind(this));
+    }
+    resolve(res) {
+        if (this.#promiseState !== PENDING) return;
+        this.#promiseState = FULFILLED;
+        this.#promiseResult = res;
+    }
+    reject(err) {
+        //没有使用bind改变this指向，打印的是undefined;
+        console.log(this, '1');
+        if (this.#promiseState !== PENDING) return;
+        this.#promiseState = REJECTED;
+        this.#promiseResult = err;
+    }
+}
+const p1 = new MyPromise((resolve, reject) => {
+    reject('错误');
+    // 状态不可逆
+    resolve(1);
+})
+console.log(p1, '2');
 ```
 
 :::
@@ -316,7 +352,7 @@ new MyPromise((resolve, reject) => {
 
 :::
 
-**返回值是Promise**
+**判断是不是Promise**
 
 ::: details
 
