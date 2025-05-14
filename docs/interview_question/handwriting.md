@@ -197,12 +197,16 @@ const result = new objBind('纽约');
 
 ## 手写Promise
 
+### 实现目标
+
 * 它有三个状态，pending, fulfilled, rejected
 * 状态不可逆。初始状态为pending,一旦变为fulfilled或者rejected,就不会再发生改变了。
 * throw （死肉）就会变为rejected.
 * then接受 两个参数，一个是成功的回调，一个是失败的回调，返回的仍然是一个Promise,
 这样才能继续链式调用。回调的数据类型，可以是函数，也可以不是函数
 * 什么时候会被认定是Promise.当它是一个函数的时候，或者是一个拥有then方法的对象
+
+### 版本（三个状态）
 
 ::: details
 
@@ -213,4 +217,85 @@ const result = new objBind('纽约');
 :::
 
 
+### 版本
 
+#### 测试用例
+
+##### 异步resolve,能否正常执行then方法的逻辑
+
+::: details
+
+```js
+new MyPromise((resolve, reject) => {
+    setTimeout(() => {
+        resolve(11);//改变了Promise的状态
+    }, 200)
+}).then(res => {
+   console.log("🚀 ~ res:", res)
+})
+```
+
+:::
+
+##### promise.then是微任务
+
+::: details
+
+```js
+const p = new MyPromise((resolve, reject) => {
+    resolve(111);
+}).then(res => {
+    console.log(res, '1');
+})
+console.log(222);// promise.then是微任务，先打印222，再打印111
+```
+
+:::
+
+## 手写防抖
+
+::: details
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" href="data:,">  <!-- 空图标 -->
+</head>
+<body>
+    <div>
+        <input type="text" id="player">
+    </div>
+    <script>
+        // 防抖：不动一段时间，就会执行。动一下，就要重新计算时间。eg: 搜索框(觉得填好了，再帮我查呀)...
+        function debounce(fn, delay) {
+            let timer = null;
+            // 这里是直接调用debounce函数，this指向window/undefined, auguments很明显是fn, delay;
+            // console.log("🚀 ~ debounce ~ debounce:", this, '\n', arguments, '\n');
+            return function() {
+                // console.log(this);// DOM元素
+                // console.log(arguments); //接收input的e参数
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                timer = setTimeout(() => {
+                    fn.apply(this, arguments);
+                }, delay)
+            }
+        }
+        function play(e) {
+            console.log(this, '汪汪队立大功', e);
+        }
+        const playerDom = document.getElementById('player');
+        // playerDom.addEventListener('input', play); // this指向和arguments
+        // debounce(play,2000)得到的是一个函数，而不是调用函数
+        playerDom.addEventListener('input', debounce(play, 2000));
+    </script>
+</body>
+</html>
+```
+
+:::

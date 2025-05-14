@@ -12,6 +12,8 @@
 * instance of 
 * __proto__或Object.getPrototypeOf、prototype
 * Object.assign
+* MutationObserver
+* characterData（特征）
 
 ### Vue
 

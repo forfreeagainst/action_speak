@@ -4,17 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="icon" href="data:,">  <!-- 空图标 -->
 </head>
 <body>
     <script>
-        
-
         const PENDING = 'pending';
         const FULFILLED = 'fulfilled';
         const REJECTED = 'rejected';
         class MyPromise{
             #promiseState = PENDING;
             #promiseResult = null;
+
+            #handlerList = [];
             constructor(executor) {
                 try {
                     executor(this.resolve.bind(this), this.reject.bind(this));
@@ -25,7 +26,18 @@
             changeState(state, result) {
                 if (this.#promiseState !== PENDING) return;
                 this.#promiseState = state;
-                this.#promiseResult = result;
+                this.#promiseResult = result;                
+                
+                if(this.#handlerList.length) {
+                    const {onFulfilled, onRejected, resolve, reject} = this.handlerList.shift();
+                    if (this.#promiseState === FULFILLED) {
+                        const data = onFulfilled(this.#promiseResult)
+                        resolve(data);
+                    } else if (this.#promiseState === REJECTED) {
+                        const data = onRejected(this.#promiseResult);
+                        resolve(data);
+                    }
+                }
             }
             resolve(res) {
                 this.changeState(FULFILLED, res);
@@ -45,24 +57,40 @@
                         const data = onRejected(this.#promiseResult)
                         resolve(data);
                     } else {
-                        // 需要一段时间，才有结果
+                        // 需要一段时间，才有结果 => 等状态改变再执行这里的回调
+                        this.#handlerList.push({
+                            onFulfilled,
+                            onRejected,
+                            resolve,
+                            reject
+                        })
                     }
                 })
             }
         }
-        const p = new MyPromise((resolve, reject) => {
-            resolve(999)
-            // throw new Error('错误');
-            // resolve(1212);
-            // setTimeout(() => {
-            //     resolve(11);
-            // }, 1000)
-        })
-        p.then(res => {
-            res += 100999222;
+        
+        const p = new Promise((resolve, reject) => {
+            resolve(111);
+        }).then(res => {
+            console.log(res, '1');
             return res;
-        })  // 假设 res=999，这里返回 1007（但被丢弃）
-        .then(res => console.log(res)) // 输出 undefined 而非 1007
+        }, 232).then(res => {
+            setTimeout(() => {
+                console.log(res, '2');
+                return res;
+            }, 1000)
+        }).then(res => {
+            setTimeout(() => {
+                console.log(res, '3');            
+            }, 2000);
+        })
+        // return new MyPromise((resolve, reject) => {
+        //     setTimeout(() => {
+        //         resolve(res);
+        //     })
+        // });
+        
+        // character 当为 true 时，监听声明的 target 节点上所有字符的变化。
     </script>
 </body>
 </html>

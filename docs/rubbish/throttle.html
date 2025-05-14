@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" href="data:,">  <!-- 空图标 -->
+</head>
+<body>
+    <script>
+        // 
+        function throttle(fn, delay) {
+            const now = new Date().getTime();
+            let prevTime = 0;
+            if (now - prevTime > delay) {
+                fn();
+                prevTime = new Date().getTime();
+            }
+        }
+    </script>
+</body>
+</html>
