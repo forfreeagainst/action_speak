@@ -203,7 +203,7 @@ const result = new objBind('纽约');
 
 * 它有三个状态，pending, fulfilled, rejected
 * 状态不可逆。初始状态为pending,一旦变为fulfilled或者rejected,就不会再发生改变了。
-* throw （死肉）就会变为rejected.
+* throw （死肉）就会变为rejected
 * then接受 两个参数，一个是成功的回调，一个是失败的回调，返回的仍然是一个Promise,
 这样才能继续链式调用。回调的数据类型，可以是函数，也可以不是函数
 * 什么时候会被认定是Promise.当它是一个函数的时候，或者是一个拥有then方法的对象
@@ -223,7 +223,7 @@ const result = new objBind('纽约');
 
 #### 测试用例
 
-##### 异步resolve,能否正常执行then方法的逻辑
+**异步resolve,能否正常执行then方法的逻辑（考验状态改变，才执行相应的回调函数）**
 
 ::: details
 
@@ -239,7 +239,7 @@ new MyPromise((resolve, reject) => {
 
 :::
 
-##### promise.then是微任务
+**promise.then是微任务**
 
 ::: details
 
@@ -250,6 +250,78 @@ const p = new MyPromise((resolve, reject) => {
     console.log(res, '1');
 })
 console.log(222);// promise.then是微任务，先打印222，再打印111
+```
+
+:::
+
+**then的成功回调不传函数，结果就穿透（直接舍弃不是函数的内容，定义一个新函数）**
+
+::: details
+
+```js
+// 传的不是函数，结果就穿透
+new MyPromise((resolve, reject) => {
+    setTimeout(() => {
+        resolve(232);
+    },500)
+}).then(110, err=> console.log(err))
+.then(res=> console.log(res), err=> console.log(err));
+```
+
+```js
+let {onFulfilled, onRejected, resolve, reject} = this.#handlerList.shift();
+// 不是函数，定义 成一个函数
+// val => val;
+// 包装成一个函数
+// function anonymous(val) {
+//     return val
+// }
+onFulfilled = typeof onFulfilled !== 'function' ? val => val: onFulfilled;
+onRejected = typeof onRejected !== 'function' ? err => err: onRejected;
+if (this.#promiseState === FULFILLED) {
+    // 这里才执行 这个函数。
+    const data = onFulfilled(this.#promiseResult)
+    resolve(data);
+} else if (this.#promiseState === REJECTED) {
+    const data = onRejected(this.#promiseResult);
+    resolve(data);
+}
+```
+
+:::
+
+**走了失败的回调，并不代表 之后的回调 都会走失败的 回调。**
+
+::: details
+
+```js
+// 报错 和 手动 reject，可以使promiseState状态为 rejected, 可以走到失败的回调。
+// 走了失败的回调，并不代表 之后的回调 都会走失败的 回调。
+new Promise((resolve, reject) => {
+    setTimeout(() => {
+        reject(232);
+    },500)
+}).then(110, err=> console.log(err, 'err1'))
+.then(res=> console.log(res, 'res2'), err=> console.log(err, 'err2'));//err1和res2
+```
+
+```js
+new MyPromise((resolve, reject) => {
+    setTimeout(() => {
+        reject(232);
+    },500)
+}).then(110, () => {throw(999)})
+.then(res=> console.log(res, 'res2'), err=> console.log(err, 'err2')); // err2
+```
+
+:::
+
+**返回值是Promise**
+
+::: details
+
+```js
+
 ```
 
 :::

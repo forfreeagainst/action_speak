@@ -29,13 +29,26 @@
                 this.#promiseResult = result;                
                 
                 if(this.#handlerList.length) {
-                    const {onFulfilled, onRejected, resolve, reject} = this.handlerList.shift();
-                    if (this.#promiseState === FULFILLED) {
-                        const data = onFulfilled(this.#promiseResult)
-                        resolve(data);
-                    } else if (this.#promiseState === REJECTED) {
-                        const data = onRejected(this.#promiseResult);
-                        resolve(data);
+                    let {onFulfilled, onRejected, resolve, reject} = this.#handlerList.shift();
+                    // 不是函数，定义 成一个函数
+                    // val => val;
+                    // 包装成一个函数
+                    // function anonymous(val) {
+                    //     return val
+                    // }
+                    onFulfilled = typeof onFulfilled !== 'function' ? val => val: onFulfilled;
+                    onRejected = typeof onRejected !== 'function' ? err => err: onRejected;
+                    try {
+                        if (this.#promiseState === FULFILLED) {
+                            // 这里才执行 这个函数。
+                            const data = onFulfilled(this.#promiseResult)
+                            resolve(data);
+                        } else if (this.#promiseState === REJECTED) {
+                            const data = onRejected(this.#promiseResult);
+                            resolve(data);
+                        }
+                    } catch(err) {
+                        reject(err)
                     }
                 }
             }
@@ -68,28 +81,24 @@
                 })
             }
         }
-        
-        const p = new Promise((resolve, reject) => {
-            resolve(111);
-        }).then(res => {
-            console.log(res, '1');
-            return res;
-        }, 232).then(res => {
-            setTimeout(() => {
-                console.log(res, '2');
-                return res;
-            }, 1000)
-        }).then(res => {
-            setTimeout(() => {
-                console.log(res, '3');            
-            }, 2000);
-        })
-        // return new MyPromise((resolve, reject) => {
+        // 链式调用
+        // new MyPromise((resolve, reject) => {
         //     setTimeout(() => {
-        //         resolve(res);
-        //     })
-        // });
-        
+        //         resolve(100);
+        //     },500)
+        // }).then(res => res * 2, err=> console.log(err))
+        // .then(res=> console.log(res), err=> console.log(err));
+
+       
+
+        // 返回值是Promise.
+        new MyPromise((resolve, reject) => {
+            setTimeout(() => {
+                reject(232);
+            },500)
+        }).then(110, () => {throw(999)})
+        .then(res=> console.log(res, 'res2'), err=> console.log(err, 'err2')); // err2
+
         // character 当为 true 时，监听声明的 target 节点上所有字符的变化。
     </script>
 </body>
