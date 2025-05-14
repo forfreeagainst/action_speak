@@ -9,7 +9,8 @@
 * stopPropagation
 * preventDefault
 * apply,bind,new, Promise
-* instance of 
+* instance of
+* Object.create()
 * __proto__或Object.getPrototypeOf、prototype
 * Object.assign
 * MutationObserver

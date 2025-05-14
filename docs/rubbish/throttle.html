@@ -7,16 +7,28 @@
     <link rel="icon" href="data:,">  <!-- 空图标 -->
 </head>
 <body>
+    <input type="button" value="Subscribe!" id="submitBtn"/>
     <script>
-        // 
+        // 节流，一段时间内，只执行一次。eg: 表单提交（1s只触发一次请求）
         function throttle(fn, delay) {
-            const now = new Date().getTime();
             let prevTime = 0;
-            if (now - prevTime > delay) {
-                fn();
-                prevTime = new Date().getTime();
+            // 需要的是是一个函数，而不是直接调用函数
+            return function() {
+                // 按钮的DOM点击，才会调用，才会有e（auguments）;
+                const now = new Date().getTime();
+                if (now - prevTime > delay) {
+                    // fn();
+                    fn.apply(this, arguments);
+                    prevTime = new Date().getTime();
+                }
             }
         }
+        function submitForm(e) {
+            console.log(this, e);
+        }
+        const submitBtn = document.getElementById('submitBtn');
+        // submitBtn.addEventListener('click', submitForm);
+        submitBtn.addEventListener('click', throttle(submitForm, 2000));
     </script>
 </body>
 </html>

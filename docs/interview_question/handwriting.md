@@ -161,15 +161,17 @@ Function.prototype.myBind = function(obj, ...args) {
 ```js
 Function.prototype.myBind = function(obj, ...args) {
     const fn = this; // 属于方法的调用 play.myBind();
-    return function xxx(...resArgs) {
+    return function bindFn(...resArgs) {
         // 符合new的第三条：执行构造函数，this指向空对象
         // console.log('里层', this, JSON.stringify(this) === "{}");
-        // if (Object.getPrototypeOf(this) === xxx.prototype) {
-        if (this instanceof xxx) {
+        // if (Object.getPrototypeOf(this) === bindFn.prototype) {
+        if (this instanceof bindFn) {
             // return new fn(...args, ...resArgs);
-            const obj = new Object();
+            // const obj = new Object();
             // obj.__proto = fn.prototype;
-            Object.setPrototypeOf(obj, fn.prototype); 
+            // Object.setPrototypeOf(obj, fn.prototype); // 可优化，用Object.create()
+            const obj = Object.create(fn.prototype); // 这是创建原型继承的标准方式
+            // 比直接修改 __proto__ 更规范（__proto__ 是非标准属性）
             const data = fn.call(obj, ...args, ...resArgs);
             return typeof data === 'object' ? data: obj;
         } else {
@@ -293,6 +295,49 @@ console.log(222);// promise.then是微任务，先打印222，再打印111
         // playerDom.addEventListener('input', play); // this指向和arguments
         // debounce(play,2000)得到的是一个函数，而不是调用函数
         playerDom.addEventListener('input', debounce(play, 2000));
+    </script>
+</body>
+</html>
+```
+
+:::
+
+## 手写节流
+
+::: details
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" href="data:,">  <!-- 空图标 -->
+</head>
+<body>
+    <input type="button" value="Subscribe!" id="submitBtn"/>
+    <script>
+        // 节流，一段时间内，只执行一次。eg: 表单提交（1s只触发一次请求）
+        function throttle(fn, delay) {
+            let prevTime = 0;
+            // 需要的是是一个函数，而不是直接调用函数
+            return function() {
+                // 按钮的DOM点击，才会调用，才会有e（auguments）;
+                const now = new Date().getTime();
+                if (now - prevTime > delay) {
+                    // fn();
+                    fn.apply(this, arguments);
+                    prevTime = new Date().getTime();
+                }
+            }
+        }
+        function submitForm(e) {
+            console.log(this, e);
+        }
+        const submitBtn = document.getElementById('submitBtn');
+        // submitBtn.addEventListener('click', submitForm);
+        submitBtn.addEventListener('click', throttle(submitForm, 2000));
     </script>
 </body>
 </html>
