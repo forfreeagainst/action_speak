@@ -50,7 +50,7 @@
                     //     return val
                     // }
                     onFulfilled = typeof onFulfilled !== 'function' ? val => val: onFulfilled;
-                    onRejected = typeof onRejected !== 'function' ? err => err: onRejected;
+                    onRejected = typeof onRejected !== 'function' ? err => { throw(err) }: onRejected;
                     try {
                         if (this.#promiseState === FULFILLED) {
                             // 这里才执行 这个函数。
@@ -106,22 +106,21 @@
         // }).then(res => res * 2, err=> console.log(err))
         // .then(res=> console.log(res), err=> console.log(err));
 
-       
         // 返回值是Promise.
         new MyPromise((resolve, reject) => {
             setTimeout(()=> {
-                resolve(0)
+                reject(0)
             })
-        }).then(res => {
-            // 通过setTimeout直接return 1010, 后面的.then获取到的res 是undefined。
-            return new MyPromise((resolve, reject) => {
-                setTimeout(() => {
-                    resolve(1010);
-                }, 1000)
-            })
-        })
+        }).then(res => 666, 323)
         .then(res=> console.log(res, 'res2'), err=> console.log(err, 'err2')); // err2
 
+
+        // 通过setTimeout直接return 1010, 后面的.then获取到的res 是undefined。
+            // return new MyPromise((resolve, reject) => {
+            //     setTimeout(() => {
+            //         resolve(1010);
+            //     }, 1000)
+            // })
         // character 当为 true 时，监听声明的 target 节点上所有字符的变化。
     </script>
 </body>

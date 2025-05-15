@@ -60,12 +60,15 @@ console.log(p2, p2.name);
 
 ```md
 绑定规则：
-(1). 默认绑定：严格模式下，this会绑定到undefined。非严格模式下，this会绑定到window。eg: play(); // 直接调用 
+(1). 默认绑定：严格模式下，this会绑定到undefined。
+非严格模式下，this会绑定到window。eg: function play() {}; // 定义到了window上，window.play
 (2). 隐式绑定：this永远指向最后调用它的对象。eg: obj.play(); fn.bind(); // 通过对象进行调用
 (3). 显示绑定：call,apply,bind
 (4). new绑定
 优先级：new绑定优先级>显示绑定优先级> 隐式绑定优先级>默认绑定优先级。
 （箭头函数没有this,它是基于闭包，闭包基于词法作用域，而词法作用域是在编译时确定的）
+
+大道至简：谁调用了它，window? 还是对象? ...(call, new 都是一些加工的产物，究极本身，就是谁调用了它)
 ```
 
 :::
@@ -197,6 +200,34 @@ const result = new objBind('纽约');
 
 ### 使用函数的arguments
 
+### 类内部开启了严格模式
+
+::: details
+
+```js
+function abc() {
+    function ddd() {
+        console.log('嘀嘀嘀', this); // window
+    }
+    ddd();
+}
+abc();
+class Animal {
+    constructor(name) {
+        console.log(this);
+    }
+    say() {
+        function a() {
+            console.log(this, '???'); // undefined
+        }
+        a(); // 谁调用这个函数， this指向谁。
+    }
+}
+new Animal('dog').say();
+```
+
+:::
+
 ## 手写Promise
 
 ### 实现目标
@@ -206,7 +237,7 @@ const result = new objBind('纽约');
 * Promise有三个状态，分别pending, fulfilled, rejected。初始状态为 pending,
 * 状态不可逆。一旦由pending转化为 fulfilled或 rejected后，状态就不会再发生改变了。
 * throw可以使Promise的状态，由pending变为rejected.
-* Promise.then本身也是个Promise(链式调用)，它接收两个参数，一个成功的回调，一个失败的回调。
+* Promise.then返回一个新的Promise(通过.then进行链式调用)，它接收两个参数，一个成功的回调，一个失败的回调。
 回调可以是函数，也可以不是函数（不是函数具有穿透效果）
 * 在PromiseA+规范里，判定为函数或者具有then方法的对象，就会被认为是Promise.([Promises/A+](https://promisesaplus.com/))
 * **`Promise.then` 的回调函数是作为微任务执行的**
@@ -229,6 +260,7 @@ class MyPromise{
     constructor(executor) {
         // 你需要熟悉this的指向。（类默认是严格模式）
         // executor(this.resolve, this.reject);
+        // 直接调用resolve,而不是通过实例调用resolve,this自然指向的不是实例
         executor(this.resolve.bind(this), this.reject.bind(this));
     }
     resolve(res) {
@@ -255,7 +287,7 @@ console.log(p1, '2');
 :::
 
 
-### 版本
+### 最终版本
 
 #### 测试用例
 
@@ -275,33 +307,25 @@ new MyPromise((resolve, reject) => {
 
 :::
 
-**promise.then是微任务**
-
-::: details
-
-```js
-const p = new MyPromise((resolve, reject) => {
-    resolve(111);
-}).then(res => {
-    console.log(res, '1');
-})
-console.log(222);// promise.then是微任务，先打印222，再打印111
-```
-
-:::
-
 **then的成功回调不传函数，结果就穿透（直接舍弃不是函数的内容，定义一个新函数）**
 
 ::: details
 
 ```js
-// 传的不是函数，结果就穿透
+// 传的不是函数，结果就穿透（promiseState,promiseResult都穿透）
 new MyPromise((resolve, reject) => {
     setTimeout(() => {
         resolve(232);
     },500)
 }).then(110, err=> console.log(err))
-.then(res=> console.log(res), err=> console.log(err));
+.then(res=> console.log(res), err=> console.log(err)); // 232
+
+new MyPromise((resolve, reject) => {
+    setTimeout(()=> {
+        reject(0)
+    })
+}).then(res => 666, 323)
+.then(res=> console.log(res, 'res2'), err=> console.log(err, 'err2')); //0 'err2'
 ```
 
 ```js
@@ -313,7 +337,7 @@ let {onFulfilled, onRejected, resolve, reject} = this.#handlerList.shift();
 //     return val
 // }
 onFulfilled = typeof onFulfilled !== 'function' ? val => val: onFulfilled;
-onRejected = typeof onRejected !== 'function' ? err => err: onRejected;
+onRejected = typeof onRejected !== 'function' ? err => { throw(err) }: onRejected;
 if (this.#promiseState === FULFILLED) {
     // 这里才执行 这个函数。
     const data = onFulfilled(this.#promiseResult)
@@ -352,6 +376,22 @@ new MyPromise((resolve, reject) => {
 
 :::
 
+**promise.then是微任务**
+
+::: details
+
+```js
+const p = new MyPromise((resolve, reject) => {
+    resolve(111);
+}).then(res => {
+    console.log(res, '1');
+})
+console.log(222);// promise.then是微任务，先打印222，再打印111
+```
+
+:::
+
+
 **判断是不是Promise**
 
 ::: details
@@ -361,6 +401,18 @@ new MyPromise((resolve, reject) => {
 ```
 
 :::
+
+### Promise的其他应用
+
+#### Promise.all（所有都成功，任意一个失败立即拒绝）
+
+全部成功 -> 返回成功数组， 如果有一个失败，返回失败结果
+
+#### Promise.allSettle（所有都有结果，永不拒绝，返回所有结果）
+
+#### Promise.any（任意一个成功，全部失败才拒绝）
+
+#### Promise.race（第一个先完成，无论成功或失败，无特殊逻辑，只看速度）
 
 ## 手写防抖
 
