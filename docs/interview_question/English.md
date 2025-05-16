@@ -27,3 +27,5 @@
 ### 其他
 
 * algorithm
+* Declarative Programming
+* Imperative Programming

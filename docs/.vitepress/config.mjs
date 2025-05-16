@@ -15,6 +15,13 @@ export default defineConfig({
           { text: '手写题', link: '/interview_question/handwriting.md' },
           { text: '浏览器', link: '/interview_question/browser.md' }
         ]
+       },
+      { 
+        text: 'Vue', 
+        items: [
+          { text: '概述', link: '/vue/outline.md' },
+          { text: "Vue哲学", link: "/vue/thinkingInVue.md"}
+        ]
        }
     ],
 
@@ -25,7 +32,14 @@ export default defineConfig({
           { text: '手写题', link: '/interview_question/handwriting.md' },
           { text: '浏览器', link: '/interview_question/browser.md' }
         ]
-      }
+      },
+      { 
+        text: 'Vue', 
+        items: [
+          { text: '概述', link: '/vue/outline.md' },
+          { text: "Vue哲学", link: "/vue/thinkingInVue.md"}
+        ]
+       }
     ],
 
     socialLinks: [
