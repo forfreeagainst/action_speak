@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // new是关键字
+        // new做了什么？
+        // 1.新创建了一个对象
+        // 2.对象的隐式原型指向函数的显示原型
+        // 3. 调用这个函数，并把this指向这个对象
+        // 4. 如果函数的返回值是引用类型，取函数的返回值，否则取这个对象
+        function myNew (fn) {
+            const obj = new Object();
+            obj.__proto__ = fn.prototype;
+            const data = fn.apply(this, ...arguments);
+            return typeof data === 'object' ? data: obj;
+        }
+        const play = function () {
+            console.log('aa')
+        }
+        const person1 = myNew(play);
+        const person2 = new play(); 
+        // 弄了一个实例
+        console.log("🚀 ~ person1:", person1, person1 instanceof play);
+        console.log("🚀 ~ person2:", person2, person2 instanceof play);
+    </script>
+</body>
+</html>

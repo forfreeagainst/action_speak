@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // call 改变this指向，传入多个参数，立即调用
+        Function.prototype.myCall = function (ctx, ...args) {
+            if (ctx === undefined || ctx === null) {
+                return ctx;
+            }
+            const fnKey = Symbol();
+            ctx[fnKey] = this; // 函数调用了，this指向了函数
+            const returnVal = ctx[fnKey](...args);
+            delete ctx[fnKey];
+            return returnVal;
+        }
+        const obj = {
+            name: 'durant',
+            age: 35
+        }
+        const play = function(fmvp, champion) {
+            console.log(this, fmvp, champion); // 没有通过call改变this指向，this指向window / undefined;
+            return 999;
+        }
+        console.log(play(2, 2));
+        console.log(play.call(obj, 2, 2));
+        console.log(play.myCall(obj, 2, 2));
+    </script>    
+</body>
+</html>

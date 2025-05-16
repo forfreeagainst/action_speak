@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" href="data:,">  <!-- 空图标 -->
+</head>
+<body>
+    <script>
+        // promise  
+        // Promise有三个状态：pending, fulfilled, rejected, 初始状态为pending
+        // 状态不可逆，一旦由pending变为fulfilled或者rejected，就不会再发生改变了。
+        // throw会把pending变为rejected
+
+        // 手写 then方法（重点）
+        // promise.then返回一个Promise（这样可以进行链式调用），它接收两个参数，
+        // 一个成功的回调，一个可选的失败的回调，回调可以是函数，也可以不适函数，
+        // 不是函数的话，它的状态和结果，都会穿透
+
+        // 在promiseA+规范，是函数或者具有then方法的对象，都可以被当作一个promise.
+        
+        // Promise.then 的回调函数是作为微任务执行的
+
+        const PENDING = 'pending';
+        const FULFILLED = 'fulfilled';
+        const REJECTED = 'rejected';
+        class MyPromise {
+            // 私有属性
+            #promiseState = PENDING;
+            #promiseResult = null;
+
+            #handlerList = [];
+            // executor 回调函数 （resolve, reject） => {}
+            constructor(executor) {
+                // 注意看resolve在哪里调用，按理说是window，但类默认开启了严格模式，所以是undefined
+                // 我们需要把this，指向这个实例，才能拿到promiseState,promiseResult
+                try {
+                    executor(this.resolve.bind(this), this.reject.bind(this))
+                } catch(err) {
+                    this.reject(err);
+                }
+            }
+            // promise.then 里的回调函数是以微任务执行的。
+            runMicroTask(fn) {
+                if (typeof process === 'object' && typeof process.nextTick === 'function') {
+                    process.nextTick(fn);
+                // } else if (typeof MutationObserver === 'function') {
+                //     const ob = new MutationObserver(fn);
+                //     const textNode = document.createTextNode('1');
+                //     ob.observe(textNode, {
+                //         characterData: true
+                //     })
+                //     textNode.data = '2';
+                } else {
+                    setTimeout(fn,0);
+                }
+            }
+            runOne() {
+                if (this.#promiseState === PENDING) return;
+                while(this.#handlerList.length) {
+                    const {onFulfilled, onRejected, resolve, reject} = this.#handlerList.shift();
+                    try {
+                        if (this.#promiseState === FULFILLED) {
+                            const data = onFulfilled(this.#promiseResult);
+                            resolve(data);
+                        } else if (this.#promiseState === REJECTED) {
+                            const data = onRejected(this.#promiseResult);
+                            resolve(data); // 执行失败的回调，不报错，也是可以重新走到成功的回调
+                        }
+                    } catch(err) {
+                        reject(err);
+                    }
+                }
+            }
+            runTask() {
+                this.runMicroTask(() => {
+                    this.runOne();
+                })
+            }
+            changeState(state, result) {
+                if (this.#promiseState !== PENDING) return;
+                this.#promiseResult = result;
+                this.#promiseState = state;
+                this.runTask();
+            }
+            resolve(res) {
+                this.changeState(FULFILLED, res);
+            }
+            reject(err) {
+                this.changeState(REJECTED, err);
+            }
+            then(onFulfilled, onRejected) {
+                return new MyPromise((resolve, reject) => {
+                    onFulfilled = typeof onFulfilled === 'function' ? onFulfilled: val => val;
+                    onRejected = typeof onRejected === 'function' ? onRejected: err => {throw err};
+                    this.#handlerList.push({
+                        onFulfilled,
+                        onRejected,
+                        resolve,
+                        reject
+                    })
+                    // 一种 是 通过 new Promise 的resolve/reject，进入.then
+                    // 另一种是 通过 .then 中执行 成功/失败的回调 中的 resolve/reject, 进入.then。
+                    this.runTask(); // 状态已经改变了就立即执行任务，怎么理解呢
+                })
+            }
+        }
+        const p = new Promise((resolve, reject) => {
+    resolve(111);
+}).then(res => {
+    console.log(res, '1');
+})
+console.log(222);// promise.then是微任务，先打印222，再打印111
+        // console.log(p, '而是因为控制台显示的是对象的实时状态。')
+    </script>
+</body>
+</html>

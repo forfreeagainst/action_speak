@@ -193,6 +193,7 @@ const play = function(coach, city) {
 }
 // 改变this, 多次传参，不立即调用
 const objBind = play.myBind(obj, '锡伯杜');
+// 通过new 调用这个函数， 而不是简单调用这个函数
 const result = new objBind('纽约');
 ```
 
@@ -377,6 +378,9 @@ new MyPromise((resolve, reject) => {
 :::
 
 **promise.then是微任务**
+
+*  一种 是 通过 new Promise 的resolve/reject，进入.then
+* 另一种是 通过 .then 中执行 成功/失败的回调 中的 resolve/reject, 进入.then。
 
 ::: details
 

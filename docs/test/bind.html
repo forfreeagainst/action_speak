@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // bind: 改变this指向；多次传参，参数不定；返回一个函数，不立即调用
+        Function.prototype.myBind = function(ctx, ...args) {
+            // 函数调用了myBind, 保留一下
+            const fn = this;
+            return function bindFn(...surplusArgs) {
+                // 通过new调用，this发生了改变，这里的this指向了实例
+                if (this instanceof bindFn) {
+                    // const obj = new Object();
+                    // obj.__proto__ = fn.prototype;
+                    const obj = Object.create(fn.prototype);
+                    const data = fn.call(obj, ...args, ...surplusArgs);
+                    return typeof data === 'object' ? data: obj;
+                } else {
+                    return fn.call(ctx, ...args, ...surplusArgs);        
+                }
+            }
+        }
+        const obj = {
+            recommended: true
+        }
+        const play = function(book, author, rate) {
+            console.log(this, book, author, rate);
+            return 404;
+        }
+        const a = play.bind(obj, '传习录');
+        const b = a('王阳明', 100);
+        console.log(b);
+        // {recommended: true} '传习录' '王阳明' 100
+        // 404
+
+        const aa = play.myBind(obj, '传习录');
+        const bb = aa('王阳明', 100);
+        console.log(bb);
+        //{recommended: true} '传习录' '王阳明' 100
+        // 404
+
+        // 通过 new 调用这个函数，而不是简单调用这个函数
+        const c = play.bind(obj, '传习录');
+        const d = new c('王阳明', 100);
+        console.log(d);
+        // play {} '传习录' '王阳明' 100
+        // play {}
+
+        const cc = play.myBind(obj, '传习录');
+        const dd = new cc('王阳明', 100);
+        console.log(dd);
+        // play {} '传习录' '王阳明' 100
+        // play {}
+    </script>
+</body>
+</html>
