@@ -16,11 +16,20 @@ export default defineConfig({
           { text: '浏览器', link: '/interview_question/browser.md' }
         ]
        },
+       { 
+        text: '算法', 
+        items: [
+          { text: '数组', link: '/algorithm/array.md' },
+          { text: '二叉树', link: '/algorithm/binary_tree.md' }
+        ]
+       },
       { 
         text: 'Vue', 
         items: [
           { text: '概述', link: '/vue/outline.md' },
-          { text: "Vue哲学", link: "/vue/thinkingInVue.md"}
+          { text: "Vue哲学", link: "/vue/thinkingInVue.md"},
+          { text: "创建开发环境", link: "/vue/createDevelopmentEnvironment.md"},
+          { text: "响应式系统", link: "/vue/reactivity.md"}
         ]
        }
     ],
@@ -34,10 +43,19 @@ export default defineConfig({
         ]
       },
       { 
+        text: '算法', 
+        items: [
+          { text: '数组', link: '/algorithm/array.md' },
+          { text: '二叉树', link: '/algorithm/binary_tree.md' }
+        ]
+       },
+      { 
         text: 'Vue', 
         items: [
           { text: '概述', link: '/vue/outline.md' },
-          { text: "Vue哲学", link: "/vue/thinkingInVue.md"}
+          { text: "Vue哲学", link: "/vue/thinkingInVue.md"},
+          { text: "创建开发环境", link: "/vue/createDevelopmentEnvironment.md"},
+          { text: "响应式系统", link: "/vue/reactivity.md"}
         ]
        }
     ],

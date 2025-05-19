@@ -15,6 +15,7 @@
 * Object.assign
 * MutationObserver
 * characterData（特征）
+* receiver(Reflect)
 
 ### Vue
 
