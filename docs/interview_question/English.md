@@ -4,6 +4,7 @@
 
 ### 浏览器
 
+* Infinity无穷大
 * Proxy
 * DefineProperty
 * stopPropagation

@@ -2,11 +2,207 @@
 
 ## 二分查找
 
+### letcode704
+
+给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。
+
+输入: nums = [-1,0,3,5,9,12], target = 9
+
+输出: 4
+
+解释: 9 出现在 nums 中并且下标为 4
+
+::: details
+
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+var search = function(nums, target) {
+    let left = 0;
+    let right = nums.length - 1;
+    // 只有一个元素，判断要不要while循环。显然要，所以是等于
+    // 左闭右开，左闭右闭，看要不要等于
+    while(left <= right) {
+        const middle = (left + right) // 2;
+        if (nums[middle] > target) {
+            right = middle - 1;
+        } else if (nums[middle] < target) {
+            left = middle + 1;
+        } else {
+            return middle;
+        }
+    }
+    // return nums.findIndex(v => v===target);
+    return -1;
+};
+```
+
+:::
+
 ## 快慢指针
+
+### letcode27
+
+给你一个数组 nums 和一个值 val，你需要 原地 移除所有数值等于 val 的元素。元素的顺序可能发生改变。然后返回 nums 中与 val 不同的元素的数量。
+
+假设 nums 中不等于 val 的元素数量为 k，要通过此题，您需要执行以下操作：
+
+更改 nums 数组，使 nums 的前 k 个元素包含不等于 val 的元素。nums 的其余元素和 nums 的大小并不重要。
+返回 k。
+
+输入：nums = [3,2,2,3], val = 3
+
+输出：2, nums = [2,2,_,_]
+
+解释：你的函数函数应该返回 k = 2, 并且 nums 中的前两个元素均为 2。
+
+你在返回的 k 个元素之外留下了什么并不重要（因此它们并不计入评测）。
+
+::: details
+
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} val
+ * @return {number}
+ */
+var removeElement = function(nums, val) {
+    let fast = 0;
+    let slow = 0;
+    // 后面的覆盖前面的
+    while(fast < nums.length) {
+       if (nums[fast] !== val) {
+        nums[slow++] = nums[fast];
+       } 
+       fast ++;
+    }
+    return slow; //返回的不是数组本身
+};
+```
+
+:::
 
 ## 双指针
 
+### letcode977
+
+给你一个按 非递减顺序 排序的整数数组 nums，返回 每个数字的平方 组成的新数组，要求也按 非递减顺序 排序。
+
+示例 1：
+
+输入：nums = [-4,-1,0,3,10]
+
+输出：[0,1,9,16,100]
+
+解释：平方后，数组变为 [16,1,0,9,100]
+
+排序后，数组变为 [0,1,9,16,100]
+
+::: details
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var sortedSquares = function(nums) {
+    let res = new Array(nums.length);
+    // let res = [];
+    let i = nums.length - 1;
+    // 值得注意的是，负数的平方可能会大于 正数的平方,最大的在两边
+    let l = 0; // 左指针
+    let r = nums.length - 1; // 右指针
+    while(l <= r) {
+        const ll = nums[l] * nums[l]; // 左边的平方
+        const rr = nums[r] * nums[r]; // 右边的平方
+        if (ll > rr) {
+            res[i --] = ll;
+            l ++;
+        } else {
+            res[i --] = rr;
+            r --;
+        }
+    }
+    return res;
+};
+```
+
+:::
+
 ## 滑动窗口
+
+### letcode209
+
+给定一个含有 n 个正整数的数组和一个正整数 target 。
+
+找出该数组中满足其总和大于等于 target 的长度最小的 子数组 [numsl, numsl+1, ..., numsr-1, numsr] ，并返回其长度。如果不存在符合条件的子数组，返回 0 。
+
+输入：target = 7, nums = [2,3,1,2,4,3]
+
+输出：2
+
+解释：子数组 [4,3] 是该条件下的长度最小的子数组。
+
+::: details
+
+滑动窗口
+
+```js
+/**
+ * @param {number} target
+ * @param {number[]} nums
+ * @return {number}
+ */
+var minSubArrayLen = function(target, nums) {
+    let res = Infinity; // 无穷大
+    let end = 0;
+    let start = 0;
+    let len = nums.length;
+    let sum = 0;
+    for(let end = 0; end < len; end ++) {
+        sum += nums[end];
+        // 注意要使用while
+        while (sum >= target) {
+            res = Math.min(res, end - start + 1);
+            sum -= nums[start];
+            start ++;
+        } 
+    }
+    return res === Infinity ? 0 : res;
+};
+```
+
+暴力解法：两层for循环
+
+```js
+/**
+ * @param {number} target
+ * @param {number[]} nums
+ * @return {number}
+ */
+var minSubArrayLen = function(target, nums) {
+    let res = Infinity; // 无穷大
+    let len = nums.length;
+    // 暴力解法：两层for循环
+    for(let i = 0; i < len; i++) {
+        let sum = 0;
+        // 注意两层for循环，j是从i开始的
+        for(let j = i; j < len; j++) {
+            sum += nums[j];
+            // 题目是大于等于
+            if (sum >= target) {
+                res = Math.min(res, j - i + 1); 
+            }
+        }
+    }
+    return res === Infinity ? 0 : res;
+};
+```
+
+:::
 
 ## 螺旋矩阵
 
@@ -56,6 +252,51 @@ var generateMatrix = function(n) {
             res[i][left] = num ++;
         }
         left ++;
+    }
+    return res;
+};
+```
+
+循环不变量（四个循环都是左闭右开），不是固定规律，不学不学
+
+```js
+var generateMatrix = function(n) {
+    let startX = startY = 0;   // 起始位置
+    let loop = Math.floor(n/2);   // 旋转圈数
+    let mid = Math.floor(n/2);    // 中间位置
+    let offset = 1;    // 控制每一层填充元素个数
+    let count = 1;     // 更新填充数字
+    let res = new Array(n).fill(0).map(() => new Array(n).fill(0));
+
+    while (loop--) {
+        let row = startX, col = startY;
+        // 上行从左到右（左闭右开）
+        for (; col < n - offset; col++) {
+            res[row][col] = count++;
+        }
+        // 右列从上到下（左闭右开）
+        for (; row < n - offset; row++) {
+            res[row][col] = count++;
+        }
+        // 下行从右到左（左闭右开）
+        for (; col > startY; col--) {
+            res[row][col] = count++;
+        }
+        // 左列做下到上（左闭右开）
+        for (; row > startX; row--) {
+            res[row][col] = count++;
+        }
+
+        // 更新起始位置
+        startX++;
+        startY++;
+
+        // 更新offset
+        offset += 1;
+    }
+    // 如果n为奇数的话，需要单独给矩阵最中间的位置赋值
+    if (n % 2 === 1) {
+        res[mid][mid] = count;
     }
     return res;
 };
