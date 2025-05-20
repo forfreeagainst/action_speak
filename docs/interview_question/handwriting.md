@@ -299,6 +299,7 @@ console.log(p1, '2');
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+<link rel="icon" href="data:,">  <!-- 空图标 -->
 </head>
 <body>
   <script>
@@ -312,7 +313,7 @@ console.log(p1, '2');
     const REJECTED = 'rejected';
     class MyPromise{
       #promiseState = PENDING;
-      #promiseResult = FULFILLED;
+      #promiseResult = null;
       #handlerList = [];
       // 接受一个 new Promise(回调函数)
       constructor(executor) {
@@ -344,7 +345,7 @@ console.log(p1, '2');
             resolve,
             reject
           } = this.#handlerList.shift();
-          if (this.#promiseResult === FULFILLED) {
+          if (this.#promiseState === FULFILLED) {
             this.runOne(onFulfilled, resolve, reject);
           } else {
             this.runOne(onRejected, resolve, reject);
@@ -445,23 +446,8 @@ new MyPromise((resolve, reject) => {
 ```
 
 ```js
-let {onFulfilled, onRejected, resolve, reject} = this.#handlerList.shift();
-// 不是函数，定义 成一个函数
-// val => val;
-// 包装成一个函数
-// function anonymous(val) {
-//     return val
-// }
 onFulfilled = typeof onFulfilled !== 'function' ? val => val: onFulfilled;
 onRejected = typeof onRejected !== 'function' ? err => { throw(err) }: onRejected;
-if (this.#promiseState === FULFILLED) {
-    // 这里才执行 这个函数。
-    const data = onFulfilled(this.#promiseResult)
-    resolve(data);
-} else if (this.#promiseState === REJECTED) {
-    const data = onRejected(this.#promiseResult);
-    resolve(data);
-}
 ```
 
 :::
