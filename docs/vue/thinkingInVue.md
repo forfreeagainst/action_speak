@@ -29,6 +29,8 @@
 
 ### 解决直接操作 DOM的性能瓶颈
 
+* 每个DOM节点都包含大量内置属性（如clientWidth、scrollHeigth、className等），创建大量DOM节点会消耗较多内存，可能导致：内存泄漏（如未正确移除事件监听器）; 垃圾回收（GC）压力增大，导致页面卡顿。
+`console.dir(document.getElementsByClassName('custom-block1')[0])`
 * 直接操作DOM (如修改样式、结构) 会触发浏览器的 重排（Reflow）和重绘（Repaint）,频繁操作会导致性能下降。
 * 虚拟DOM 是对真实 DOM 的抽象表示，操作它不会触发浏览器 渲染流程，仅在最终 更新时 批量同步到 真实DOM。
 

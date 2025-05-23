@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // result记录了索引，是个数组。
+        // 首先，与结果集的最后一个比较，比它大的，都添加，
+        // 比它小的，优化序列，找到 大于左边，小于右边的 合适位置放下。二分查找
+        // 以上得出：最长递增子序列的长度 就是结果集的长度；结果集最后一个，代表的就是最大数的索引
+        // 我们可以使用前驱节点，p记录了前驱节点索引，是个数组
+        function getSequence(arr) {
+            const res = [0]; // 结果集
+            const len = arr.length;
+
+            const p = new Array(len).fill(undefined);
+
+            let left, right, midde;
+            for(let i = 0; i < len; i++ ) {
+                const arrI = arr[i];
+                if (arrI !== 0) {
+                    const resLastIndex = res.length - 1;
+                    // 都是比它大的
+                    if (arr[res[resLastIndex]] < arrI) {
+                        res.push(i);
+                        continue;
+                    }
+                    // 如果不比之前的大，找到比它小的替换
+                    left = 0;
+                    right = res.length - 1;
+                    while(left < right) {
+                        middle = (left + right) >> 1; // 整除2
+                        // 1 4 7  插入 3， 找 大于左边 ，小于右边（找到比它小的，替换）
+                        if (arr[res[middle]] < arrI) {
+                            left = middle + 1;
+                        } else {
+                            right = middle;
+                        }
+                    }
+                    if(arrI < arr[res[left]]) {
+                        res[left] = i;
+                    }
+                }
+            }
+            return res;
+        }
+        let arr = [4,5,1,2,7,3,6,9];
+        // arr = [1,2,3,4,5,6];
+        // arr = [14,19,1,2,33, 16,18];
+        arr = [1, 3, 2, 4, 0, 5];
+        console.log(getSequence(arr));
+    </script>
+</body>
+</html>

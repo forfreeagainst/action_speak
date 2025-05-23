@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    //判断是空数组
+    const isEmptyArr1 = (data) => {
+      if (Array.isArray(data) && !data.length) return true;//数组的方法
+      return false;
+    }
+    const isEmptyArr2 = (data) => {
+      // 判断这个对象是否由构造函数实例化而来。
+      if (data instanceof Array && !data.length) return true;//使用 instanceof 运算符
+      return false;
+    }
+    const isEmptyArr3 = (data) => {
+      // Object.prototype.toString.call(data) 通过调用 Object 原型链上的 toString 方法，
+      // 并将其内部的 this 指向 data
+      if (Object.prototype.toString.call(data) === "[object Array]" && !data.length) {
+        return true;
+      }
+      return false;
+    }
+    //注：其他方法不通用，undefined没有constuctor,__proto__,getPrototypeOf
+    //判断是空对象
+    function isEmptyObj() {
+
+    }
+    //输入一个值，返回其数据类型
+    function getDataType() {
+
+    }
+    //死循环指定的时间(指定时间一直执行这个函数里的东西)
+    function delay(duration) {
+      var start = Date.now();
+      while (Date.now() - start < duration);
+    }
+    //加减乘除
+    // 格式化金额
+    function formatCurrency(number) {
+      // 将数字转换为字符串并去除小数点
+      const numberStr = number.toFixed(2).replace('.', '');
+      // 使用正则表达式每三个数字分隔
+      const formatted = numberStr.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      // 将字符串重新加上小数点
+      return formatted.replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+    }
+    // 使用示例
+    console.log(formatCurrency(1234567.89)); // 输出: 1,234,567.89
+  </script>
+</body>
+
+</html>

@@ -15,8 +15,13 @@
 * __proto__或Object.getPrototypeOf、prototype
 * Object.assign
 * MutationObserver
+* DocumentFragment
+* requestAnimationFrame
 * characterData（特征）
 * receiver(Reflect)
+* iterator
+* async
+* Promise
 
 ### Vue
 

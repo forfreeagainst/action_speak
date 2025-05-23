@@ -20,12 +20,17 @@ export default defineConfig({
         text: '算法', 
         items: [
           { text: '数组', link: '/algorithm/array.md' },
+          { text: '链表', link: '/algorithm/linked_list.md' },
+          { text: '哈希表', link: '/algorithm/hashtable.md' },
+          { text: '字符串', link: '/algorithm/string.md' },
+          { text: '栈与队列', link: '/algorithm/stack_and_queue.md' },
           { text: '二叉树', link: '/algorithm/binary_tree.md' }
         ]
        },
       { 
         text: 'Vue', 
         items: [
+          { text: '加深源码理解', link: '/vue/interview_question.md' },
           { text: '概述', link: '/vue/outline.md' },
           { text: "Vue哲学", link: "/vue/thinkingInVue.md"},
           { text: "创建开发环境", link: "/vue/createDevelopmentEnvironment.md"},
@@ -56,6 +61,7 @@ export default defineConfig({
       { 
         text: 'Vue', 
         items: [
+          { text: '加深源码理解', link: '/vue/interview_question.md' },
           { text: '概述', link: '/vue/outline.md' },
           { text: "Vue哲学", link: "/vue/thinkingInVue.md"},
           { text: "创建开发环境", link: "/vue/createDevelopmentEnvironment.md"},

@@ -52,6 +52,44 @@ console.log(p2, p2.name);
 
 :::
 
+### 优化(使用Object.create())代替__proto__
+
+::: details
+
+```md
+Object.create(proto) 在对象创建时 就确定原型链，引擎可以立即优化对象的结构（隐藏类/Shape 优化）。
+
+Object.setPrototypeOf(obj, proto) 动态修改已有对象 的原型，这会破坏引擎对对象的优化假设，导致 去优化（deoptimization），性能较差。
+
+何时使用 setPrototypeOf？
+尽管性能较差，但 setPrototypeOf 仍然有用，例如：
+
+需要 动态修改 已有对象的原型（如某些元编程场景）。
+
+在 库/框架 中需要调整对象继承关系，但无法提前用 Object.create。
+```
+
+```js
+// 测试 Object.create()
+const obj1 = Object.create({ foo: 1 });
+console.time("create");
+for (let i = 0; i < 1e6; i++) {
+    const newObj = Object.create(obj1);
+}
+console.timeEnd("create"); // ~10ms
+
+// 测试 Object.setPrototypeOf()
+const obj2 = { bar: 2 };
+console.time("setProto");
+for (let i = 0; i < 1e6; i++) {
+    const newObj = {};
+    Object.setPrototypeOf(newObj, obj2);
+}
+console.timeEnd("setProto"); // ~100ms (慢 10 倍以上)
+```
+
+:::
+
 ## call & apply & bind
 
 ### 得先明白this指向问题
@@ -518,6 +556,37 @@ console.log(222);// promise.then是微任务，先打印222，再打印111
 #### Promise.any（任意一个成功，全部失败才拒绝）
 
 #### Promise.race（第一个先完成，无论成功或失败，无特殊逻辑，只看速度）
+
+#### 并发控制
+
+::: details
+
+```js
+// Vue源码
+async function runParallel(maxConcurrency, source, iteratorFn) {
+  /**@type {Promise<void>[]} */
+  const ret = []
+  /**@type {Promise<void>[]} */
+  const executing = []
+  for (const item of source) {
+    const p = Promise.resolve().then(() => iteratorFn(item))
+    ret.push(p)
+
+    if (maxConcurrency <= source.length) {
+      const e = p.then(() => {
+        executing.splice(executing.indexOf(e), 1)
+      })
+      executing.push(e)
+      if (executing.length >= maxConcurrency) {
+        await Promise.race(executing)
+      }
+    }
+  }
+  return Promise.all(ret)
+}
+```
+
+:::
 
 ## 手写防抖
 
