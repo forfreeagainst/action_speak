@@ -123,3 +123,88 @@ DOM的常见操作
 改：innerHTML、innerText、innerContent、style,appendChild,insertBefore,setAttribute
 Eg: innerText不返回隐藏元素的文本，textContent返回所有文本
 查：querySeletor,querySeletorAll
+
+json-server 启动本地服务，mock数据
+
+{
+    getList: {
+        code: 200,
+        list: [{name: 'durant', age: 35}]
+    }
+}
+
+http://localhost:3000/getList
+
+
+for...in 循环语句只会输出 obj 对象中的可枚举属性。for of 和for in 
+
+
+javaScript:
+esModule和CommonJs区别？
+什么是深拷贝，什么是浅拷贝，有什么方法实现？
+普通函数和箭头函数的区别？
+js继承
+es6有哪些？
+跨域解决方案有哪些？
+遍历数组/对象？
+事件循环
+
+
+
+css
+元素居中？
+BFC?
+隐藏元素的方式？
+em和rem区别？
+
+浏览器、网络：
+状态码有哪些？
+xss和csrf攻击的区别？
+
+vue2
+Vue的双向绑定原理？
+使用虚拟DOM和原生操作DOM的区别？
+Vue的生命周期
+create和mounted的区别？
+Vue2的组件通信方式有哪些？
+computed和watch的区别？
+说说vuex(使用场景以及优缺点)
+v-if和v-show的区别？
+说说nextTick
+说说Keep-alive
+data为什么是一个函数，而不是一个对象
+Vue的指令有哪些？
+Vue的修饰符有哪些
+Vue的路由传参有哪几种方式 
+
+
+找到权威的官网，视频只是用来参考的
+
+怎么讲原型与原型链 ？  vue2就通过重写数组的方法，实现数组的响应式更新。
+
+
+谷歌代码：chromium/chromium
+
+行内样式表
+内部样式表
+外部样式表
+浏览器默认样式表。
+浏览器把div设置为了display:none,所以它独占一行。
+document.styleSheets[0].addRule('div', 'border: 2px solid #f30 !imporant');
+
+1. 对外统一口径，设计一致化的 API
+2. 策略模式处理多场景
+
+
+* 拿个Vue2+webpack的开源项目，测试构建时长。
+* Vue官网
+* Vue源码
+* React文档
+* React基础视频对应的学习内容
+* vite 多包下create-vite有很多个 template
+* 配置项目的lint规则
+* 二叉树的中序遍历，letcode简单题
+* 拖拽
+* Vue-I18n 跟ElementPlus国际化结合
+* 微前端
+* 手写vue-router
