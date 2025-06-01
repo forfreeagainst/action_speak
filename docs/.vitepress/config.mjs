@@ -10,6 +10,14 @@ export default defineConfig({
     nav: [
       { text: 'Home', link: '/' },
       { 
+        text: '剑客', 
+        items: [
+          { text: 'Web API', link: '/swords/web_api.md' },
+          { text: 'CSS', link: '/swords/css_base.md' },
+          { text: 'JavaScript', link: '/swords/js_base.md' }
+        ]
+       },
+      { 
         text: '面试题', 
         items: [
           { text: '手写题', link: '/interview_question/handwriting.md' },
@@ -27,7 +35,7 @@ export default defineConfig({
           { text: '二叉树', link: '/algorithm/binary_tree.md' }
         ]
        },
-      { 
+      {
         text: 'Vue', 
         items: [
           { text: '加深源码理解', link: '/vue/interview_question.md' },
@@ -40,6 +48,14 @@ export default defineConfig({
     ],
 
     sidebar: [
+      { 
+        text: '剑客', 
+        items: [
+          { text: 'Web API', link: '/swords/web_api.md' },
+          { text: 'CSS', link: '/swords/css_base.md' },
+          { text: 'JavaScript', link: '/swords/js_base.md' }
+        ]
+       },
       {
         text: '面试题',
         items: [

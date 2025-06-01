@@ -23,6 +23,11 @@ features:
     details: 大模型，AI。。。
 ---
 
+| 函数 | 普通函数 | 箭头函数 |
+| --- | --- | --- |
+| 应用 | 组件库 | 组件库 |
+| 进度 | ？ | ？ |
+
 # 想找工作啦
 
 ## 开发技巧
@@ -73,7 +78,7 @@ This is a details block.
 * 词法作用域，动态作用域，执行上下文，作用域与作用域链，闭包（防抖，节流，）
 * 数据类型（原始类型，引用类型），判断数据类型，堆，栈，参数按值传递，按引用传递，
 * this指向（new, bind, call, apply, this指向...） 类数组对象与arguments
-* 浏览器事件模型（事件捕获，事件冒泡，事件对象，事件委托....）(委托和代理 区别)
+* 浏览器事件模型（事件捕获，事件冒泡，事件对象，事件委托....）
 * 浏览器请求（xhr, ajax, fetch, axios）
 * 前端异步编程规范（Promise,Promise扩展all、any等，实现一个带并发限制的异步调度器 Scheduler，保证同时运行的任务最多有N个），async与await，generator， new Promise(return 不是Promise),不执行.then
 * 前端模块化规范（IIFE,cmd,amd,commonJS esModule, umd）

@@ -1,50 +1,6 @@
 # 临时文件
 
-## JavaScript的运行环境组成
 
-JavaScript 的完整运行环境由 ECMAScript（核心语言）、DOM（文档对象模型） 和 BOM（浏览器对象模型） 三部分组成
-
-### 核心ECMAScript
-
-由ECMA-262定义并提供核心功能（由 ECMA-262 标准定义的 JavaScript 语言核心，eg:语法、类型、关键字、内置对象等）
-
-定义：由 ECMA-262 标准定义的 JavaScript 语言基础，与任何宿主环境（如浏览器、Node.js）无关。
-
-包含内容：
-
-* 语法（变量、循环、函数、类等）。
-* 内置对象和数据类型（Array、Date、Promise、Symbol 等）。
-* 严格模式（"use strict"）。
-
-### DOM文档对象模型(document object model)
-
-提供与网页内容交互的方法和接口(由 WHATWG 标准化的 操作网页内容的接口，将 HTML/XML 文档抽象为树形结构)
-
-### BOM浏览器对象模型(brower object model)
-
-提供与浏览器交互的方法和接口(非标准化的浏览器特有功能集合，无统一规范，各浏览器实现可能不同)
-
-包含内容：
-
-* window（全局对象）、navigator（浏览器信息）、location（URL 操作）、history（导航历史）、screen（屏幕信息）。
-* 弹窗（alert）、定时器（setTimeout）、AJAX（早期 XMLHttpRequest）。
-
-#### window
-
-moveBy,moveTo,resizeBy,resizeTo,scrollTo,scrollBy
-Open,close
-Eg: window.close() 仅用于通过window.open() 打开的窗口
-新创建的window对象有一个opener属性，该属性指向打开他的原始窗口对象。
-
-#### Location
-
-#### Navigator
-
-#### Screen
-
-#### History
-
-用来操作浏览器URL的历史记录
 
 ## 冷门知识
 
@@ -142,7 +98,6 @@ for...in 循环语句只会输出 obj 对象中的可枚举属性。for of 和fo
 javaScript:
 esModule和CommonJs区别？
 什么是深拷贝，什么是浅拷贝，有什么方法实现？
-普通函数和箭头函数的区别？
 js继承
 es6有哪些？
 跨域解决方案有哪些？
@@ -152,7 +107,6 @@ es6有哪些？
 
 
 css
-元素居中？
 BFC?
 隐藏元素的方式？
 em和rem区别？
@@ -208,3 +162,13 @@ document.styleSheets[0].addRule('div', 'border: 2px solid #f30 !imporant');
 * Vue-I18n 跟ElementPlus国际化结合
 * 微前端
 * 手写vue-router
+
+项目没做过什么难点。
+方法比问题多。（实践的 重要性）（看了一两篇文章，真以为自己无敌了）
+创业公司，免费劳动力。eg: 前几年就这么干过。
+独角兽公司，工资大幅降低，只求平台。
+
+
+许老师，打扰您了。想问一下，您这里有什么项目？
+我这里可以免费无偿工作1个月（每天投入5小时）。
+空窗的时间，学了vue源码，前端工程化等东西，想通过新项目或者棘手项目练手。

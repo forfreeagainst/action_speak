@@ -1,6 +1,5 @@
 # babel
 
-
 ```js
 import { parse } from '@babel/parser'
 

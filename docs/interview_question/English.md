@@ -22,6 +22,8 @@
 * iterator
 * async
 * Promise
+* inherit
+* spawn
 
 ### Vue
 
@@ -36,3 +38,4 @@
 * algorithm
 * Declarative Programming
 * Imperative Programming
+* graceful 优雅的
