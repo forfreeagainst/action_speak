@@ -65,7 +65,7 @@ first函数执行完毕，对应的函数执行上下文也被 推出栈中，�
 ::: details
 
 原始类型：null, undefined, number, string, boolean, bigInt, Symbol
-引用类型：object, array, regExp(正则表达式), Date, Function 
+引用类型：Object, Array, regExp(正则表达式), Date, Function 
 
 :::
 
@@ -325,17 +325,100 @@ addEventLister  => attachEventListener => onclick
 
 ## 浏览器请求
 
-::: details
+
 
 xhr
 
 fetch
 
-ajax
+### ajax
 
-axios
+#### 概念
+
+::: details
+AJAX 全称 （Async JavasScript and XML）
+即异步的 JavaScript 和 XML, 是一种创建 交互式网页应用 的网页开发技术，可以在不重新
+加载整个网页的情况下，与服务器交换数据，并且更新部分网页。
+Ajax 的原理 简单来说，就是通过 XmlHttpRequest 对象来向服务器发异步请求，从服务器获得数据，
+然后用 JavaScript 来操作 DOM 而更新页面。
+
+实现Ajax 异步交互需要服务器逻辑进行配合，需要完成以下步骤：
+
+* 创建 Ajax 的核心对象 XMLHttpRequest 对象
+* 通过 XMLHttpRequest 对象的 open() 方法与服务器端建立连接
+* 构建请求所需要的数据内容，并通过 XMLHttpRequest 对象的 send() 方法发送给服务器端
+* 通过 XMLHttpRequest 对象提供的 onreadystatechange 事件 监听服务器端的通信状态
+* 接收并处理服务器 向 客户端 响应的数据结果
+* 将 处理结果 更新到 HTML 页面中。
+
+XMLHttpRequest: 该 API 由微软在 1999 年（IE5）首次实现，命名为 XMLHttpRequest，因为当时 XML 是主流的数据交换格式。
 
 :::
+
+#### 封装一个ajax请求
+
+::: details
+
+```js
+// 封装一个ajax请求
+function ajax(options) {
+    // 创建XMLHttpRequest对象
+    const xhr = new XMLHttpRequest();
+
+    // 初始化参数的内容
+    options = options || {};
+    options.type = (options.type || 'GET').toUpperCase();
+    options.dataType = options.dataType || 'json';
+    const params = options.data;
+
+    // 发送请求
+    if (options.type === 'GET') {
+        xhr.open('GET', options.url + '?' + params, true);
+        xhr.send(null)
+    } else if (options.type === 'POST') {
+        xhr.open('POST', options.url, true);
+        xhr.send(params);
+    }
+
+    //接收请求
+    xhr.onreadystatechange = function () {
+        // 请求操作已经完成。这意味着数据传输已经彻底完成或失败。readyState === 4
+        if (xhr.readyState === 4) {
+            let status = xhr.status;
+            if (status >=200 && status < 300) {
+                options.success && options.success(xhr.responseText, xhr.responseXML);
+            } else {
+                options.fail && options.fail(status);
+            }
+        }
+    }
+}
+```
+
+:::
+
+#### 使用方式如下
+
+::: details
+
+```js
+ajax({
+    type: "post",
+    dataType: 'json',
+    data: {},
+    url: 'https://xxx',
+    success: function(text, xml) { // 请求成功后的回调函数
+        console.log(text);
+    },
+    fail: function(status) { // 请求失败后的回调函数
+        console.log(status);
+    }
+})
+```
+
+:::
+
+axios
 
 ## 前端异步编程规范
 
@@ -373,7 +456,70 @@ axios
 
 ::: details
 
-async 默认返回一个Promise的东西
+async 函数 返回一个promise对象
+
+```js
+function fn() {
+    return Promise.resolve('200');
+}
+
+// 等价于
+async function asyncFn() {
+    return '200';
+}
+```
+
+:::
+
+::: tip
+
+下面的例子中，await 会阻塞下面的代码（即加入微任务队列, 想象成promise.resolve().then() ）。
+先执行async 外面的同步代码（console.log(3)）
+，同步代码执行完，再回到async 函数中，再执行之前阻塞的代码(console.log(2))。 
+
+```js
+async function fn1() {
+    console.log(1);
+    await fn2();
+    console.log(2); // 阻塞, 理解成promise.resolve().then(function() {console.log(2)})
+}
+async function fn2() {
+    console.log('fn2');
+}
+fn1();
+console.log(3);
+// 结果： 1， fn2, 3, 2
+```
+
+:::
+
+拿捏呢，我不是几百年前就无敌了，而是努力了几百年后，才无敌的。手写Promise后，明白Promise构造函数里面的
+东西是同步代码，.then的回调函数是微任务执行的。
+
+::: details
+
+```js
+async function async1() {
+    console.log('async1 start'); // 2
+    await async2();
+    console.log('async1 end'); // 微任务1  6
+}
+async function async2() {
+    console.log('async2'); // 3
+}
+console.log('script start'); // 1
+setTimeout(function() {
+    console.log('settimeout'); // 宏任务1 8
+})
+async1();
+new Promise(function(resolve) {
+    console.log('promise1'); // 4
+    resolve()
+}).then(function () {
+    console.log('promise2'); // 微任务2 7
+})
+console.log('script end');// 5
+```
 
 :::
 
@@ -477,6 +623,30 @@ JavaScript 是单线程语言，真正的同步任务会直接在主线程执行
 
 :::
 
+### 内存泄漏
+
+::: details
+
+内存泄漏（Memory leak）是在计算机科学中，由于疏忽或错误造成程序 未能释放已经不再使用的内存。
+
+场景：
+
+* 闭包：内部函数引用外部变量，阻止GC, 避免不必要的闭包。
+* 定时器未清除，使用clearInterval, clearTimeout, 再赋值null;
+* removeChild(el); 还需 el = null;
+* 不需要事件监听，removeEventListener.
+* 第三方库未销毁。调用destroy()或类似方法。eg: sortable.js
+
+如何检查内存泄漏？
+
+Chrome DevTools → Memory → Heap Snapshot：对比前后快照，查看内存增长。
+
+Performance Monitor：观察 JS Heap 是否持续增长。
+
+window.performance.memory（非标准 API）：
+
+:::
+
 ### 垃圾回收的方式
 
 #### 还需要继续分析，
@@ -554,8 +724,32 @@ enum AllocationSpace {
 ## 函数式编程
 
 ::: details
+函数式编程旨在 尽可能地提高代码的无状态性和 不变性。要做到这一点，就要学会使用无副作用的函数，
+也就是纯函数。
+纯函数是 对给定的输入返还相同的输出，并且要求你所有的数据都是不可变的，即纯函数 = 无状态 + 数据不可变。
 
-什么函数，没有副作用。
+纯函数的好处：
+
+* 使用纯函数，我们可以产生可测试的代码
+* 不依赖外部环境计算，不会产生副作用，提高函数的复用性。
+
+函数式编程的 优点：
+
+* 更好的管理状态：因为它的宗旨是无状态，或者说更少的状态，能最大化地减少这些未知、优化
+代码，减少出错情况
+* 更简单的复用：固定输入 -> 固定输出，没有其他外部变量影响，并且无副作用。这样代码复用时，
+完全不需要考虑它的内部实现和外部影响
+* 更优雅的组合：往大的说，网页是由各个组件组成的。往小的说，一个函数也可能是由 多个小函数组成的。
+更强的复用性，带来更强大的组合性。
+* 隐性好处。减少代码量，提高维护性。
+
+函数式编程的缺点：
+
+* 性能：函数式编程相对于指令式编程，性能绝对是一个短板，因为它往往会对一个方法进行过度包装，从而产生
+上下文切换的性能开销。
+* 资源占用：在Js中为了实现对象状态的不可变，往往会创建新的对象，因此，它对垃圾回收所产生的压力
+远远超过其他编程方式。
+* 递归陷阱：在函数式编程中，为了实现迭代，通常会采用递归操作。
 
 :::
 
@@ -564,6 +758,10 @@ enum AllocationSpace {
 ::: details
 
 柯里化的目的在于避免频繁调用具有相同参数的函数
+惰性执行：
+每次调用柯里化函数时，若参数不足，则返回一个新函数（继续等待剩余参数），直到参数足够时才执行计算。
+
+ 
 
 :::
 

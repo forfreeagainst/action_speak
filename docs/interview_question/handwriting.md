@@ -678,3 +678,31 @@ async function runParallel(maxConcurrency, source, iteratorFn) {
 ```
 
 :::
+
+## 函数组合
+
+::: details
+
+```js
+```
+
+:::
+
+## LRU 缓存 (Least Recently Used)
+
+::: details
+
+```js
+```
+
+:::
+
+## 发布订阅模式 (Pub/Sub)
+
+::: details
+
+```js
+
+```
+
+:::

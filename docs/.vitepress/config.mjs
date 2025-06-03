@@ -38,6 +38,7 @@ export default defineConfig({
       {
         text: 'Vue', 
         items: [
+          { text: "Vue2源码", link: "/vue/vue2.md"},
           { text: '加深源码理解', link: '/vue/interview_question.md' },
           { text: '概述', link: '/vue/outline.md' },
           { text: "Vue哲学", link: "/vue/thinkingInVue.md"},
@@ -77,6 +78,7 @@ export default defineConfig({
       { 
         text: 'Vue', 
         items: [
+          { text: "Vue2源码", link: "/vue/vue2.md"},
           { text: '加深源码理解', link: '/vue/interview_question.md' },
           { text: '概述', link: '/vue/outline.md' },
           { text: "Vue哲学", link: "/vue/thinkingInVue.md"},

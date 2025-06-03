@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        async function runParallel(maxConcurrency, source, iteratorFn) {
+            // debugger
+            // 存储所有任务的promise
+            const ret = []
+            // 存储正在执行的任务promise
+            const executing = []
+            
+            for (const item of source) {
+                // 创建任务promise
+                const p = Promise.resolve().then(() => iteratorFn(item))
+                ret.push(p)
+                // 如果需要控制并发
+                if (maxConcurrency <= source.length) {
+                    // 任务完成后从executing中移除自己
+                    const e = p.then(() => {
+                        executing.splice(executing.indexOf(e), 1)
+                    })
+                    executing.push(e)
+                    console.log(executing)
+                    // 如果达到最大并发数，等待任意一个任务完成
+                    if (executing.length >= maxConcurrency) {
+                        await Promise.race(executing)
+                    }
+                }
+            }
+            return Promise.all(ret)
+        }
+        const timeList = [1000, 9000, 2000, 4000, 5000, 3000, 7000, 6000, 8000];
+        function uploadImage(v) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    // console.log(v);
+                    resolve(v);
+                }, v)
+            })
+        }
+        // 并发调度
+        runParallel(3, timeList, uploadImage).then(results => console.log('所有上传完成:', results))
+    </script>
+</body>
+</html>

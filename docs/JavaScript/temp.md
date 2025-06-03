@@ -1,7 +1,5 @@
 # 临时文件
 
-
-
 ## 冷门知识
 
 遍历对象的属性的时候，不是按照书写的顺序来遍历。
@@ -53,18 +51,6 @@ console.log([33, 4444, 555].reduce(((pre,current) => pre += current>34 ? 1: 0),0
 第一次进来，Pre是0，当前是33，
 第二次进来，pre是第一次的返回值，当前是4444，
 
-
-数据类型
-基本类型
-null, undefined,number,string,boolean, bigInt,symbol
-引用类型
-Object,Array,Function, Map,Set, Date, regExp
-
-判断数据类型
-typeof
-能判断所有的基本类型和function(引用类型)
-
-
 数据结构
 数组Array，映射Map,集合Set,栈Stack,堆Heap, 队列Queue,树Tree,图Graph,链表Linked-list
 
@@ -72,13 +58,6 @@ typeof
 堆： 引用类型对象的值存储在堆中，在栈中存放的是指向堆内存的引用地址。
 队列：先进先出
 
-
-DOM的常见操作
-增：createElement,createTextNode,createDocumentDragment,createAttribute
-删：removeChild
-改：innerHTML、innerText、innerContent、style,appendChild,insertBefore,setAttribute
-Eg: innerText不返回隐藏元素的文本，textContent返回所有文本
-查：querySeletor,querySeletorAll
 
 json-server 启动本地服务，mock数据
 
@@ -97,19 +76,10 @@ for...in 循环语句只会输出 obj 对象中的可枚举属性。for of 和fo
 
 javaScript:
 esModule和CommonJs区别？
-什么是深拷贝，什么是浅拷贝，有什么方法实现？
 js继承
 es6有哪些？
 跨域解决方案有哪些？
 遍历数组/对象？
-事件循环
-
-
-
-css
-BFC?
-隐藏元素的方式？
-em和rem区别？
 
 浏览器、网络：
 状态码有哪些？
@@ -133,9 +103,6 @@ Vue的路由传参有哪几种方式
 
 
 找到权威的官网，视频只是用来参考的
-
-怎么讲原型与原型链 ？  vue2就通过重写数组的方法，实现数组的响应式更新。
-
 
 谷歌代码：chromium/chromium
 
@@ -167,7 +134,6 @@ document.styleSheets[0].addRule('div', 'border: 2px solid #f30 !imporant');
 方法比问题多。（实践的 重要性）（看了一两篇文章，真以为自己无敌了）
 创业公司，免费劳动力。eg: 前几年就这么干过。
 独角兽公司，工资大幅降低，只求平台。
-
 
 许老师，打扰您了。想问一下，您这里有什么项目？
 我这里可以免费无偿工作1个月（每天投入5小时）。

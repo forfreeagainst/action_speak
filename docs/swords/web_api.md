@@ -61,6 +61,43 @@
 * setAttribute
 * innerHTML
 * innerText、textContent
+
+::: details
+
+* textContent 表示一个节点及其后代的文本内容。（显示和隐藏的都有）
+* innerText 表示一个节点及其后代所渲染文本的内容（只有显示的）
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .display-none{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="big-box">
+        <div class="display-none">
+            隐藏
+        </div>
+        <div>显示</div>
+    </div>
+    <script>
+       const bigEl = document.getElementsByClassName('big-box')[0];
+       console.log(bigEl.textContent); // 表示一个节点及其后代的文本内容，eg: 隐藏，显示
+       console.log(bigEl.innerText); // 表示一个节点及其后代所渲染文本的内容(注意渲染)，eg: 显示
+    </script>
+</body>
+</html>
+```
+
+:::
+
 * style
 
 ### 查
@@ -276,4 +313,46 @@ console.log('pinia'.startsWith('pi')); // true
 * replace
 
 ## 数组的常用方法
+
+## js本地存储的方式有哪些？
+
+* cookie
+* sessionStorage
+* localStorage
+* indexedDB
+
+## 如何判断一个元素是否在可视区域中？
+
+### 常见应用
+
+* 图片的懒加载
+* 列表的无限滚动
+* 计算广告元素的曝光情况
+* 可点击链接的预加载
+
+### 实现方式
+
+* offsetTop、scrollTop
+* getBoundingClientRect
+* Intersection Observer
+
+## 单点登录
+
+单点登录 Single Sign On 简称为 SSO, 是目前比较流行的企业业务整合的解决方案之一。
+SSO的 定义是在多个应用系统中，用户只需要登录一次 就可以访问所有相互信任 的应用系统
+SSO 一般都需要一个独立的认证中心 （passport）,子系统的登录均得 通过passport, 子系统本身将不参与登录操作。
+当一个系统成功登录以后， passport 将会颁发一个令牌 给各个子系统，子系统可以拿着 令牌去获取 各自得受保护资源。
+各个子系统在被 passport 授权以后，会建立一个局部会话，在一定时间内可以无需再次向 passport发起认证。
+
+## 如何实现上拉加载，下拉刷新？
+
+## 正则表达式的理解？应用场景？
+
+## web常见的攻击方式有哪些？如何防御？
+
+* XSS(Cross Site Scripting) 跨脚本攻击
+* CSRF(Cross-site request forgery) 跨站请求伪造
+* SQL注入攻击
+
+## js的继承方式？
 
