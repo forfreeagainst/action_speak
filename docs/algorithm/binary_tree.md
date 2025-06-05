@@ -30,3 +30,67 @@ letcode 144 ，145，94
 // 确定递归函数的参数和返回值
 // 确认终止条件
 // 确定单层递归的逻辑
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+function TreeNode(val, left, right) {
+    this.val = (val === undefined ? 0 : val);
+    this.left = (left === undefined ? null : left);
+    this.right = (right === undefined ? null : right);
+}
+
+function buildTree(arr) {
+    if (arr.length === 0) return null;
+    
+    const root = new TreeNode(arr[0]);
+    const queue = [root];
+    let i = 1;
+    
+    while (queue.length > 0 && i < arr.length) {
+        const current = queue.shift();
+        
+        if (i < arr.length && arr[i] !== null) {
+            current.left = new TreeNode(arr[i]);
+            queue.push(current.left);
+        }
+        i++;
+        
+        if (i < arr.length && arr[i] !== null) {
+            current.right = new TreeNode(arr[i]);
+            queue.push(current.right);
+        }
+        i++;
+    }
+    
+    return root;
+}
+
+// root其实是一个对象。
+function inorderTraversal(root) {
+    const res = [];
+    const inorder = (node) => {
+        if (!node) return;
+        inorder(node.left);
+        res.push(node.val);
+        inorder(node.right);
+    };
+    inorder(root);
+    return res;
+}
+
+const root = buildTree([1, null, 2, 3]);
+console.log("🚀 ~ root:", root)
+const result = inorderTraversal(root);
+console.log("🚀 ~ result:", result); // 正确输出: [1, 3, 2]
+  </script>
+</body>
+</html>
+```

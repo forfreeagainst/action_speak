@@ -143,4 +143,13 @@ render() {
 
 ast用来表示源代码的树形结构。(描述js,css,html)
 vNode(虚拟dom) 是描述的dom元素，可以增加一些自定义属性。（描述dom）
+
+把虚拟Dom转换为真实Dom
+patch(初始化渲染， 更新渲染) 
+初始化渲染：createElement,appendChild,createTextNode, setAttribute...
+更新渲染：
+
+数据变了，重新_render,生成虚拟dom, 重新_update, 生成真实dom。
+
+数据变化，自动更新视图。（观察者模式）
 :::

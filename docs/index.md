@@ -23,7 +23,7 @@ features:
     details: 大模型，AI。。。
 ---
 
-| 函数 | 普通函数 | 箭头函数 |
+| A | B | C |
 | --- | --- | --- |
 | 应用 | 组件库 | 组件库 |
 | 进度 | ？ | ？ |
@@ -63,14 +63,8 @@ This is a details block.
 
 * 温故而知新
 * you need to repeat,repeat and repeat.
-* 25-31 简单的东西，重复学。伸展区
 
 ### Css基础训练
-
-* BFC
-* flex
-* animation, transform
-* less,sass, stylus, postcss
 
 ### JS内功修炼
 
