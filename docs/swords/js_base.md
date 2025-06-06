@@ -298,6 +298,8 @@ this指向
 
 * Array.from(类数组)
 * [...类数组]
+* Array.prototype.slice.call(类数组)
+* for循环
 
 :::
 
