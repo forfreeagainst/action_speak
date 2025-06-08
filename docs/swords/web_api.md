@@ -356,3 +356,48 @@ SSO 一般都需要一个独立的认证中心 （passport）,子系统的登录
 
 ## js的继承方式？
 
+## es6+
+
+### 变量声明：const、var、let
+
+变量声明 ，变量/参数 ，字面量
+
+#### 区别
+
+::: details
+
+* 块级作用域
+
+```md
+var: 具有函数作用域或全局作用域。在函数内部声明的var变量，在整个函数内都可访问，即便在块级作用域
+(如for循环)内声明，也会提升到函数的顶部，这种现象称为变量提升。
+let 和const: 具有块级作用域。在块级作用域内声明的let 和 const 变量，只能在该块级作用域内访问，
+在块级作用域外部无法访问。
+```
+
+```js
+function play() {
+    console.log(i); // undefined
+    for(var i = 0; i < 3; i++) {
+    }
+    console.log(j); // ReferenceError: j is not defined
+    for(let j = 0; j < 3; j++) {
+    }
+}
+play();
+```
+
+* 变量提升
+
+```md
+var: 会发生变量提升，即变量可以在声明之前被使用，但是值为undefined.
+let 和 const ：不存在变量提升。在声明之前访问 let 或const 声明 的变量会导致ReferenceError错误，
+这被称为暂时性死区。
+```
+
+* 重复声明
+* 重新赋值
+
+:::
+
+#### 字面量

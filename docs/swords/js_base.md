@@ -4,9 +4,18 @@
 
 ::: details
 
-通过原型，对象可以共享属性和方法。
+```md
+Js是基于原型的继承。通过原型，对象可以共享属性和方法。
 实例化对象的__proto__(隐式原型)会永远指向构造函数的显示原型prototype
 原型链的顶端是null.
+```
+
+```js
+const arr = [33];
+console.log(Object.getPrototypeOf(arr) === Array.prototype)
+console.log(Object.getPrototypeOf(Array.prototype) === Object.prototype)
+console.log(Object.getPrototypeOf(Object.prototype) === null);
+```
 :::
 
 ## 词法作用域与动态作用域
@@ -21,8 +30,9 @@ bash,它是动态作用域，函数执行的时候，才确定生效范围。
 ## 执行上下文
 
 ::: details
+
+```md
 执行上下文有三种，全局执行上下文，函数执行上下文，Eval函数执行上下文
-作用域有九种，
 
 每个函数执行的时候，都会创建一个执行上下文。
 
@@ -34,6 +44,7 @@ first函数被调用，创建函数执行上下文并压入栈
 second函数执行完毕，对应的函数执行上下文被 推出 执行栈，执行下一个执行上下文first函数
 first函数执行完毕，对应的函数执行上下文也被 推出栈中，然后执行全局上下文。
 所有代码执行完毕，全局上下文也会被推出 栈中，程序结束。
+```
 
 :::
 
@@ -41,8 +52,89 @@ first函数执行完毕，对应的函数执行上下文也被 推出栈中，�
 
 ::: details
 
-作用域链是变量生效的区域。作用域链是由自己的执行环境和父级的执行环境组成的，通过作用域与作用域链的关系，
-可以访问父级的变量。
+```md
+作用域是 变量和函数生效的范围。
+作用域有哪些？
+全局作用域，函数作用域，块级作用域；
+脚本作用域，模块作用域，闭包作用域，
+eval作用域，catch作用域，with作用域
+
+作用域链是JavaScript中查找变量和函数的一种机制。作用域链是有当前执行环境（Execution Context） 
+中的变量对象（Variable Object）以及父级执行环境的变量对象组成的。当代码在一个执行环境中执行时， 
+如果访问一个变量或者函数，JavaScript引擎会首先在当前执行环境的变量对象中查找，如果找不到，
+它会 沿着作用域链向上一级的执行环境中查找，直到找到对应的变量或者函数，或者达到全局执行环境为止。
+```
+
+:::
+
+## 函数提升、变量提升
+
+### 函数提升
+
+#### 什么是函数提升
+
+::: details
+
+```js
+// js脚本追求的是灵活性，它允许先执行后定义。
+sayHello(); // Hello World!
+function sayHello() {
+    console.log('Hello World!')
+}
+```
+
+:::
+
+#### 为什么需要函数提升
+
+::: details
+
+* js脚本追求的是灵活性，它允许先执行后定义。
+* 函数嵌套，没有预解析，很难实现嵌套的效果。
+
+```js
+// 用的预解析的结构
+function fib(n) { // 解析fib
+    return fib(n - 1) + fib(n - 2); // fib没解析完成
+}
+// 用的预解析的结构
+function a() {
+    b();
+}
+function b() {
+    console.log('b');
+}
+console.log(a);
+```
+
+:::
+
+### 变量提升
+
+::: details
+
+实现原理是预解析，特性叫变量提升。
+
+```js
+console.log(a);
+var a = 33;
+```
+
+:::
+
+### 两者结合
+
+函数提升 比 变量提升的优先级 高
+
+::: details
+
+```js 
+console.log(a); // function a，函数优先级高
+var a = 1; // 重新声明，重新赋值
+console.log(a); // 1
+function a() {} // 预解析已经解析过了。
+console.log(a); // 1
+```
 
 :::
 
@@ -50,6 +142,7 @@ first函数执行完毕，对应的函数执行上下文也被 推出栈中，�
 
 ::: details
 
+```md
 闭包是能够访问自由变量的函数。
 通过访问闭包，就会涉及变量对象和作用域链两大概念。
 因为作用域与作用域链的关系，内部函数可以访问外部的变量，让我们获取变量更方便。
@@ -58,18 +151,79 @@ first函数执行完毕，对应的函数执行上下文也被 推出栈中，�
 常见的闭包应用由：防抖，节流....
 
 创建私有变量，延长变量的生命周期
+```
+
 :::
 
 ## 数据类型
 
 ::: details
 
-原始类型：null, undefined, number, string, boolean, bigInt, Symbol
+原始类型：null, undefined, number, string, boolean, BigInt, Symbol
 引用类型：Object, Array, regExp(正则表达式), Date, Function 
 
 :::
 
-## 如何判断数据类型
+### 原始类型
+
+#### null
+
+#### number
+
+::: details
+
+```js
+const a = 0b11; // 二进制
+console.log(a); // 3
+const b = 0o11; // 八进制
+console.log(b); // 9
+const c = 0x11; // 十六进制
+console.log(c); // 17
+console.log(11 .toString()); // 需要有空格，不然浏览器会把.当成小数点，就报错了。 打印结果为 11
+
+// 进制转换
+const d = parseInt(100, 2); // 等价于 0b100
+console.log(d, 0b100); // 4 4
+const e = 100 .toString(2); // 100转成 2进制
+console.log(e); // 1100100
+```
+
+:::
+
+#### string
+
+* JSON.stringify() 序列化：能不能传给后端，看能不能被序列化（JSON.stringify()）。
+* JSON.parse() 反序列化
+
+```js
+// 打印结果：{"d":999,"e":null}
+console.log(JSON.stringify({
+    a: undefined, // 直接忽略了
+    b: Symbol(), // 直接忽略了
+    d: 999, // 不会被忽略
+    e: null, // 不会被忽略
+    // 报错：Do not know how to serialize a BigInt（不知道如何序列化BigInt）
+    // c: BigInt(9007199254740991) 
+}))
+```
+
+#### boolean
+
+!! 转成布尔值
+
+#### undefined
+
+不建议使用undefined,它是 window的一个属性。使用void 0，就好了;
+
+#### BigInt
+
+以node.js计算为主，正经的浏览器业务不会用到
+
+#### Symbol
+
+解决命名冲突
+
+### 如何判断数据类型
 
 * typeof :可以判断原始类型和 Function
 * instanceof: 构造函数的prototype属性是否出现在某个实例对象的原型链上。
@@ -169,6 +323,24 @@ function getType(obj){
  return Object.prototype.toString.call(obj).replace(/^\[object (\S+)\]$/,
 '$1');
 }
+```
+
+:::
+
+### 如何保证某个function为函数/构造器
+
+::: details
+
+```js
+function judge() {
+    if (new.target) {
+        console.log('构造器')
+    } else {
+        console.log('函数')
+    }
+}
+judge(); // 函数
+new judge(); // 构造器
 ```
 
 :::
@@ -294,7 +466,7 @@ this指向
 
 普通函数都默认有arguments参数，它是一个类数组
 
-如何转成真实的数组？
+### 如何转成真实的数组？
 
 * Array.from(类数组)
 * [...类数组]
