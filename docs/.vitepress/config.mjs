@@ -21,7 +21,8 @@ export default defineConfig({
         text: '面试题', 
         items: [
           { text: '手写题', link: '/interview_question/handwriting.md' },
-          { text: '浏览器', link: '/interview_question/browser.md' }
+          { text: '模拟面试', link: '/interview_question/moni.md' },
+          { text: '面试技巧', link: "/interview_question/interview_skill.md"}
         ]
        },
        { 
@@ -32,7 +33,11 @@ export default defineConfig({
           { text: '哈希表', link: '/algorithm/hashtable.md' },
           { text: '字符串', link: '/algorithm/string.md' },
           { text: '栈与队列', link: '/algorithm/stack_and_queue.md' },
-          { text: '二叉树', link: '/algorithm/binary_tree.md' }
+          { text: '二叉树', link: '/algorithm/binary_tree.md' },
+          { text: '回溯算法', link: "/algorithm/backtrack.md"},
+          { text: '贪心算法', link: "/algorithm/greedy.md"},
+          { text: '动态规划', link: "/algorithm/dynamic_programming.md"},
+          { text: '单调栈', link: "/algorithm/monotonic_stack.md"}
         ]
        },
       {
@@ -61,7 +66,8 @@ export default defineConfig({
         text: '面试题',
         items: [
           { text: '手写题', link: '/interview_question/handwriting.md' },
-          { text: '浏览器', link: '/interview_question/browser.md' }
+          { text: '模拟面试', link: '/interview_question/moni.md' },
+          { text: '面试技巧', link: "/interview_question/interview_skill.md"}
         ]
       },
       { 
@@ -72,7 +78,11 @@ export default defineConfig({
           { text: '哈希表', link: '/algorithm/hashtable.md' },
           { text: '字符串', link: '/algorithm/string.md' },
           { text: '栈与队列', link: '/algorithm/stack_and_queue.md' },
-          { text: '二叉树', link: '/algorithm/binary_tree.md' }
+          { text: '二叉树', link: '/algorithm/binary_tree.md' },
+          { text: '回溯算法', link: "/algorithm/backtrack.md"},
+          { text: '贪心算法', link: "/algorithm/greedy.md"},
+          { text: '动态规划', link: "/algorithm/dynamic_programming.md"},
+          { text: '单调栈', link: "/algorithm/monotonic_stack.md"}
         ]
        },
       { 

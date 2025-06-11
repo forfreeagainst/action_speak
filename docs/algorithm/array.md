@@ -40,9 +40,38 @@ var search = function(nums, target) {
 };
 ```
 
+```js
+var search = function(nums, target) {
+    let left = 0;
+    let right = nums.length - 1;
+    let res = -1;
+    while(left <= right) {
+        // let middle = Math.floor((left + right) / 2);
+        let middle = (left + right) // 2;
+        if (nums[middle] === target) {
+            res = middle;
+            break;
+        }  else if (nums[middle] < target) {
+            left = middle + 1;
+        } else {
+            right = middle - 1;
+        }
+    }
+    return res;
+};
+```
+
+#### 类似题目：2529. 正整数和负整数的最大计数
+
+```js
+
+```
+
 :::
 
 ## 快慢指针
+
+注意返回值
 
 ### letcode27
 
@@ -81,6 +110,36 @@ var removeElement = function(nums, val) {
     }
     return slow; //返回的不是数组本身
 };
+```
+
+#### 类似题目：26. 删除有序数组中的重复项
+
+注意返回值
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var removeDuplicates = function(nums) {
+    let slow = 1;
+    let fast = 1;
+    let temp = nums[0];
+    while(fast < nums.length) {
+       if (nums[fast] !== temp) {
+            nums[slow++] = nums[fast];
+            temp = nums[fast];
+       }
+       fast ++;
+    }
+    return slow; // 返回新数组的长度
+};
+```
+
+#### 类似题目：80. 删除有序数组中的重复项 II
+
+```js
+
 ```
 
 :::
@@ -130,6 +189,61 @@ var sortedSquares = function(nums) {
 };
 ```
 
+```js
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var sortedSquares = function(nums) {
+    let left = 0;
+    let right = nums.length - 1;
+    const res = [];
+    let len = nums.length -1;
+    // 首先最大的平方数，一定是在最左边 或者 最右边
+    while(left <= right) {
+        const left2 = nums[left] * nums[left];
+        const right2 = nums[right] * nums[right];
+        if (left2 <= right2) {
+            res[len] = right2;
+            right --;
+        } else {
+            res[len] = left2;
+            left ++;
+        }
+        len --;
+    }
+    return res;
+};
+```
+
+#### 类似题目：88. 合并两个有序数组
+
+```js
+/**
+ * @param {number[]} nums1
+ * @param {number} m
+ * @param {number[]} nums2
+ * @param {number} n
+ * @return {void} Do not return anything, modify nums1 in-place instead.
+ */
+var merge = function(nums1, m, nums2, n) {
+    let len = m + n -1;
+    let m_len = m - 1;
+    let n_len = n - 1;
+    // 为啥不是len? 而是n_len. 越界访问nums2
+    while(n_len >= 0) {
+        if (nums1[m_len] >= nums2[n_len]) {
+            nums1[len] = nums1[m_len];
+            m_len --;
+        } else {
+            nums1[len] = nums2[n_len];
+            n_len --;
+        }
+        len --;
+    }
+};
+```
+
 :::
 
 ## 滑动窗口
@@ -151,6 +265,7 @@ var sortedSquares = function(nums) {
 滑动窗口
 
 ```js
+// 时间复杂度 O(n)
 /**
  * @param {number} target
  * @param {number[]} nums
@@ -170,6 +285,31 @@ var minSubArrayLen = function(target, nums) {
             sum -= nums[start];
             start ++;
         } 
+    }
+    return res === Infinity ? 0 : res;
+};
+```
+
+```js
+/**
+ * @param {number} target
+ * @param {number[]} nums
+ * @return {number}
+ */
+var minSubArrayLen = function(target, nums) {
+    let res = Infinity;
+    let left = 0;
+    let right = 0;
+    let sum = 0;
+    while(right < nums.length) {
+        sum += nums[right];
+        // 不断地缩小窗口
+        while(sum >= target) {
+            res = Math.min(res, right-left + 1);
+            sum -= nums[left];
+            left ++;
+        }
+        right ++;
     }
     return res === Infinity ? 0 : res;
 };
@@ -200,6 +340,12 @@ var minSubArrayLen = function(target, nums) {
     }
     return res === Infinity ? 0 : res;
 };
+```
+
+#### 类似题目：325. 和等于 k 的最长子数组长度
+
+```js
+
 ```
 
 :::
