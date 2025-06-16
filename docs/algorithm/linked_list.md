@@ -64,6 +64,10 @@ var removeElements = function(head, val) {
 
 ::: details
 
+* size 要减少/增加
+* get不到，返回 -1
+* addAtIndex, 在哪个下表，插入东西，也是参考splice。
+
 ```js
 function ListNode(val, next) {
     this.val = (val === undefined ? null: val);
@@ -103,8 +107,14 @@ MyLinkedList.prototype.addAtTail = function(val) {
 };
 
 MyLinkedList.prototype.addAtIndex = function(index, val) {
-    if (index < 0 || index > this.size) return; // ??边界合理？
-    let cur = this.head;
+    // const arr = [1, 2, 3];
+    // arr.splice(3,0, 4);
+    // console.log("🚀 ~ arr:", arr); // 1, 2, 3,4
+    if (index < 0 || index > this.size) return; // 边界参考splice
+    // const arr = [1, 2, 3];
+    // arr.splice(0,0, 4);
+    // console.log("🚀 ~ arr:", arr); // 4，1， 2，3
+    let cur = this.head; // 是this.head，也是参考splice
     for(let i = 0; i < index; i++) {
         cur = cur.next;
     }
@@ -127,13 +137,106 @@ MyLinkedList.prototype.deleteAtIndex = function(index) {
 
 ```
 
+```js
+function ListNode(val, next) {
+    this.val = (val === undefined ? null: val);
+    this.next = (next === undefined ? null: next);
+}
+
+var MyLinkedList = function() {
+    this.size = 0;
+    this.head = new ListNode(0);
+};
+
+MyLinkedList.prototype.get = function(index) {
+    // 链表下标从0开始
+    if (index < 0 || index >= this.size) return -1; // 注意：要返回-1
+    let cur = this.head.next; // 链表下标为0的数
+    for(let i = 0; i < index; i++) {
+        cur = cur.next;
+    }
+    return cur.val;
+};
+
+MyLinkedList.prototype.addAtHead = function(val) {
+    const headNode = new ListNode(val);
+    headNode.next = this.head.next;
+    this.head.next = headNode;
+    this.size ++;
+};
+
+MyLinkedList.prototype.addAtTail = function(val) {
+    let cur = this.head;
+    while(cur.next) {
+        cur = cur.next;
+    }
+    cur.next = new ListNode(val);
+    this.size ++;
+};
+
+MyLinkedList.prototype.addAtIndex = function(index, val) {
+    if (index < 0 || index > this.size) return; // 参考splice的边界
+    let cur = this.head;
+    for(let i = 0; i < index; i++) {
+        cur = cur.next;
+    }
+    const newNode = new ListNode(val);
+    newNode.next = cur.next;
+    cur.next = newNode;
+    this.size ++;
+};
+
+MyLinkedList.prototype.deleteAtIndex = function(index) {
+   if (index < 0 || index >= this.size) return;
+   let cur = this.head;
+   for(let i = 0; i < index; i++) {
+        cur = cur.next;
+   }
+   cur.next = cur.next.next;
+   this.size --; // 注意 size要减少
+};
+```
+
 :::
 
 ## letcode206-反转链表
 
 ::: details
 
+### 双指针
+
 ```js
+var reverseList = function(head) {
+    let tail = null; // 最后一个节点，它是我们最终想要的新链表
+    let cur = head;
+    while(cur) {
+        let next = cur.next;
+        cur.next = tail; // 最后一个节点的前一个
+        tail = cur;
+        cur = next;        
+    }
+    return tail;
+};
+```
+
+### 递归
+
+```js
+function reverse(cur, tail) {
+    if (!cur) return tail;
+    const temp = cur.next;
+    cur.next = tail;
+    tail = cur;
+    return reverse(temp, tail);
+}
+
+var reverseList = function(head) {
+    return reverse(head, null);
+};
+```
+
+<!-- ```js
+// 晦涩难懂
 var reverseList = function(head) {
      if (head == null || head.next == null) {
         return head;
@@ -142,7 +245,7 @@ var reverseList = function(head) {
     head.next.next = head;
     head.next = null;
     return newHead;
-};
+}; -->
 ```
 
 :::
@@ -152,6 +255,21 @@ var reverseList = function(head) {
 ::: details
 
 ```js
+var swapPairs = function(head) {
+    const dummyNode = new ListNode(0);
+    dummyNode.next = head;
+    let cur = dummyNode;
+    // 空节点的下两个节点
+    while(cur.next && cur.next.next) {
+        const node1 = cur.next;
+        const node3 = cur.next.next.next;
+        cur.next = cur.next.next;
+        cur.next.next = node1;
+        node1.next = node3;
+        cur = node1;
+    }
+    return dummyNode.next;
+};
 ```
 
 :::
@@ -161,7 +279,22 @@ var reverseList = function(head) {
 ::: details
 
 ```js
+var removeNthFromEnd = function(head, n) {
+    // 这是倒数呀
+    const dummyNode = new ListNode(0, head);
+    let first = head;
+    let second = dummyNode;
 
+    for(let i = 0; i < n; i++) {
+        first = first.next;
+    }
+    while(first) {
+        first = first.next;
+        second = second.next;
+    }
+    second.next = second.next.next;
+    return dummyNode.next;
+};
 ```
 
 :::
@@ -171,7 +304,133 @@ var reverseList = function(head) {
 ::: details
 
 ```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
 
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var detectCycle = function(head) {
+    if (!head) return null;
+    let slow = head;
+    let fast = head;
+    while(fast && fast.next) {
+        fast = fast.next.next;
+        slow = slow.next;
+        // 相等说明有环，且这个点为环入口
+        if (fast === slow) {
+            let index = head;
+            while(index !== slow) {
+                index = index.next;
+                // 这句需要重点理解
+                slow = slow.next;
+            }
+            return index;
+        }
+    }
+    return null;
+};
+```
+
+```js
+var detectCycle = function(head) {
+    if (head === null) {
+        return null;
+    }
+    let slow = head, fast = head;
+    while (fast !== null) {
+        slow = slow.next;
+        if (fast.next !== null) {
+            fast = fast.next.next;
+        } else {
+            return null;
+        }
+        if (fast === slow) {
+            let ptr = head;
+            while (ptr !== slow) {
+                ptr = ptr.next;
+                slow = slow.next;
+            }
+            return ptr;
+        }
+    }
+    return null;
+};
+```
+
+:::
+
+## letcode2：两数相加（letcode100热题）
+
+::: details
+
+```js
+var addTwoNumbers = function(l1, l2) {
+    const dummyNode = new ListNode(0);
+    let carry = 0
+    let link1 = l1;
+    let link2 = l2;
+    let link3 = dummyNode;
+    while(link1 || link2 || carry > 0) {
+        const aVal = link1 && link1.val ? link1.val : 0;
+        const bVal = link2 && link2.val ? link2.val : 0;
+        const sum = aVal + bVal + carry;
+        link3.next = new ListNode(sum % 10);
+        link3 = link3.next;
+        carry = ~~(sum / 10)
+        if (link1) {
+            link1 = link1.next;
+        }
+        if (link2) {
+            link2 = link2.next;
+        }
+    }
+    return dummyNode.next;
+};
+```
+
+```js
+// 辣鸡代码 * 1
+var addTwoNumbers = function(l1, l2) {
+    // Step 1: Convert linked lists to arrays (digits in reverse order)
+    const aArr = [];
+    while (l1) {
+        aArr.push(l1.val);
+        l1 = l1.next;
+    }
+    const bArr = [];
+    while (l2) {
+        bArr.push(l2.val);
+        l2 = l2.next;
+    }
+
+    // Step 2: Calculate sum from least significant digit (right to left)
+    let i = 0;
+    const resultArr = [];
+    let carry = 0;
+
+    while (i < aArr.length || i < bArr.length || carry > 0) {
+        const sum = (aArr[i] || 0) + (bArr[i] || 0) + carry;
+        resultArr.push(sum % 10);
+        carry = Math.floor(sum / 10);
+        i++;
+    }
+
+    // Step 3: Build the result linked list (in reverse order)
+    let dummyNode = new ListNode(0);
+    let current = dummyNode;
+    for (const num of resultArr) {
+        current.next = new ListNode(num);
+        current = current.next;
+    }
+    return dummyNode.next;
+};
 ```
 
 :::

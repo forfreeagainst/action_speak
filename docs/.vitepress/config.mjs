@@ -14,7 +14,8 @@ export default defineConfig({
         items: [
           { text: 'Web API', link: '/swords/web_api.md' },
           { text: 'CSS', link: '/swords/css_base.md' },
-          { text: 'JavaScript', link: '/swords/js_base.md' }
+          { text: 'JavaScript', link: '/swords/js_base.md' },
+          { text: "Node.js", link: "/swords/node_base.md"}
         ]
        },
       { 

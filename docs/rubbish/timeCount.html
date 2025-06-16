@@ -81,6 +81,16 @@
         updateDisplay();
     </script>
     <script>
+        const map = new Map();
+        const s = 'asdfaa'
+        for(let v of s) {
+            const temp = map.get(v) || 0;
+            map.set(v, temp + 1);
+        }
+        console.log(map)
+        for(let v of map) {
+            const [key, val] = v;
+        }
     </script>
 </body>
 </html>
