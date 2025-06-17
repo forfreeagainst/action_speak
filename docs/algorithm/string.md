@@ -5,7 +5,16 @@
 ::: details
 
 ```js
-
+var reverseString = function(s) {
+    for(let i = 0; i < s.length / 2; i++) {
+        let left = i;
+        let right = s.length - i - 1;
+        let temp = s[left];
+        s[left] = s[right];
+        s[right] = temp;
+    }
+    return s;
+};
 ```
 
 :::
@@ -25,7 +34,10 @@
 ::: details
 
 ```js
-
+var reverseWords = function(s) {
+    //  \s+:	匹配连续的一个或多个空白字符
+    return s.trim().split(/\s+/).reverse().join(' ');
+};
 ```
 
 :::
@@ -51,6 +63,8 @@
 :::
 
 ## letcode459重复的子字符串
+
+给定一个非空的字符串 s ，检查是否可以通过由它的一个子串重复多次构成。
 
 ::: details
 

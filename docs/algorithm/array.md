@@ -449,3 +449,108 @@ var generateMatrix = function(n) {
 ```
 
 :::
+
+## letcode15.三数之和
+
+::: details
+
+```js
+var threeSum = function(nums) {
+    // 排序 + 双指针
+    nums.sort((a, b) => a - b);
+    const res = []
+    for(let i = 0; i < nums.length; i++) {
+        if(i > 0 && nums[i] === nums[i - 1]) continue; // 跳过重复的数字
+        let left = i + 1;
+        let right = nums.length - 1;
+        while(left < right) {
+            const sum = nums[i] + nums[left] + nums[right];
+            if (sum === 0) {
+                res.push([nums[i], nums[left], nums[right]]);
+                // 存在相同的元素，继续往前/ 往后移动
+                while (left < right && nums[left] === nums[++left]); // 跳过重复的数字
+                while (left < right && nums[right] === nums[--right]); // 跳过重复的数字
+            } else if (sum > 0) {
+                right --;
+            } else {
+                left ++;
+            }
+        }
+    }
+    return res;
+};
+```
+
+```js
+var threeSum = function(nums) {
+    let result = [];
+    nums.sort((a, b) => a - b); // 排序数组
+ 
+    for(let i = 0; i < nums.length; i++) {
+        if(i > 0 && nums[i] === nums[i - 1]) continue; // 跳过重复的数字
+ 
+        let left = i + 1; // 左指针
+        let right = nums.length - 1; // 右指针
+ 
+        while(left < right) {
+            let sum = nums[i] + nums[left] + nums[right];
+            if(sum === 0) {
+                result.push([nums[i], nums[left], nums[right]]);
+                // 超级精华
+                while (left < right && nums[left] === nums[++left]); // 跳过重复的数字
+                while (left < right && nums[right] === nums[--right]); // 跳过重复的数字
+            } else if (sum < 0) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+    }
+    return result;
+};
+```
+
+:::
+
+
+## letcode18.四数之和
+
+::: details
+
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[][]}
+ */
+var fourSum = function(nums, target) {
+    nums.sort((a,b) => a - b);
+    const res = [];
+    for(let i = 0; i < nums.length; i++) {
+        // 去重
+        if (i > 0 && nums[i] === nums[i - 1]) continue;
+        for(let j = i + 1; j < nums.length; j++) {
+            // 去重
+            if (j > i + 1 && nums[j - 1] === nums[j]) continue;
+            let left = j + 1;
+            let right = nums.length - 1;
+            while(left < right) {
+                const sum = nums[i] + nums[j] + nums[left] + nums[right];
+                if (sum === target) {
+                    res.push([nums[i], nums[j], nums[left], nums[right]]);
+                    // 再去重
+                    while (left < right && nums[left] === nums[++left]); // 跳过重复的数字
+                    while (left < right && nums[right] === nums[--right]);
+                } else if (sum > target) {
+                    right --;
+                } else {
+                    left ++;
+                }
+            }
+        }       
+    }
+    return res;
+};
+```
+
+:::

@@ -38,7 +38,8 @@ export default defineConfig({
           { text: '回溯算法', link: "/algorithm/backtrack.md"},
           { text: '贪心算法', link: "/algorithm/greedy.md"},
           { text: '动态规划', link: "/algorithm/dynamic_programming.md"},
-          { text: '单调栈', link: "/algorithm/monotonic_stack.md"}
+          { text: '单调栈', link: "/algorithm/monotonic_stack.md"},
+          { text: '代码总结', link: "/algorithm/fine.md"},
         ]
        },
       {
@@ -83,7 +84,8 @@ export default defineConfig({
           { text: '回溯算法', link: "/algorithm/backtrack.md"},
           { text: '贪心算法', link: "/algorithm/greedy.md"},
           { text: '动态规划', link: "/algorithm/dynamic_programming.md"},
-          { text: '单调栈', link: "/algorithm/monotonic_stack.md"}
+          { text: '单调栈', link: "/algorithm/monotonic_stack.md"},
+          { text: '代码总结', link: "/algorithm/fine.md"},
         ]
        },
       { 

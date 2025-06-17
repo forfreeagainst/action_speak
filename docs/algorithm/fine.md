@@ -1,8 +1,29 @@
 # 好好
 
-## 语法错误
+## 审题方面
 
 ::: details
+
+* 返回索引，还是值
+
+:::
+
+## 语法错误
+
+
+### sort
+
+需要手写sort
+
+```js
+[5,3,1].sort((a, b) => a - b); // [1, 3, 5]  a-b升序
+
+const arr = [5, 3, 1];
+arr.sort((a, b) => {
+    console.log(a, b);
+    return a - b;
+})
+```
 
 ### js没有 // 整除。
 
@@ -13,5 +34,37 @@
 
 * unshift：前面添加，shift前面移除
 
+### 使用const，又赋值运算符
+
+::: details
+
+使用 let。
+
+```js
+const countTemp = bMap.get(sum) || 0;
+// 先++， 再赋值
+bMap.set(sum, ++countTemp);
+```
+
 :::
 
+## 代码优化
+
+```js
+// 再去重
+while (left < right && nums[left] === nums[++left]); // 跳过重复的数字
+while (left < right && nums[right] === nums[--right]);
+
+do { left++; } while (left < right && nums[left] === nums[left - 1]);
+do { right--; } while (left < right && nums[right] === nums[right + 1]);
+
+// 第一次：无条件执行 left++（即使 nums[left] 不重复也会先移动一次）。
+// 后续：如果 nums[left] === nums[left - 1]，则继续 left++，直到不满足条件。
+```
+
+## 常用方法的时间复杂度
+
+* sort: nlogn
+* Set.has: 时间复杂度 O(1)
+* Array.indexOf() 和 Array.includes() :时间复杂度：O(n)
+* reverse() :时间复杂度O(n)
