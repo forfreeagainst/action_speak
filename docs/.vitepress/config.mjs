@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Try",
+  title: "九劫秘典",
   description: "You′re never a loser until you quit trying.",
   base: process.env.NODE_ENV === 'production' ? '/action_speak/' : '/',
   themeConfig: {
@@ -52,7 +52,36 @@ export default defineConfig({
           { text: "创建开发环境", link: "/vue/createDevelopmentEnvironment.md"},
           { text: "响应式系统", link: "/vue/reactivity.md"}
         ]
-       }
+       },
+       {
+        text: "项目",
+        items: [
+          {text: "Canvas", link: "/project/canvas.md"},
+          {text: "从Vue2迁移到Vue3", link: "/project/MigratingFromVue2ToVue3.md"},
+          {text: "基于Promise调用子组件弹窗", link: "/project/PromiseDialog.md"},
+          {text: "权限控制", link: "/project/permission.md"},
+          {text: "性能优化", link: "/project/PerformanceOptimization.md"},
+          {text: "国际化", link: "/project/I18n.md"},
+          {text: "动态表单", link: "/project/DynamicForm.md"},
+          {text: "脚手架", link: "/project/cli.md" },
+          {text: "大文件上传", link: "/project/FileUpload.md" },
+          {text: "低代码", link: "/project/LowCode.md"},
+          {text: "Echarts图表", link: "/project/EchartsHook.md"},
+          {text: "可排序的", link: "/project/sortable.md"},
+          {text: "sdk前端埋点", link: "/project/sdk.md"},
+          {text: "持续集成持续部署", link: "/project/CICD.md"},
+          {text: "配置式Provider", link: "/project/ConfigProvider.md"},
+          {text: "虚拟滚动", link: "/project/VirtualScrolling.md"},
+          {text: "千分符金额文本框组件", link: "/project/ThousandSeparatorAmoutInput.md"},
+          {text: "WebSocket", link: "/project/WebSocket.md"},
+          {text: "SEO", link: "/project/seo.md"},
+          { text: "大屏", link: "/project/largeScreen.md"},
+          { text: "前端安全", link: "/project/safe.md"},
+          { text: "单点登录", link: "/project/singleSignOn.md"},
+          {text: "视频合成", link: "/project/video_merger.md"},
+          {text: "音乐软件", link: "/project/music_soft.md"},
+        ]
+      }
     ],
 
     sidebar: [
@@ -98,9 +127,37 @@ export default defineConfig({
           { text: "创建开发环境", link: "/vue/createDevelopmentEnvironment.md"},
           { text: "响应式系统", link: "/vue/reactivity.md"}
         ]
-       }
+       },
+        {
+        text: "项目",
+        items: [
+          {text: "Canvas", link: "/project/canvas.md"},
+          {text: "从Vue2迁移到Vue3", link: "/project/MigratingFromVue2ToVue3.md"},
+          {text: "基于Promise调用子组件弹窗", link: "/project/PromiseDialog.md"},
+          {text: "权限控制", link: "/project/permission.md"},
+          {text: "性能优化", link: "/project/PerformanceOptimization.md"},
+          {text: "国际化", link: "/project/I18n.md"},
+          {text: "动态表单", link: "/project/DynamicForm.md"},
+          {text: "脚手架", link: "/project/cli.md" },
+          {text: "大文件上传", link: "/project/FileUpload.md" },
+          {text: "低代码", link: "/project/LowCode.md"},
+          {text: "Echarts图表", link: "/project/EchartsHook.md"},
+          {text: "可排序的", link: "/project/sortable.md"},
+          {text: "sdk前端埋点", link: "/project/sdk.md"},
+          {text: "持续集成持续部署", link: "/project/CICD.md"},
+          {text: "配置式Provider", link: "/project/ConfigProvider.md"},
+          {text: "虚拟滚动", link: "/project/VirtualScrolling.md"},
+          {text: "千分符金额文本框组件", link: "/project/ThousandSeparatorAmoutInput.md"},
+          {text: "WebSocket", link: "/project/WebSocket.md"},
+          {text: "SEO", link: "/project/seo.md"},
+          { text: "大屏", link: "/project/largeScreen.md"},
+          { text: "前端安全", link: "/project/safe.md"},
+          { text: "单点登录", link: "/project/singleSignOn.md"},
+          {text: "视频合成", link: "/project/video_merger.md"},
+          {text: "音乐软件", link: "/project/music_soft.md"},
+        ]
+      }
     ],
-
     socialLinks: [
       { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
     ]

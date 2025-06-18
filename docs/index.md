@@ -3,9 +3,9 @@
 layout: home
 
 hero:
-  name: "Try"
+  name: "九劫秘典"
   text: "You′re never a loser until you quit trying."
-  tagline: 我想 接触 更高水平的 开发团队，体验一下 什么感觉
+  tagline: 修炼前三重，宇宙尊者之下无敌。修炼前六重，宇宙之主之下无敌。全部修炼，宇宙最强者之下无敌。
   # actions:
   #   - theme: brand
   #     text: Markdown Examples
@@ -16,17 +16,17 @@ hero:
 
 features:
   - title: Feature A
-    details: 我一个人就能 单挑 低代码、前端埋点、脚手架、Vue源码、前端构建、算法、可视化大屏
+    details: 基础坚如磐石
   - title: Feature B
-    details: 还有一些小技能：自动化部署，静态资源站点、React应用层、设计模式、npm包、英文文章
+    details: 业务驱动技术
   - title: Feature C
-    details: 大模型，AI。。。
+    details: 撕天一爪
 ---
 
 | A | B | C |
 | --- | --- | --- |
-| 应用 | 组件库 | 组件库 |
-| 进度 | ？ | ？ |
+| D | E | F |
+| G | ？ | ？ |
 
 # 想找工作啦
 
@@ -58,13 +58,6 @@ This is a details block.
 ## 我的课程大纲
 
 ::: details
-
-### 前沿
-
-* 温故而知新
-* you need to repeat,repeat and repeat.
-
-### Css基础训练
 
 ### JS内功修炼
 
