@@ -10,3 +10,125 @@ about the unusual day I had last week. 有关我上周异常的一天。
 ```
 
 :::
+
+## 英文歌
+
+### shots
+
+Am I out of touch? Am I out of my place.
+我是否已变得难以接近，是否已偏离我心中的自己？
+
+When I keep saying that I'm looking for an empty space. 
+当我不断想要追寻某个并不存在的偏执梦境
+
+Oh, I'm wishing you're here.But I'm wishing you're gone.
+我明明很希望你在我身边，却又想干脆与你就此不见。
+
+I can't have you and I'm only gonna do you wrong.
+我无法将你拥入怀里，因我只会不断做出伤害你的事情。
+
+Oh, I'm gonna mess this up.
+最后我又会搞砸一切。
+
+Oh, this is just my luck.
+这就是我的命运。
+
+Over and over and over again.
+一次又一次循环往复。
+
+I'm sorry for everything oh everything I've done.
+我很抱歉，为我所做的一切。
+
+From the second that I was born
+从我出生的那一刻起
+
+It seems I had a loader gun.
+就彷佛上了膛的枪
+
+And then I shot shot shot a hole through everything I loved
+然后我不断破坏我所珍爱的一切
+
+Oh I shot shot shot a hole through every single thing that I loved.
+我将每一块曾珍惜的美好都打成粉碎。
+
+Am I out of luck, Am I waiting to break，
+我的运气是否耗尽，我是否在等待爆发。
+
+When I keep sayin'that I'm lookin' for a way to escape.
+我一直说我在寻找一种方式逃离
+
+Oh I'm wishin' I had
+真希望我找到了
+
+What I'm takin' for granted.
+那些理所应当的事情
+
+I can't have you and I'm only gonna do you wrong.
+我无法拥有你，只会不停地伤害你。
+
+Oh I'm gonna mess this up.
+我会搞砸的
+
+Oh this is just my luck.
+这就是我的命数
+
+Over and over and over again.
+周而复始
+
+In the meantime we let it go
+与此同时，我们顺其自然。
+
+At the road side we used to know
+在我们曾熟悉的路标旁
+
+We can let this drift away,
+我们让一切事物渐渐远去
+
+Oh we let this drift away,
+嗯，我们让一切事物渐渐远去
+
+At the bay side we used to show
+在我们曾经靠岸的海湾边
+
+In the moonlight we let it go
+月光皎洁，我们顺其自然
+
+We can let this drift away.
+喔，我们让一切事物渐渐远去
+
+And there's always time to change your mind.
+你总会改变想法
+
+And there's always time to change your mind.
+你总会改变想法
+
+Oh love, can you hear me？
+喔，亲爱的，能听见我吗？
+
+Oh let it drift away
+让一切事物渐渐远去吧。
+
+### empty love
+
+All my friends are faded, one of them's half naked.
+我的朋友都醉了, 其中有一个还是半裸着。
+
+That's when I really start to hate it， Can't make it' til three.
+我突然有点厌倦这一切了, 没法撑到凌晨三点了。
+
+## 短语
+
+* as if 像...一样
+* out of touch 失去联系，难以接近
+* out of my place 偏离位置
+* look for 寻找
+* do sb. wrong 委屈、伤害某人
+* be ready to do sth 更侧重于准备好的状态
+* be getting ready to do sth 更强调准备的动作和过程
+ <!-- 例如，“I'm ready to go to work.”（我准备好去上班了。）更强调已经完成了准备工作，可以随时出发的状态；而 “I'm getting ready to go to work.” 则突出正在进行准备工作的这个过程。 -->
+
+## 缩写
+
+* EOL = End of Life
+* gonna === going to
+* 'til === until 直到

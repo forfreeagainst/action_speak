@@ -78,6 +78,7 @@ export default defineConfig({
           { text: "大屏", link: "/project/largeScreen.md"},
           { text: "前端安全", link: "/project/safe.md"},
           { text: "单点登录", link: "/project/singleSignOn.md"},
+          { text: "主题皮肤", link: "/project/theme_skin.md"},
           {text: "视频合成", link: "/project/video_merger.md"},
           {text: "音乐软件", link: "/project/music_soft.md"},
         ]
@@ -153,6 +154,7 @@ export default defineConfig({
           { text: "大屏", link: "/project/largeScreen.md"},
           { text: "前端安全", link: "/project/safe.md"},
           { text: "单点登录", link: "/project/singleSignOn.md"},
+          { text: "主题皮肤", link: "/project/theme_skin.md"},
           {text: "视频合成", link: "/project/video_merger.md"},
           {text: "音乐软件", link: "/project/music_soft.md"},
         ]
