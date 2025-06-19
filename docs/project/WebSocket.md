@@ -53,7 +53,7 @@ WebSocket 和 短轮询（http） 有什么区别？
 
 ## 代码
 
-```ts
+```md
 import {ref, onUnmounted} from 'vue';
 
 // 可以弄带有参数的url, send看是否要连接上就发送

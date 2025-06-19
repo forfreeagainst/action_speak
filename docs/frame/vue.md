@@ -784,7 +784,7 @@ contructor：判断是不是对象 ,是的话，包一层reactive
 
 缩略版 computed
 
-```ts
+```md
  // 在effect 里用到 fullname.value才行
 // const fullname = computed(() => state.firstname + state.name);
 // effect(() => {
@@ -830,7 +830,7 @@ export class ComputedRefImpl<T> {
 reactiveEffect: 接收参数: getter函数，调度器
 收集依赖， 
 
-```ts
+```js
 export class ReactiveEffect<T = any> {
   active = true
   deps: Dep[] = []
@@ -938,7 +938,7 @@ export class ReactiveEffect<T = any> {
 
 effect: 
 
-```ts
+```md
 export function effect<T = any>(
   fn: () => T,
   options?: ReactiveEffectOptions,
@@ -977,9 +977,9 @@ export function effect<T = any>(
 
 提供 DOM API (提供一系列dom操作的api方法) ，针对浏览器的
 
-1. createRenderer(RuntimeCore的方法) 我们可以自己创建渲染器 （自定义渲染器），接收rendererOptions
-2. render(RuntimeCore的方法) 用内置的渲染器来进行渲染 （渲染dom元素）(把虚拟节点变成真实节点)
-3. h方法可以创建一个虚拟dom (接收参数：type, propsOrChildren, children)
+1.createRenderer(RuntimeCore的方法) 我们可以自己创建渲染器 （自定义渲染器），接收rendererOptions
+2.render(RuntimeCore的方法) 用内置的渲染器来进行渲染 （渲染dom元素）(把虚拟节点变成真实节点)
+3.h方法可以创建一个虚拟dom (接收参数：type, propsOrChildren, children)
 
 
 type 标签：div , propsOrChildren 属性 {}
@@ -1161,7 +1161,7 @@ template ——> ast语法树
 
 new Vue() 做了啥？
 1.调用_init方法
-2. 合并选项
+2.合并选项
 
 Observer类，Dep类，
 渲染完真实DOM,

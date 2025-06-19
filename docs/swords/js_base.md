@@ -1052,7 +1052,7 @@ arrowFn.apply(gracefulPerson);
 
 #### 基础类型
 
-```ts
+```md
 const aa: null = null;
 const bb: undefined = undefined;
 const cc: string = "23";
@@ -1065,7 +1065,7 @@ const func: Function = () => undefined;
 
 #### 常见类型
 
-```ts
+```md
 // Object
 const obj: Record<string, any> = {string: 'any'}
 

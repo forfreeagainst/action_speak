@@ -259,7 +259,7 @@ pnpm run mdlint
 
 关键代码：
 
-```ts
+```md
 pkg.husky.hooks['pre-commit'] = `${PKG_NAME} commit-file-scan`;
 pkg.husky.hooks['commit-msg'] = `${PKG_NAME} commit-msg-scan`;
 
