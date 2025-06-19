@@ -201,6 +201,10 @@ pubsub.unsubscribe('message', logMessage);
 pubsub.publish('message', '???');
 ```
 
+### mitt是什么？
+
+mitt 是一个轻量级的 JavaScript 发布-订阅（Pub/Sub）模式 库，用于实现事件驱动的通信。它的全称就是 mitt（没有更长的官方全称），但它的名称可能来源于 "minimal event emitter"（最小化事件发射器）或类似含义，因为它专注于极简的发布-订阅功能
+
 :::
 
 ## 观察者和发布订阅模式的区别？
