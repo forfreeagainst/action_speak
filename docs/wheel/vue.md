@@ -448,7 +448,7 @@ vue3-webpack-project/
 
 `src/App.vue`
 
-```vue
+```js
 <template>
   <div id="app">
     <h1>Hello Vue 3 with Webpack!</h1>

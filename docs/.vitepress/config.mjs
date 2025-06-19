@@ -155,8 +155,9 @@ export default defineConfig({
           { text: "前端安全", link: "/project/safe.md"},
           { text: "单点登录", link: "/project/singleSignOn.md"},
           { text: "主题皮肤", link: "/project/theme_skin.md"},
-          {text: "视频合成", link: "/project/video_merger.md"},
-          {text: "音乐软件", link: "/project/music_soft.md"},
+          { text: "vue基建项目", link: "/project/vueInfrastructure.md"},
+          { text: "视频合成", link: "/project/video_merger.md"},
+          { text: "音乐软件", link: "/project/music_soft.md"},
         ]
       }
     ],
