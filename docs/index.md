@@ -57,9 +57,9 @@ This is a details block.
 
 ## 我的课程大纲
 
-::: details
-
 ### 剑客
+
+::: details
 
 * css基础
 * js初版设计
@@ -72,7 +72,11 @@ This is a details block.
 * 测试工具
 * 英语强化
 
-### JS内功修炼
+:::
+
+#### JS内功修炼
+
+::: details
 
 * 原型与原型链（eg: vue2的数组重写, Object.create,instanceof...）
 * 词法作用域，动态作用域，执行上下文，作用域与作用域链，闭包（防抖，节流，）
@@ -89,7 +93,24 @@ This is a details block.
 * Es6 & EsNext (for of, 箭头函数，class, BigInt)
 * TypeScript（tsConfig,泛型，）
 
-### Vue
+:::
+
+#### 工程化
+
+::: details
+
+* AST
+* 包管理工具
+* 构建工具（webpack, vite, esbuild, roolup, ... 自动化构建）
+* 微前端
+
+:::
+
+### 框架
+
+#### Vue
+
+::: details
 
 * Vue源码
 * Vue3新特性
@@ -98,25 +119,27 @@ This is a details block.
 * Vue-Router（应用、手写）
 * SSR(页面的渲染流程超熟悉的、客户端渲染、服务端渲染)
 
-### Node.js
+:::
 
-* Node基础
+#### React
 
-### React
+::: details
 
 * React基础
 * ...
 * React-redux源码解析
 * React SSR源码解析
 
-### 工程化
+:::
 
-* AST
-* 包管理工具
-* 构建工具（webpack, vite, esbuild, roolup, ... 自动化构建）
-* 微前端
+#### 多端开发
+
+* React Native
 
 ### 项目
+
+::: details
+
 * Http缓存 & 本地缓存优化实战
 * React项目优化
 * Vue项目优化
@@ -124,14 +147,8 @@ This is a details block.
 * 低代码
 * SDK
 
-### 多端开发
+:::
 
-* React Native
+### 面试题
 
 ### 设计模式、数据结构与算法
-
-* 算法（数组）
-* ...
-* 算法（二叉树）
-
-:::
