@@ -558,7 +558,7 @@ module.exports = {
 
 ### 访问项目
 
-在浏览器中访问 http://localhost:9000，你应该会看到 "Hello Vue 3 with Webpack!" 的页面。
+在浏览器中访问 `http://localhost:9000`，你应该会看到 "Hello Vue 3 with Webpack!" 的页面。
 
 ### 强化webpack.config.js配置
 
