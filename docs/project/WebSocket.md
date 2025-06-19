@@ -184,7 +184,7 @@ export function useWebsocket(url: string) {
 }
 ```
 
-```vue
+```js
 <script setup lang="ts">
 import {onMounted} from 'vue';
 import {useWebsocket} from '@/hooks/useWebsocket.ts';

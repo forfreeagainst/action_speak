@@ -19,7 +19,7 @@
 
 ### 父组件
 
-```vue
+```js
 <template>
     <div>
       <ThousandSeparatorInput v-model="amount" />
@@ -48,7 +48,7 @@
 
 ### 子组件
 
-```vue
+```js
 <template>
     <input
       type="text"

@@ -53,7 +53,7 @@ Naive UI 的样式文件支持按需引入（如通过 unplugin-auto-import 或�
 
 解决：将 Provider 提升到根组件或路由层级，减少重复渲染：
 
-```vue
+```js
 <!-- 推荐：在 App.vue 或顶层布局中一次性提供 -->
 <template>
   <n-config-provider>
@@ -72,7 +72,7 @@ Naive UI 的样式文件支持按需引入（如通过 unplugin-auto-import 或�
 
 解决：懒加载交互组件，结合 onMounted 或异步逻辑：
 
-```vue
+```js
 <script setup>
 import { onMounted } from 'vue'
 
@@ -147,7 +147,7 @@ Provider 组件：通过 Vue 的 provide 向子组件树注入一个共享的 Lo
 
 (2) 源码简化示例
 
-```vue
+```js
 <!-- 伪代码：n-loading-bar-provider 的实现逻辑 -->
 <template>
   <slot />
@@ -211,7 +211,7 @@ Naive UI 的 Provider 已经处理了以下细节：
 
 子组件只需调用 useLoadingBar()，无需关心实现细节：
 
-```vue
+```js
 <script setup>
 import { useLoadingBar } from 'naive-ui'
 const loadingBar = useLoadingBar()
@@ -227,7 +227,7 @@ const handleClick = () => {
 
 如果想用 Vant 4 实现类似功能，可以这样封装：
 
-```vue
+```js
 <!-- src/components/LoadingBarProvider.vue -->
 <template>
   <slot />
