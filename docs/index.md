@@ -59,6 +59,19 @@ This is a details block.
 
 ::: details
 
+### 剑客
+
+* css基础
+* js初版设计
+* js优化版本
+* web的api
+* node基础
+* webpack初代构建工具
+* 构建工具
+* 计算机网络
+* 测试工具
+* 英语强化
+
 ### JS内功修炼
 
 * 原型与原型链（eg: vue2的数组重写, Object.create,instanceof...）

@@ -118,7 +118,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 
 ```
 
-```bash
+```md
 #!/bin/bash
 # deploy.sh - 自动化部署脚本
 

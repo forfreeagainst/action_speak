@@ -473,7 +473,7 @@ package.json
 
 #### 设置一个新的 webpack 项目
 
-```bash
+```md
 npx webpack init
 
 ? Do you want to simplify the creation of HTML files for your bundle? Yes
@@ -503,7 +503,7 @@ devDependencies:
 
 要使用 Typescript 来编写 webpack 配置，你需要先安装必要的依赖，比如 Typescript 以及其相应的类型声明，类型声明可以从 DefinitelyTyped 项目中获取，依赖安装如下所示：
 
-```bash
+```md
 npm install --save-dev typescript ts-node @types/node @types/webpack
 # 如果使用版本低于 v4.7.0 的 webpack-dev-server，还需要安装以下依赖
 npm install --save-dev @types/webpack-dev-server

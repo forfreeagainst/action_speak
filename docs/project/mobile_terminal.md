@@ -4,7 +4,7 @@
 
 ### 安装serve本地服务生成临时外网链接
 
-```bash
+```md
 npm install -g serve
 serve -s dist
 ```

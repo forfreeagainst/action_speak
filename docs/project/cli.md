@@ -496,7 +496,7 @@ lint-staged + Git Hooks 的强制约束：
 
 <!-- prettier：提交前必须prettier -->
 
-```bash
+```md
 pnpm add --save-dev husky lint-staged
 pnpm exec husky init
 npm pkg set scripts.prepare="husky install"

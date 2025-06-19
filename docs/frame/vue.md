@@ -410,7 +410,7 @@ app: App<Element>
 
 ### 初始化项目
 
-```bash
+```md
 mkdir vue3-webpack-project
 cd vue3-webpack-project
 npm init -y
@@ -418,7 +418,7 @@ npm init -y
 
 ### 安装 Vue 3 和 Webpack 相关的依赖
 
-```bash
+```md
 npm install vue@3
 npm install --save-dev webpack webpack-cli webpack-dev-server vue-loader@next @vue/compiler-sfc css-loader style-loader html-webpack-plugin
 ```

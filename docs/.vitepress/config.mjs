@@ -12,10 +12,16 @@ export default defineConfig({
       { 
         text: '剑客', 
         items: [
-          { text: 'Web API', link: '/swords/web_api.md' },
           { text: 'CSS', link: '/swords/css_base.md' },
+          { text: 'JavaScript初版笔记', link: '/swords/javascript.md' },
           { text: 'JavaScript', link: '/swords/js_base.md' },
-          { text: "Node.js", link: "/swords/node_base.md"}
+          { text: 'Web API', link: '/swords/web_api.md' },
+          { text: "Node.js", link: "/swords/node_base.md"},
+          { text: 'Webpack始祖', link: '/swords/webpack.md' },
+          { text: "构建工具", link: "/swords/build_tools.md"},
+          { text: "计算机网络", link: "/swords/computer_network.md"},
+          { text: '测试工具', link: '/swords/test_tool.md' },
+          { text: "英语强化", link: "/swords/English.md"},
         ]
        },
         { 
@@ -96,10 +102,16 @@ export default defineConfig({
       { 
         text: '剑客', 
         items: [
-          { text: 'Web API', link: '/swords/web_api.md' },
           { text: 'CSS', link: '/swords/css_base.md' },
+          { text: 'JavaScript初版笔记', link: '/swords/javascript.md' },
           { text: 'JavaScript', link: '/swords/js_base.md' },
-          { text: "Node.js", link: "/swords/node_base.md"}
+          { text: 'Web API', link: '/swords/web_api.md' },
+          { text: "Node.js", link: "/swords/node_base.md"},
+          { text: 'Webpack始祖', link: '/swords/webpack.md' },
+          { text: "构建工具", link: "/swords/build_tools.md"},
+          { text: "计算机网络", link: "/swords/computer_network.md"},
+          { text: '测试工具', link: '/swords/test_tool.md' },
+          { text: "英语强化", link: "/swords/English.md"},
         ]
        },
         { 
