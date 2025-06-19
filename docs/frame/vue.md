@@ -482,7 +482,7 @@ createApp(App).mount('#app');
 
 `src/index.html`
 
-```html
+```md
 <!DOCTYPE html>
 <html lang="en">
 <head>

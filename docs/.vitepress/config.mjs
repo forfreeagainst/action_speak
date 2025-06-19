@@ -28,9 +28,9 @@ export default defineConfig({
       { 
         text: '面试题', 
         items: [
-          { text: '手写题', link: '/interview_question/handwriting.md' },
-          { text: '模拟面试', link: '/interview_question/moni.md' },
-          { text: '面试技巧', link: "/interview_question/interview_skill.md"}
+          { text: '手写题', link: '/interview/handwritingPlus.md' },
+          { text: '模拟面试', link: '/interview/moni.md' },
+          { text: '面试技巧', link: "/interview/interview_skill.md"}
         ]
        },
        { 
@@ -112,9 +112,9 @@ export default defineConfig({
       {
         text: '面试题',
         items: [
-          { text: '手写题', link: '/interview_question/handwriting.md' },
-          { text: '模拟面试', link: '/interview_question/moni.md' },
-          { text: '面试技巧', link: "/interview_question/interview_skill.md"}
+          { text: '手写题', link: '/interview/handwritingPlus.md' },
+          { text: '模拟面试', link: '/interview/moni.md' },
+          { text: '面试技巧', link: "/interview/interview_skill.md"}
         ]
       },
       { 
