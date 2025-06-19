@@ -18,6 +18,13 @@ export default defineConfig({
           { text: "Node.js", link: "/swords/node_base.md"}
         ]
        },
+        { 
+        text: '框架', 
+        items: [
+          { text: 'Vue', link: '/frame/vue.md' },
+          { text: "React", link: "/frame/react.md"},
+        ]
+       },
       { 
         text: '面试题', 
         items: [
@@ -91,7 +98,15 @@ export default defineConfig({
         items: [
           { text: 'Web API', link: '/swords/web_api.md' },
           { text: 'CSS', link: '/swords/css_base.md' },
-          { text: 'JavaScript', link: '/swords/js_base.md' }
+          { text: 'JavaScript', link: '/swords/js_base.md' },
+          { text: "Node.js", link: "/swords/node_base.md"}
+        ]
+       },
+        { 
+        text: '框架', 
+        items: [
+          { text: 'Vue', link: '/frame/vue.md' },
+          { text: "React", link: "/frame/react.md"},
         ]
        },
       {

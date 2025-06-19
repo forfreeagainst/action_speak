@@ -135,7 +135,20 @@ module.exports = {
 // 写入到硬盘：./dist/app.js, ./dist/search.js
 ```
 
-![理解理解](./image.png)
+```js
+module.exports = {
+  entry: {
+    app: './src/app.js',
+    search: "./src/search.js"
+  },
+  output: {
+    filename: '[name].js',
+    path: __dirname + '/dist',
+  }
+}
+
+// 写入到硬盘 ./dist/app.js, ./dist/search.js
+```
 
 ### 高级进阶
 
