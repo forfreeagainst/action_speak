@@ -1,5 +1,20 @@
 # canvas
 
+## 常见API
+
+* getContext: 获取渲染上下文
+* fillStyle:画笔颜色
+* clearRect(4个坐标)：清除指定矩形区域，让清除部分完全透明。
+* fillRect(4个坐标)：从哪个坐标点绘制多少宽多少高的形状，绘制矩形区域
+* strokeRect(4个坐标)：类似fillRect,这里是绘制矩形边框
+* strokeStyle：边框颜色
+* beginPath():开始绘制路线
+* moveTo(两个坐标)：画笔移动到哪个（x,y）坐标
+* lineTo(两个坐标)：绘制一条从当前位置到指定 x 以及 y 位置的直线。
+* fill():填充绘制
+* stroke():描边绘制
+* closePath(): 关闭绘制路线
+
 ## 简单学习API
 
 ```js
@@ -35,6 +50,25 @@ onMounted(() => {
     height: 250px;
 }
 </style>
+```
+
+```js
+<canvas id="cavnasArea"></canvas>
+
+const canvasBox = document.getElementById('cavnasArea')
+if (canvasBox.getContext) {
+  const ctx = canvasBox.getContext("2d");
+  ctx.beginPath();  
+  ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // 绘制
+  ctx.moveTo(110, 75);
+  ctx.arc(75, 75, 35, 0, Math.PI, false); // 口 (顺时针)
+  ctx.moveTo(65, 65);
+  ctx.arc(60, 65, 5, 0, Math.PI * 2, true); // 左眼
+  ctx.moveTo(95, 65);
+  ctx.arc(90, 65, 5, 0, Math.PI * 2, true); // 右眼
+  // ctx.fill();
+  ctx.stroke();
+}
 ```
 
 ## 可视化

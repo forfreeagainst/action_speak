@@ -63,3 +63,161 @@ Vue2 对于对象，使用defineProperty 对对象的属性进行劫持，增加
 
 :::
 
+## 说说观察者模式？
+
+观察者模式（Observer Pattern） 定义了一种一对多的依赖关系，当一个对象（被观察者）的状态 发生改变时，
+所有依赖于它的对象 （观察者）都会得到通知 并 自动更新。
+
+::: details
+
+### 基本实现
+
+```js
+// 被观察者 (主题)
+class ObserverTheme {
+    constructor() {
+        this.observers = []; // 存储观察者列表
+    }
+    // 添加观察者
+    addObserver(observer) {
+        if (observer && observer.update) {
+            this.observers.push(observer);
+        } else {
+            throw new Error('观察者 必须实现 update方法');
+        }
+    }
+    // 移除观察者
+    removeObserver(observer) {
+        this.observers = this.observers.filter(ob => ob !== observer);
+    }
+    // 通知所有观察者
+    notify(data) {
+        this.observers.forEach(observer => {
+            observer.update(data);
+        })
+    }
+}
+// 观察者
+class Observer {
+    constructor(name) {
+        this.name = name;
+    }
+    // 被通知时执行的方法
+    update(data) {
+        console.log(`${this.name} 收到更新`, data);
+    }
+}
+```
+
+### 使用示例
+
+```js
+const themeOb = new ObserverTheme();
+
+// 创建观察者
+const observer1 = new Observer('观察者1');
+const observer2 = new Observer('观察者2');
+
+themeOb.addObserver(observer1);
+themeOb.addObserver(observer2);
+
+// 发布通知
+themeOb.notify('待到秋来九月八');
+
+// 移除一个观察者
+themeOb.removeObserver(observer1);
+
+// 再次发布通知
+themeOb.notify('我花开后百花杀');
+
+```
+
+:::
+
+## 手写简易发布订阅模式？
+
+特点
+
+* 松耦合：发布者和订阅者不需要知道对方的存在
+* 灵活性：可以动态添加和移除 订阅者
+* 一对多：一个事件可以被 多个订阅者监听
+
+应用场景
+
+* 组件间通信（如前端框架中的事件总线）
+* 事件驱动系统
+
+::: details
+
+### 基本实现
+
+```js
+class PubSub {
+    constructor () {
+        this.events = {};
+    }
+    subscribe(event, callback) {
+        this.events[event] = this.events[event] || [];
+        this.events[event].push(callback);
+    }
+    publish(event, ...args) {
+        if (this.events[event]) {
+            this.events[event].forEach(callback => {
+                callback(...args);
+            })
+        }
+    }
+    unsubscribe(event, callback) {
+        if (!this.events[event]) return;
+        this.events[event] = this.events[event].filter(
+            cb => cb !== callback
+        )
+    }
+}
+```
+
+### 实现用例
+
+```js
+// 创建发布订阅实例
+const pubsub = new PubSub();
+
+// 定义回调函数
+function logMessage(data) {
+    console.log('收到消息', data);
+}
+
+
+// 订阅‘message’ 事件
+pubsub.subscribe('message', logMessage);
+
+// 发布‘message’事件
+pubsub.publish('message', 'Hello World!');
+
+// 取消订阅
+pubsub.unsubscribe('message', logMessage);
+
+// 再次发布，不再有反应
+pubsub.publish('message', '???');
+```
+
+:::
+
+## 观察者和发布订阅模式的区别？
+
+::: details
+
+```md
+
+1.耦合度
+* 观察者模式：被观察者和观察者知道彼此的存在
+* 发布订阅模式：发布者和订阅者 不需要知道对方的存在
+2.通信方式
+* 观察者模式：直接调用观察者的方法
+* 发布订阅模式：通过事件中心进行通信
+3.灵活性
+* 发布订阅模式通常更灵活，支持动态添加 / 移除 订阅关系。
+
+```
+
+:::
