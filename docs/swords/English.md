@@ -1,4 +1,6 @@
-# 影视文本
+# 英语强化
+
+## 影视文本
 
 ::: details
 
@@ -14,6 +16,8 @@ about the unusual day I had last week. 有关我上周异常的一天。
 ## 英文歌
 
 ### shots
+
+::: details
 
 Am I out of touch? Am I out of my place.
 我是否已变得难以接近，是否已偏离我心中的自己？
@@ -108,7 +112,11 @@ Oh love, can you hear me？
 Oh let it drift away
 让一切事物渐渐远去吧。
 
+:::
+
 ### empty love
+
+::: details
 
 All my friends are faded, one of them's half naked.
 我的朋友都醉了, 其中有一个还是半裸着。
@@ -116,7 +124,11 @@ All my friends are faded, one of them's half naked.
 That's when I really start to hate it， Can't make it' til three.
 我突然有点厌倦这一切了, 没法撑到凌晨三点了。
 
+:::
+
 ## 短语
+
+::: details
 
 * as if 像...一样
 * out of touch 失去联系，难以接近
@@ -127,13 +139,21 @@ That's when I really start to hate it， Can't make it' til three.
 * be getting ready to do sth 更强调准备的动作和过程
  <!-- 例如，“I'm ready to go to work.”（我准备好去上班了。）更强调已经完成了准备工作，可以随时出发的状态；而 “I'm getting ready to go to work.” 则突出正在进行准备工作的这个过程。 -->
 
+:::
+
 ## 缩写
+
+::: details
 
 * EOL = End of Life
 * gonna === going to
 * 'til === until 直到
 
+:::
+
 ## 单词记忆
+
+::: details
 
 * Traversal 遍历
 * inorder 中序
@@ -325,8 +345,11 @@ That's when I really start to hate it， Can't make it' til three.
 * character
 * soldier
 
+:::
 
 ## 单词
+
+::: details
 
 ### 浏览器
 
@@ -367,6 +390,8 @@ That's when I really start to hate it， Can't make it' til three.
 * graceful 优雅的
 * recursion 递归
 
+:::
+
 ## 目标
 
 ::: details
@@ -389,11 +414,6 @@ Ctrl+A ctrl全选中,某些不选
 cd后，tab能选择想要到达的路径下
 alt+shift+鼠标左击， alt+鼠标左击，alt取消同时编辑多处@vsCode同时编辑多处
 鼠标点击开始位置，shift开始位置，shift结束位置@将很长的数据进行剪切
-
-Fn+Esc@thinkbook的快捷键使用不了，
-1. fn和ctrl互换
-* 重启时, f + f2.
-* 查询豆包或deepseek, thinkbook中ctrl和fn键盘互换。
 
 * 运动，早晨轻量的运动
 * 利用场的力量

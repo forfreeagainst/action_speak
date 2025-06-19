@@ -29,41 +29,8 @@ export default defineConfig({
         items: [
           { text: 'Vue', link: '/frame/vue.md' },
           { text: "React", link: "/frame/react.md"},
-        ]
-       },
-      { 
-        text: '面试题', 
-        items: [
-          { text: '手写题', link: '/interview/handwritingPlus.md' },
-          { text: '模拟面试', link: '/interview/moni.md' },
-          { text: '面试技巧', link: "/interview/interview_skill.md"}
-        ]
-       },
-       { 
-        text: '算法', 
-        items: [
-          { text: '数组', link: '/algorithm/array.md' },
-          { text: '链表', link: '/algorithm/linked_list.md' },
-          { text: '哈希表', link: '/algorithm/hashtable.md' },
-          { text: '字符串', link: '/algorithm/string.md' },
-          { text: '栈与队列', link: '/algorithm/stack_and_queue.md' },
-          { text: '二叉树', link: '/algorithm/binary_tree.md' },
-          { text: '回溯算法', link: "/algorithm/backtrack.md"},
-          { text: '贪心算法', link: "/algorithm/greedy.md"},
-          { text: '动态规划', link: "/algorithm/dynamic_programming.md"},
-          { text: '单调栈', link: "/algorithm/monotonic_stack.md"},
-          { text: '代码总结', link: "/algorithm/fine.md"},
-        ]
-       },
-      {
-        text: 'Vue', 
-        items: [
-          { text: "Vue2源码", link: "/vue/vue2.md"},
-          { text: '加深源码理解', link: '/vue/interview_question.md' },
-          { text: '概述', link: '/vue/outline.md' },
-          { text: "Vue哲学", link: "/vue/thinkingInVue.md"},
-          { text: "创建开发环境", link: "/vue/createDevelopmentEnvironment.md"},
-          { text: "响应式系统", link: "/vue/reactivity.md"}
+          { text: 'vue源码', link: '/frame/vue_source.md' },
+          { text: 'vue2', link: '/frame/vue2.md' },
         ]
        },
        {
@@ -95,7 +62,34 @@ export default defineConfig({
           {text: "视频合成", link: "/project/video_merger.md"},
           {text: "音乐软件", link: "/project/music_soft.md"},
         ]
-      }
+      },
+      { 
+        text: '面试题', 
+        items: [
+          { text: "leetcode100第一部", link: "/interview/algorithmOne.md"},
+          { text: "leetcode100第二部", link: "/interview/algorithmTwo.md"},
+          { text: '手写题初版', link: '/interview/handwriting.md' },
+          { text: '手写题Plus', link: '/interview/handwritingPlus.md' },
+          { text: '面试技巧', link: "/interview/interview_skill.md"},
+          { text: '模拟面试', link: '/interview/moni.md' },
+        ]
+       },
+       { 
+        text: '算法', 
+        items: [
+          { text: '数组', link: '/algorithm/array.md' },
+          { text: '链表', link: '/algorithm/linked_list.md' },
+          { text: '哈希表', link: '/algorithm/hashtable.md' },
+          { text: '字符串', link: '/algorithm/string.md' },
+          { text: '栈与队列', link: '/algorithm/stack_and_queue.md' },
+          { text: '二叉树', link: '/algorithm/binary_tree.md' },
+          { text: '回溯算法', link: "/algorithm/backtrack.md"},
+          { text: '贪心算法', link: "/algorithm/greedy.md"},
+          { text: '动态规划', link: "/algorithm/dynamic_programming.md"},
+          { text: '单调栈', link: "/algorithm/monotonic_stack.md"},
+          { text: '代码总结', link: "/algorithm/fine.md"},
+        ]
+       },
     ],
 
     sidebar: [
@@ -119,41 +113,8 @@ export default defineConfig({
         items: [
           { text: 'Vue', link: '/frame/vue.md' },
           { text: "React", link: "/frame/react.md"},
-        ]
-       },
-      {
-        text: '面试题',
-        items: [
-          { text: '手写题', link: '/interview/handwritingPlus.md' },
-          { text: '模拟面试', link: '/interview/moni.md' },
-          { text: '面试技巧', link: "/interview/interview_skill.md"}
-        ]
-      },
-      { 
-        text: '算法', 
-        items: [
-          { text: '数组', link: '/algorithm/array.md' },
-          { text: '链表', link: '/algorithm/linked_list.md' },
-          { text: '哈希表', link: '/algorithm/hashtable.md' },
-          { text: '字符串', link: '/algorithm/string.md' },
-          { text: '栈与队列', link: '/algorithm/stack_and_queue.md' },
-          { text: '二叉树', link: '/algorithm/binary_tree.md' },
-          { text: '回溯算法', link: "/algorithm/backtrack.md"},
-          { text: '贪心算法', link: "/algorithm/greedy.md"},
-          { text: '动态规划', link: "/algorithm/dynamic_programming.md"},
-          { text: '单调栈', link: "/algorithm/monotonic_stack.md"},
-          { text: '代码总结', link: "/algorithm/fine.md"},
-        ]
-       },
-      { 
-        text: 'Vue', 
-        items: [
-          { text: "Vue2源码", link: "/vue/vue2.md"},
-          { text: '加深源码理解', link: '/vue/interview_question.md' },
-          { text: '概述', link: '/vue/outline.md' },
-          { text: "Vue哲学", link: "/vue/thinkingInVue.md"},
-          { text: "创建开发环境", link: "/vue/createDevelopmentEnvironment.md"},
-          { text: "响应式系统", link: "/vue/reactivity.md"}
+          { text: 'vue源码', link: '/frame/vue_source.md' },
+          { text: 'vue2', link: '/frame/vue2.md' },
         ]
        },
         {
@@ -186,7 +147,34 @@ export default defineConfig({
           { text: "视频合成", link: "/project/video_merger.md"},
           { text: "音乐软件", link: "/project/music_soft.md"},
         ]
-      }
+      },
+       { 
+        text: '面试题', 
+        items: [
+          { text: "leetcode100第一部", link: "/interview/algorithmOne.md"},
+          { text: "leetcode100第二部", link: "/interview/algorithmTwo.md"},
+          { text: '手写题初版', link: '/interview/handwriting.md' },
+          { text: '手写题Plus', link: '/interview/handwritingPlus.md' },
+          { text: '面试技巧', link: "/interview/interview_skill.md"},
+          { text: '模拟面试', link: '/interview/moni.md' },
+        ]
+       },
+      { 
+        text: '算法', 
+        items: [
+          { text: '数组', link: '/algorithm/array.md' },
+          { text: '链表', link: '/algorithm/linked_list.md' },
+          { text: '哈希表', link: '/algorithm/hashtable.md' },
+          { text: '字符串', link: '/algorithm/string.md' },
+          { text: '栈与队列', link: '/algorithm/stack_and_queue.md' },
+          { text: '二叉树', link: '/algorithm/binary_tree.md' },
+          { text: '回溯算法', link: "/algorithm/backtrack.md"},
+          { text: '贪心算法', link: "/algorithm/greedy.md"},
+          { text: '动态规划', link: "/algorithm/dynamic_programming.md"},
+          { text: '单调栈', link: "/algorithm/monotonic_stack.md"},
+          { text: '代码总结', link: "/algorithm/fine.md"},
+        ]
+       },
     ],
     socialLinks: [
       { icon: 'github', link: 'https://github.com/vuejs/vitepress' }

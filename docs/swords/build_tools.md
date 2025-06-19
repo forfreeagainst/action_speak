@@ -88,6 +88,8 @@ plugin是扩展器，Webpack在构建过程会触发一系列生命周期钩子�
 
 #### babel-loader原理
 
+::: details
+
 词法分析，语法分析，ast ()
 
 :::
@@ -140,7 +142,6 @@ Rollup 是一个基于 ES 模块（ESModule）进行开发的 JavaScript 模块�
 -w, --watch                 监视产物文件并在更改时重新构建
 --environment <values>      传递给配置文件的设置（请参阅示例）
 ```
-
 
 ### rollup常用插件
 
