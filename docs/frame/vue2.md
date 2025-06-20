@@ -153,3 +153,32 @@ patch(初始化渲染， 更新渲染)
 
 数据变化，自动更新视图。（观察者模式）
 :::
+
+### 废弃
+
+::: details
+
+$mount 做了什么？
+看vue2生命周期示意图：编译template，生成render函数。如果没有模板，将el的外部html，编译成template,
+再编译template, 生成render函数。
+
+Vue流程
+引入vue文件，如何初始化
+initMixin(Vue), stateMixin(Vue), eventsMixin(Vue),lifecycleMixin(Vue),renderMixin(Vue);
+initGlobalAPI
+new Vue({})
+
+项目是怎么运行起来的？
+
+虚拟dom是表示真实dom的js对象。(为什么要有虚拟DOM)
+1. template 模板转化为 ast
+2. render ast => vDom
+3. vDom 转换为 真实Dom
+
+1. vue-loader => template-compiler 
+.vue 文件处理 转化为 render函数 => vDom => 真实Dom
+// vm._render() 返回vdom
+// vm._update(vm._render(), hydrating)
+
+
+:::

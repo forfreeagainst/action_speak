@@ -1,0 +1,169 @@
+互金：互联网金融 平台
+
+面试题回答：
+
+vue3新特性？
+1.Vue2是采用选项式API,Vue3是采用组合式API，能让相关功能的代码更加有序的组织在一起。
+//新增功能A(data,methods,watch),不利于维护和复用
+2.生命周期不一样
+3.Vue3通过引入defineAsyncComponent函数，使异步组件加载更加方便和灵活。
+4.响应式原理不一样？defineProperty和proxy?
+defineProperty是遍历对象的每一个属性，给每个属性设置一个set和get方法，
+如果对象是新增属性的话，在vue2是不具备响应式的。
+proxy是对整个对象进行监听。
+5.优化了diff算法，尽可能复用更多的旧节点，最小化更新操作，从而提高页面渲染效率。
+6.自定义hook,更好的代码逻辑复用方式
+7.新的内置组件teleport
+8.更好支持Ts
+
+Vue3为什么要使用Proxy?(你对Proxy的理解？)
+vue2中采用 defineProperty来劫持整个对象，然后进行深度遍历所有属性，给每个属性添加getter和setter，
+实现响应式
+vue3采用proxy重写了响应式系统，因为proxy可以对整个对象进行监听，所以不需要深度遍历
+- 可以监听动态属性的添加
+- 可以监听到数组的索引和数组length属性
+- 可以监听删除属性
+
+Vue3常见的组合API有哪些？
+setup：组合式 API 的入口
+ref与reactive
+computed和watch
+watchEffect,watchPostEffect,watchSyncEffect
+
+ref和reactive的区别？
+reactive不支持string,number等原始类型
+reactive被替换整个对象，之前的引用会丢失响应式连接
+reactive被解构操作，也会丢失响应式
+ref支持所有数据类型，访问时要使用.value
+官方推荐使用ref。
+
+Vue2和vue3的diff算法？
+Vue2 双端比较：头与头，
+Vue3 最长递增子序列
+
+Vue的插件化机制应用及原理？
+Vue.use可以是一个有install方法的对象，也可以是install函数
+(插件：增强Vue的功能，插件可以是对象，也可以是函数。如果是对象，对象中需要提供install函数，如果是
+函数，形态需要前面声明的install函数保持一致)
+平常vue-router,vuex都是开发中常用的插件。当然我们也可以设置自己的插件，
+增强Vue本身的能力，来实现高效开发。在项目中，我自定义指令等等。
+
+
+了解过ast吗？请说说它的运用场景？
+词法分析，语法分析，语义分析，代码生成
+const input = "(add 2 (substract 4 2))"
+const tokens = tokenizer(input);
+const ast = parser(tokens);
+const newAst = transformer(ast);
+const output = codeGenerator(newAst); //C语法
+//逐字分词
+function tokenizer() {
+  //引号
+  //括号
+  //数字
+  //字符
+}
+
+
+babel的plugin和loader应用与原理?
+babel是一个流行的JavaScript编译器。
+babel包括以下几个核心内容？
+1.@babel/core
+2.@babel/parser
+3.@babel/traverse
+4.@babel/generator
+5.辅助相关types polyfill template等
+webpack: babel的预设babel-preset-env
+
+
+webpack的打包过程与原理？
+
+webpack的优化配制
+
+vite为什么更快？（Vite有哪些优势）
+
+vite 开发环境打包选择 ESBuild，线上用 rollup。
+ESBuild-go语言编写（编译型），不存在编译时的开销，只有运行时
+
+
+Vue有了响应式原理，为何还要有diff?
+它们是两个不同的概念。数据响应式保证了数据和视图的同步更新，提供便捷的开发方式。
+虚拟DOM+diff算法，减少了不必要的DOM操作，提高了页面渲染效率，使页面交互更加流畅。
+Vue为什么采用响应式原理？
+首先.它可以提高开发效率。它进行了数据绑定，保证视图与数据的同步更新，当数据发生改变，视图也会自动更新，
+避免人为地去操作DOM。让开发者更关注数据本身，而不是要把数据如何渲染到视图这个过程。
+其次，它具有依赖追踪，能追踪每个数据的依赖关系。当哪些组件或者计算属性依赖于某些数据，这些数据发生
+变化时，能自动更新依赖的组件和计算属性。
+Vue为什么要有diff算法？
+首先能带来性能上的优化，直接操作真实DOM是非常昂贵的，虚拟DOM能在内存中快速进行比较和计算差异，让我们
+尽可能复用更多的旧节点，最小化更新操作，从而提高页面渲染效率。
+其次，能进行批量更新，能将多次DOM更新操作合并为一次，避免频繁的DOM操作，减少了浏览器的重排和重绘。
+
+
+前端编码工程化介绍 （自己个人的角度去讲，为了什么，做了哪些事情）
+没有强制的代码格式化，公共文件的git代码冲突比较多
+开会时，svn提出了代码规范文档。开发风格不同，不能很好统一。
+(git clone Vue3,vue2模板， pinia, vuex,vue-router)
+cspell: 复杂的名字缩写，表单名字（特点：长，不好翻译）的命名，后端设计，每个项目独有
+原有前端规范文档存在svn，不好用。多个项目统一规范麻烦。
+1.我们使用了vuePress搭建了静态网站。
+前端编码规范文档，多个项目，流动性强
+monorepo封装了哪些包:
+lint包：eslint,stylelint,prettier
+hook包:
+cli包：
+如何去一键扫描，一键修复
+cli可选择哪些包，多包和单包本质没什么区别？
+monorepo和 多包管理的区别？
+husky钩子针对不同文件进行代码规范扫描
+pnpm本身的workspace就能进行多包,为什么使用lerna?
+lerna的抽象的功能指令，package.json的script
+lerna多包的原理？
+
+前端稳定性监控：
+项目背景：bug率，
+实现无埋点：
+vue的errorHandler
+web:onError
+React: didCatch, errorBoundary?错误边界
+
+如何上报？
+1xhr，
+2gif,
+3.sendBeacon,
+区别？
+队列收集的动作？发布订阅
+
+ESM，CJS,IIFE区别？
+ES Modules是es6引入的官方JavaScript模块化标准，让浏览器支持异步加载。
+特点：静态导入和导出，支持静态的import和export语句，可以在编译时确定模块的依赖关系。
+浏览器和服务器支持: ESM原生被现代浏览器和Node.js支持，无须任何构建工具即可使用。
+代码分割和懒加载：支持代码的动态导入，可以实现按需加载，提高应用性能。
+
+CommonJS是一种用于服务器端JavaScript的模块化标准。
+modules.exports和require
+特点：同步加载，用于Node.js环境，使用require函数动态导入模块。
+
+Immediately Invoked Function Expression
+IIFE是一种不使用任何模块化工具的JavaScript模块化模式
+特点：可以在不使用任何构建工具的情况下实现模块化，在任何支持JavaScript的环境中运行，
+定义后立即执行，创建了一个独立的作用域。
+
+pnpm本身就能发布多包，为什么还要使用lerna?
+
+故事感：重要的背景，巨大的挑战，特别的策略，超出预期的结果。
+
+封装组件，比如介绍文件上传组件
+原生手写文件上传组件，支持大文件上传等。（以后是否可以变成一个插件）
+金额组件，显示千位符，访问是没有千位符，最大金额，最小金额，小数位可变，
+弹窗组件
+
+
+图片和Base64编码的优点
+1.base64是字符串，不用额外发请求，但图片体积会变大。
+
+ts面试
+
+ts的好处？
+type和interface的区别？interface可重复定义。
+any 和unknown的区别？ unknow是更安全的any,是需要类型守卫，才能进行操作的。

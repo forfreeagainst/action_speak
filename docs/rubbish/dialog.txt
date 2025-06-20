@@ -1,0 +1,168 @@
+# 必问
+
+如何封装一个组件？
+business components业务组件
+  layout
+components组件
+  button
+    doc： vite-press
+    src:
+      __tests__
+      README.md
+  form
+  toast
+
+前端编码规范项目的引出：
+项目背景：前端编码规范文档书写（svn），效果不明显。减少系统维护的负担。
+
+多个项目，统一编码规范，
+cli修改+多个规范插件，多个项目不方便，自定义脚手架
+打包，服务（访问）
+commander(mininest老式写法)
+inquirer
+license:MIT开源，允许软件的商业使用，同时保留源代码的版权声明
+git:actions是代码提交了，才会开始部署
+
+npm link:
+将main 改为bin ,
+#!/usr/bin/env node
+package.json, index.js 
+引入核心包：inquirer,commander,确定版本
+
+encode-fe-lint init
+pnpm init
+encode-fe-lint init
+
+
+AI助手
+项目背景：通过openAI,chatGPT做事情
+chat GPT, OPEN AI, SDK,
+Vscode插件：volar, vscode-eslint,version Lens
+依赖：dotenv(跨平台)
+
+service
+express.json(); //返回json
+其他返回结果：buffer,文本，等
+跨域：origin: * , url
+响应头 ：content-type ,application/octet-stream, kimai流式返回
+如何启动bash脚本, sh start.sh
+navive UI(UI组件库), vue3
+tailwindcss
+细节：compoents, 区域view
+部署：
+定制化：bash或 node的能力
+
+
+工程化体系
+前端工程化 = 前端 + 软件工程（打包构建）
+将工程方法论应用到前端开整个流程（）
+
+前端工程化发展
+1.前端切图仔2015
+2.前后端分离：CS -> BS -> SPA
+3.自动化：脚手架，前端框架，构建（分析代码依赖关系）
+分析代码依赖关系（script1.js, script2.js）
+4.最佳实践（awesome）: umi,vite，工具链（rust[rspack])
+umi开箱即用的一些框架
+
+脚手架能力：
+为什么要用脚手架，设计开发这个脚手架？
+让代码在可控范围，搭地基，让开发者更注重业务
+将一些重复的工作流程化，自动化
+
+vue脚手架（将一些重复的工作流程化，自动化，规范化是前提【next、nuxt约定式路由】）
+  -初始化项目，选择项目模板
+  -server 启动服务（屏蔽到你对于webpack server的配制关注）
+  -build，chunk,tree-shaking,dynamic import
+
+  约定式路由和配制式路由不同？
+
+架构怎么设计的？准备阶段，开发过程，发布流程
+
+##准备阶段
+1.选型
+2.代码规范
+  1.架构规范（文件目录）
+  2.基础资源规范（img、fonts)
+  3.UI、物料
+
+##开发过程
+1.开发、打包、构建整个流程处理
+2.mock/服务（网关平台）
+3.代码质量（eslint,stylelint,spellcheck）
+4.测试（unit test, e2e, ui test）
+e2e端到端测试，
+
+##发布流程
+1.git flow 规范怎么结合？
+  1.分支规范（master,develop, features、test、sandbox）
+  2.PR机制（pull request），代码在编写完后，需要进过一轮review 才能合入主分支
+  3.commit 规范(commitlint控制commit message 的规范)
+  4.changelog 规范（开发支出，就需要定义版本号，tags:v1.0.34新增自动会话）
+  自动生成，conventional changelog
+2.自动化构建：持续集成部署（CI/CD：）
+【github action、gitlab、Jenkins、circleCI、阿里云效】
+
+
+监控埋点？用户行为，异常错误收集（网络请求，js代码错误）、
+
+前端性能监控？
+首屏加载时长（Vue性能优化视频）
+手动埋点，可视化埋点，无痕埋点（成本低，采集事件）
+手动埋点
+
+数据上报
+1.gif(无跨域影响，速度快，不适合上报大量数据)
+const img = new Image();
+img.src = reportDataUrl
+2.推荐Navigator.sendBeacon () ， 
+3.xhr上报，可携带大量数据，要解决跨域问题
+
+无痕上报
+//SDK是什么？封装的方法/类
+SDK.report = function () {
+  const img = new Image();
+  const serializeData = serialize(data);
+  img.src = "https://www.baidu.com/vvvv.gif?${serializeData}"
+}
+document.addEventListener('click', () => {
+  SDK.report({})
+}, false); //false冒泡阶段
+
+稳定性工具：CLI,Snippet（代码片段）,物料市场
+
+包管理工具：pnpm(首推)，yarn
+pnpm:节省磁盘空间，提升安装速度
+
+前端仓库管理
+1.monorepo
+2.multirepo
+3.turorepo
+4.nx(构建缓存、增量打包)
+
+3. 项目中遇到的难点和亮点 最多不超过3个
+根据业务需求，设计拖拉拽表单工具，快速绘制表单元素，推进团队开发效率
+封装业务中常见的组件，如千位符金额、弹窗、文件上传等，增强代码维护性、扩展性。
+项目打包体积过大，通过Webpack Bundle Analyzer进行包体积分析，使用代码分割，
+代码压缩、多线程打包等策略，包体积由15M减少到8M。
+5. 项目最后的价值 业务的效果
+2024年6月末，该平台累计业务发生额已突破500亿元，且荣获2023年度中国金融科技发展奖，
+为超过1000家企业客户提供综合服务支持,助力企业节省各项成本超过5000万元。
+
+
+
+
+
+
+
+
+
+
+
+
+插件（vuex, vue-router,pinia）  
+（全局属性，全局方法,全局组件，。。。）
+不侵入源码的情况下，对源码进行扩展，通过插件增强自身能力
+插件可以是对象，也可以是函数
+对象有install方法，函数同install(执行当前函数)
+如何定义插件？

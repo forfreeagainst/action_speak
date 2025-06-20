@@ -1,0 +1,139 @@
+setup, props,{expose}
+context .attrs, .slots, emit,expose
+
+vuex和pinia的区别？
+vuex:modules,namespace, state,getter类似state计算属性
+,mutation和commit同步,action和dispatch异步
+pinia:
+$patch变更多个state里的值，优于多次提交state的修改。
+
+前端稳定性监控：
+收集数据，上传
+
+具体指标（收集错误）：
+稳定性情况：js异常，接口异常，资源异常
+用户行为信息
+页面性能
+
+整理存储数据
+
+接口异常:on,open,
+代码和资源异常：window.addEventListener('error', (event) )
+promise异常：window.addEventListener('unhandledRejection', (event))
+
+1.可预防：
+1.1提供标准化研发流程(cli,tsconfig,文档沉淀，组件库，npm包，code snippet,jest)
+1.2演练（压测，code review 问题注入）
+1.3灰度方案（CDN分流-proxy， 代码区分）
+2.可监控
+2.1无埋点：自动发布采集到的错误信息
+数据采集
+js异常 window.addEventListener('error')
+接口异常 xhr fetch axios 
+资源异常 
+其他常见异常 unhandledRejection
+框架异常：vue.config.errorHandler, react的componentDidCatch
+行为的跟踪：click, 页面的切换（hash change, history change）
+performance:
+
+数据上报：xhr, image, sendBeacon
+
+数据清洗：
+阈值清洗
+
+数据持久化：
+数据库
+
+数据可视化：
+数据报表
+
+3.可回滚
+3.1容器化部署
+  代码和配置项一起打包配制
+3.2数据迁移
+只增不删
+
+
+1. 怎么理解内存泄漏
+不被使用的变量常驻内存，没有清除掉。
+
+2. 怎么解决内存泄漏，代码层面如何优化？
+（1）使用 Performance + Memory 分析内存与性能
+（2）setTimeout,setInterval及时清除
+（3）事件绑定的清除
+Software Development Kit软件开发工具包
+手动代码埋点：顾名思义，就是需要开发者手动写代码在需要埋点的地方调用埋点SDK的函数并传入参数。
+手动埋点可以很方便的设置自定义的属性，自定义的事件，完全的满足定制化的需求，
+支持各种场景的业务需要。但缺点也很明显，埋点代码的侵入性大，容易与业务代码耦合，后期的维护成本较高。
+一般公司自建埋点平台，系统会采用这种方式去做。
+2️⃣可视化埋点：也叫框架式埋点或者无痕埋点。通过提供一个可视化的界面，由用户对业务页面进行圈点，
+通过可视化交互的方式，在页面上的元素（比如按钮、链接等）等进行埋点的配置。注入原理很简单，
+通过在页面中嵌入可视化埋点SDK，上面它会上报页面元素的信息到服务器。服务器对页面元素进行分析，
+标记出可以被埋点的元素，用户在这些元素上进行标注，然后前端再统一进行渲染。这种方式可以做到按需配置，
+不会产生大量无用的数据。但是缺点也很明显，比较难加载一些运行时的参数，当页面结构发生变化的时候可能
+就需要部分重新去进行配置了。
+3️⃣无埋点：也叫自动化埋点或全埋点。这种方案是通过监听浏览器全局事件来收集用户数据的，所以页面上所有
+的用户点击的操作都会被收集上报。该方案其实简单明了，与业务代码是没有耦合的，收集的用户行为数据也比较
+全，但是数据量非常大，无用的数据太多了，给服务器增加了很多的压力，也无法进行定制化的一些去埋点，所以
+只能收集一些常用的基本数据，一般用于颗粒度比较粗的数据分析。
+
+
+前端编码工程化脚手架
+actions:
+  init：初始化（一键接入）
+    1.检查版本更新
+    2.问用户需要哪些lint工具
+    3.检查冲突，有就解决
+    4.安装依赖
+    5.script添加fix,scan命令
+    6.配制commit卡点
+    7.初始化完成
+  scan：一键扫描
+    根据扫描区域进行扫描，得到扫描结果(prettier,eslint,stylelint, markdownlint)
+  update：一键更新
+    比对版本，提示有新版本
+config:
+  ejs用途????
+lints:
+  eslint:
+    1.抓取要eslint的文件信息（fast-glob）
+    2.获取eslintConfig及eslintConfigType(extend:不同eslint类型，eg:ts,js,vue,react)
+    3.lintFiles各文件（是否修复）
+    4.整理eslint结果
+  markdownlint:
+    1.抓取要markdownlint的文件信息
+    2.获取markdownlintConfig
+    3.markdownlint各文件（是否修复）
+    4.整理markdownlint结果
+  prettier:
+    1.抓取prettier的文件信息
+    2.prettier各文件
+  stylelint:
+    1.抓取stylelint的文件信息
+    2.获取stylelintConfig
+    3.整理stylelint结果（并提供错误信息，参考何处）
+  index:
+    将lint的所有工具，全部收敛
+utils: 工具包
+    conflict-resolve冲突解决，constants常量定义，generate-template生成模板（将ejs变成js）
+    git????log美化console.log效果npm-type获取项目是npm还是pnpm
+    print-report打印最终的结果
+cli.ts: bin命令
+index.ts: ???? 
+types.ts: 定义数据类型
+
+事件代理（也叫事件委托）
+如何解决跨域问题
+offsetWidth/offsetHeight,clientWidth/clientHeight与
+scrollWidth/scrollHeight的区别（了解一下，图片懒加载有用，方式一为使用以上参数，或使用IntersectionObserver API，但是这API有兼容性问题）
+promise，async await  微任务，宏任务，事件循环（https://blog.csdn.net/weixin_46795923/article/details/123857728）
+双向绑定原理（v-model），响应式原理（Object.defineProperty，Proxy）
+判断两个对象相等？
+浏览器缓存（协商缓存，强缓存）
+HTTP HTTPS区别
+权限控制，后端根据用户身份所拥有的权限，来返回不同的路由表，再根据路由表。动态添加路由（addRoute 或addRoutes）
+npm run start（流程）
+Vue 组件 data 为什么必须是函数
+v-for如果使用index作为key会导致什么
+diff算法的实现
+this.$nextTick了

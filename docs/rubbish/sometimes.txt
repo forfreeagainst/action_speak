@@ -1,0 +1,42 @@
+(mixin:不能按需引入，溯源困难，但也能提高代码复用性，Vue3可以自定义hook)
+(插槽：让组件具有更丰富的复用性，本质是一个函数，外部组件可以自定义内部组件的内容，
+有默认插槽，具名插槽，作用域插槽，作用域插槽可以实现父组件展示子组件的内容。)
+(动画：1.使用css3的animation,transform 2.使用相关库animate.js 
+3.如果是vue项目，使用vue-transition)
+
+Mixin:选项式配置的混入，除了template,style的混入。
+除了生命周期是合并为数组，data和methods等都会被覆盖。
+一个组件改动了mixin的数据，另一个引用了mixin的组件不受影响。
+优势：提高代码复用性，无须传递状态
+缺点：不能按需引入，溯源困难
+
+插槽
+本质：是一个函数
+目的：外部组件自定义内部组件的内容
+实现内容分发：
+子组件：占位符
+父组件：组件内容
+作用域插槽：父组件展示子组件的内容
+
+动画需要补充知识
+1.Gasp
+2.Animate css
+3.切换css 预先定义动画相关类名 实现动画
+ Trasnsition: transform,
+ Animation
+4.js操作style  transitions
+Vue, transition实现原理， 第三种，transitionstart,transitionend
+
+在标准的 JavaScript 中，检测普通变量的访问或修改是行不通的。然而，
+我们可以通过 getter 和 setter 方法来拦截对象属性的 get 和 set 操作。
+
+
+Vue中的生命周期钩子有哪些？并简单说明原理？
+
+Vue中的数据绑定有哪些方式？请详细说明？
+
+vue3的createApp做了啥？
+createApp是创建Vue3应用的入口点。通过传入根组件并调用它，你可以得到一个新的Vue应用实例对象。这个对象包含了一系列用于配置和挂载应用
+的方法，如 use、component、directive、mount 等。
+总结：createApp 函数的主要作用是创建一个 Vue 3 应用实例，提供了一系列配置方法来定制应用，最后通过 mount 方法将应用挂载到 DOM 上，
+从而启动整个 Vue 应用的生命周期。它简化了应用的初始化过程，使得开发者可以更方便地创建和管理 Vue 应用。

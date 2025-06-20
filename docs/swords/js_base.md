@@ -1266,4 +1266,38 @@ keyof、typeof
 
 ::: details
 
+```md
+相同点：interface和type都可以用于定义 对象结构。
+不同的是
+* interface: 更专注与对象和类的结构，支持继承、自动合并。
+* type: 可以定义类型别名、联合类型、交叉类型，不支持继承和自动合并。
+
+type a = number; // 类型别名
+```
+
+:::
+
+#### interface 和抽象类的区别？
+
+::: details
+
+```md
+相同点：都用于定义一个类的格式
+不同点：
+* 接口：只能描述结构，不能有任何实现代码，一个类，可以实现多个接口。
+* 抽象类：既可以包含抽象方法，也可以包含具体方法。一个类只能继承一个抽象类。
+```
+
+```js
+interface Esbuild {
+    dev(): void;
+}
+interface Rollup {
+    prod(): void;
+}
+class Vite implements Esbuild, Rollup {
+    
+}
+```
+
 :::

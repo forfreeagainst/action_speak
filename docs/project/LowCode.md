@@ -134,3 +134,42 @@ sortable.js -> VueDraggableNext、VueDraggablePlus
 
 ```
 
+## 物料
+
+::: details
+
+```md
+
+参考：retool低代码  Framer无代码
+
+物料区：动态组件component :is="h3"
+文本框
+下拉框
+金额
+日期
+文本域
+单选框
+复选框
+
+渲染区
+
+配制区：
+
+表单校验：
+elementUI是通过rules进行校验的，
+我们有一些特殊的校验规则协议
+eg:数字，最小值，最大值,必填和非必填反复横跳
+name:'percent', 0到100
+name: 'amount', 大于0/大于等于0
+name: 'isPositive', 正数
+设计表单校验方式？
+1(me).使用elementUIPlus+全局变量，rules: {...规则集.percentRule}
+2.无UI组件+统一校验函数，设计成类，有个use方法，往实例加新的规则。（插件化）
+
+实践:
+Validator校验器，渲染器，数据加工器，数据转换器
+版本选择？选择实战的版本，不同版本的问题，新创的项目都会有。(使用Pnpm)
+
+```
+
+:::

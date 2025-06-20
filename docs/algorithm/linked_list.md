@@ -245,8 +245,8 @@ var reverseList = function(head) {
     head.next.next = head;
     head.next = null;
     return newHead;
-}; -->
-```
+};
+``` -->
 
 :::
 

@@ -48,6 +48,20 @@ bMap.set(sum, ++countTemp);
 
 :::
 
+### 如何遍历Map
+
+::: details
+
+```js
+for(let [key, val] of map) {
+    if (val >= k) {
+        res.push(key)
+    }
+}
+```
+
+:::
+
 ## 代码优化
 
 ```js
@@ -68,3 +82,20 @@ do { right--; } while (left < right && nums[right] === nums[right + 1]);
 * Set.has: 时间复杂度 O(1)
 * Array.indexOf() 和 Array.includes() :时间复杂度：O(n)
 * reverse() :时间复杂度O(n)
+
+## 刷题顺序
+
+::: details
+
+* 数组 
+* 链表
+* 哈希表
+* 字符串
+* 栈与队列
+* 二叉树
+* 回溯算法
+* 贪心算法
+* 动态规划
+* 单调栈
+
+:::

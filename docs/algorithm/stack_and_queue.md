@@ -1,5 +1,12 @@
 # 栈与队列
 
+```md
+前端常见数据结构
+
+队列：queue FIFO 先进先出 ->打印队列，线程队列
+栈: stack FILO 先进后出
+```
+
 ## letcode232.用栈实现队列
 
 ```md
@@ -182,27 +189,27 @@ var evalRPN = function(tokens) {
 
 ```js
 var maxSlidingWindow = function(nums, k) {
-    const n = nums.length;
-    const q = [];
-    for (let i = 0; i < k; i++) {
-        while (q.length && nums[i] >= nums[q[q.length - 1]]) {
-            q.pop();
+    const arr = [];
+    for(let i = 0; i < k; i++) {
+        while (arr.length && arr[arr.length - 1] < nums[i]) {
+            arr.pop();
         }
-        q.push(i);
+        arr.push(nums[i]);
     }
+    const res = [arr[0]];
+    for(let i = k; i < nums.length; i++) {
+         while(arr.length && arr[arr.length - 1] < nums[i]) {
+            arr.pop();
+        }
+        arr.push(nums[i]);
 
-    const ans = [nums[q[0]]];
-    for (let i = k; i < n; i++) {
-        while (q.length && nums[i] >= nums[q[q.length - 1]]) {
-            q.pop();
+        if (arr.length && arr[0] === nums[i - k]) {
+            arr.shift();
         }
-        q.push(i);
-        while (q[0] <= i - k) {
-            q.shift();
-        }
-        ans.push(nums[q[0]]);
+
+        res.push(arr[0])
     }
-    return ans;
+    return res;
 };
 ```
 
