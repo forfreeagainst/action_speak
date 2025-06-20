@@ -544,7 +544,7 @@ module.exports = {
 
 ### 配置 `package.json` 脚本
 
-```mdon
+```md
 "scripts": {
   "dev": "webpack serve --mode development",
   "build": "webpack --mode production"

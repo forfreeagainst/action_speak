@@ -53,7 +53,7 @@ const isEmptyArr3 = (data) => {
 }
 ```
 
-```answer
+```md
 (1)为什么要有原型？对象共享属性和方法
 (2)函数就会自带一个prototype(func();)
 对象拥有__proto__(const obj = new func();//实例对象)

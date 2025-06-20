@@ -90,7 +90,26 @@ MyQueue.prototype.empty = function() {
 ::: details
 
 ```js
-
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+var isValid = function(s) {
+    const arr = [];
+    for(let i = 0; i < s.length; i++) {
+        const end = arr[arr.length - 1];
+        if (end === '[' && s.charAt(i) === ']') {
+            arr.pop()
+        } else if (end === '{' && s.charAt(i) === '}') {
+            arr.pop();
+        } else if (end === '(' && s.charAt(i) === ')') {
+            arr.pop();
+        } else {
+            arr.push(s.charAt(i));
+        }
+    }
+    return arr.length === 0;
+};
 ```
 
 :::
@@ -100,17 +119,59 @@ MyQueue.prototype.empty = function() {
 ::: details
 
 ```js
-
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var removeDuplicates = function(s) {
+    const arr = [];
+    for(let i = 0; i < s.length; i++) {
+        const end = arr[arr.length - 1];
+        if (end === s.charAt(i)) {
+            arr.pop();
+        } else {
+            arr.push(s.charAt(i));
+        }
+    }
+    return arr.join('');
+};
 ```
 
 :::
 
 ## letcode150逆波兰表达式求值
 
+要注意转整数呀，同时除法的结果，暗藏杀机。
+
 ::: details
 
 ```js
-
+/**
+ * @param {string[]} tokens
+ * @return {number}
+ */
+var evalRPN = function(tokens) {
+    let res = [];
+    for(let i = 0; i < tokens.length; i++) {
+        if (['+', '-', '*', '/'].includes(tokens[i])) {
+           const end = Number(res.pop());
+           const start = Number(res.pop());
+           if (tokens[i] === '/') {
+                const temp = start / end;
+                res.push(temp > 0 ? Math.floor(temp): Math.ceil(temp));
+           } else if (tokens[i] === '+'){
+               res.push(start + end);
+            } else if (tokens[i] === '-'){
+               res.push(start - end);
+            } else if (tokens[i] === '*'){
+               res.push(start * end);
+           }
+        } else {
+            res.push(Number(tokens[i]));
+        }
+    }
+    return res[0]
+};
 ```
 
 :::
@@ -120,7 +181,50 @@ MyQueue.prototype.empty = function() {
 ::: details
 
 ```js
+var maxSlidingWindow = function(nums, k) {
+    const n = nums.length;
+    const q = [];
+    for (let i = 0; i < k; i++) {
+        while (q.length && nums[i] >= nums[q[q.length - 1]]) {
+            q.pop();
+        }
+        q.push(i);
+    }
 
+    const ans = [nums[q[0]]];
+    for (let i = k; i < n; i++) {
+        while (q.length && nums[i] >= nums[q[q.length - 1]]) {
+            q.pop();
+        }
+        q.push(i);
+        while (q[0] <= i - k) {
+            q.shift();
+        }
+        ans.push(nums[q[0]]);
+    }
+    return ans;
+};
+```
+
+### 暴力解法，时间超出限制
+
+```js
+var maxSlidingWindow = function(nums, k) {
+    const res = [];
+    const arr = [];
+    for(let i = 0; i < nums.length; i ++) {
+        arr.push(nums[i]);
+        if (arr.length === k) {
+            let max = -Infinity;
+            for(let j = 0; j < arr.length; j++) {
+                max = Math.max(max, arr[j]);
+            }
+            res.push(max);
+            arr.shift()
+        }
+    }
+    return res;
+};
 ```
 
 :::
