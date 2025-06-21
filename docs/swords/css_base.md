@@ -13,18 +13,124 @@
 ### 说说对盒子模型的理解？
 
 ::: details
-在css中，盒子模型可以分为
-* W3C 标准盒子模型
-* IE 盒子模型
 
+```md
+在css中，盒子模型可以分为 (W3C)标准盒子模型 和 IE盒子模型？
+IE盒子模型的宽高包含padding和border，标准盒子模型的宽高不包含 padding和border。
+```
 :::
 
 ### 对 BFC的理解？
 
 ::: details
 
-块级格式上下文，它是页面中一块渲染区域，并且有一套属于自己的渲染规则。
+```md
+BFC是块级格式上下文。它的特点是
+独立渲染区域 => 开启BFC的区域，是一块独立的渲染区域。
+应用:
+1.父子margin合并 => 
+父子 margin 合并 是指 父元素的 margin-top 和第一个子元素的 margin-top 合并
+（或 margin-bottom 和最后一个子元素的 margin-bottom 合并）
+普通文档流中，父元素的 margin-top 会和子元素的 margin-top 合并，
+最终取 max(20px, 30px) = 30px。，而BFC可以阻止这种情况。
+2.浮动元素会脱离文档流，导致父元素高度塌陷（height:0）。而BFC可以让父元素正确计算高度。
+3.阻止浮动元素覆盖 => 浮动元素会覆盖相邻的非浮动元素
 
+如何开启BFC?
+1.使用float:left; 一起脱离文档流
+2.position:absolute; 或position:fixed; 一起脱离文档流。
+3.display:flow-root; 最佳实现，专门用于创建BFC,副作用小，但IE不支持
+4.display:inline-block;行内块元素创建BFC
+5.overflow: auto; 或 overflow:hidden;
+```
+
+#### 父子margin合并
+
+```css
+.bfc-margin-box{
+    /*overflow开启BFC*/
+    /* overflow: hidden; */
+    /*border开启BFC*/
+    /* border:solid 1px green; */
+    /*以下都能开启BFC*/
+    /* padding: 1px; */
+    /* float:left; */
+    /* position: absolute; */
+    /* display: flow-root; */
+    /* display: inline-block; */
+    margin-top: 20px;
+}
+.bfc-margin-box > .top-box{
+    height: 30px;
+    background-color: pink;
+    margin-top: 40px;
+}
+```
+
+#### 浮动元素会脱离文档流，导致父元素高度塌陷（height:0）
+
+```css
+ .bfc-float-box{
+    background-color: salmon;
+    /*最佳实现，专门用于创建BFC,无副作用，但IE不支持*/
+    /* display: flow-root; */
+    /*使用overflow 开启 BFC*/
+    /* overflow: hidden; */
+    /* overflow: auto; */
+    /* 以下三种都可以*/
+    /* float:left; */
+    /* position:absolute; */
+    /* position:fixed; */
+    /*行内块元素创建BFC*/
+    display: inline-block;
+    /* 父元素设置具体高度*/
+    /* height: 20px; */
+    /*以下两种不行,仍只有2px高度*/
+    /* padding: 1px; */
+    /* border:solid 1px red; */
+}
+.bfc-float-box > .float-box{            
+    float: left;
+}
+```
+
+#### 阻止浮动元素覆盖
+
+影响了谁,就给谁开BFC.
+
+```css
+.left-box{
+    float: left;
+    /*浮动元素会覆盖相邻的非浮动元素,空间会,但文本内容不会*/
+    background-color: purple;
+}
+.right-box{
+    background-color: skyblue;
+    /* 给非浮动元素添加 overflow: hidden，使其成为 BFC。 */
+    /* overflow: hidden; */
+}
+```
+
+```md
+<div class="float-cover-box">
+    <div class="left-box">左边浮动</div>
+    <div class="right-box">右边正常文档流</div>
+</div>
+```
+
+发生了什么
+
+```md
+浮动元素（float）脱离文档流，但不会覆盖后续块级元素的文本内容，
+因为 CSS 设计上允许文字环绕浮动元素（这是 float 的原始用途——实现图文混排）
+
+1.left-box 设置了 float: left，脱离普通文档流，但仍占据布局空间
+（其他元素会“避开”它的位置）。
+2.right-box 是块级元素，默认会占据整行宽度，但由于浮动元素的存在，它的文本内容
+会环绕浮动元素（而不是被覆盖）。
+3.背景色（skyblue）会延伸到浮动元素下方，但文字会自动避开浮动区域。
+
+```
 
 :::
 
@@ -32,24 +138,41 @@
 
 ::: details
 
+```md
+px是固定长度单位，不会随着其他元素的变化而变化。
+em和rem都是相对长度单位。rem是相对于根元素的字体大小来计算的。em是相对父级元素的属性来变化的。
+vw：设备的视口宽度，vh：设备的视口高度。
+```
+
 :::
 
 ### CSS3新特性
 
 ::: details
 
+* border-radius: 圆角，box-shadow: 阴影
+* transform: rotate旋转，scale缩放，translate移动，skew倾斜
+* 媒体查询
 * animation:
-* transform:
 
 :::
 
 ### flex
 
+::: details
+
+```md
+
+```
+
+:::
+
 ### 什么是响应式设计？
 
 ::: details
 
-
+```md
+```
 
 :::
 
@@ -91,6 +214,35 @@
 ### 隐藏元素的方式
 
 * visibility:
+
+### 为什么要初始化样式？
+
+::: details
+
+```md
+不同浏览器的默认样式不同，不初始化会造成不同浏览器的显示差异。
+常见设置浏览器默认样式有哪些？
+* {
+padding: 0;
+margin:0;
+list-style: none;
+text-decoration: none;//decoration装饰品
+outline:none;//outline勾勒...的外形
+box-sizing:border-box;//sizing标定...的大小
+}
+
+```
+
+:::
+
+### 常用选择器和伪元素，优先级
+
+::: details
+
+```md
+```
+
+:::
 
 ## CSS预处理器
 
