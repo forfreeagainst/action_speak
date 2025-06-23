@@ -169,7 +169,27 @@ console.log("🚀 ~ result:", result); // 正确输出: [1, 3, 2]
 
 ::: details
 
-#### 递归遍历
+#### 前序的迭代法
+
+```js
+var preorderTraversal = function(root) {
+    if (!root) return [];
+    const res = [];
+    const stack = [root];
+    let cur = null
+    // 前序遍历 中 左 右
+    do {
+        cur = stack.pop();
+        res.push(cur.val);
+        // 先进后出, 模拟栈行为，先push,后pop
+        cur.right && stack.push(cur.right);
+        cur.left && stack.push(cur.left);
+    } while(stack.length);
+    return res;
+};
+```
+
+#### 前序的递归法
 
 ```js
 var traversal = function(curr, arr) {
@@ -192,7 +212,27 @@ var preorderTraversal = function(root) {
 
 ::: details
 
-#### 递归的思路
+#### 中序迭代的思路
+
+```js
+var inorderTraversal = function(root) {
+    // 中序： 左 中 右
+    const res = [];
+    const stk = [];
+    while (root || stk.length) {
+        while (root) {
+            stk.push(root);
+            root = root.left;
+        }
+        root = stk.pop();
+        res.push(root.val);
+        root = root.right;
+    }
+    return res;
+}
+```
+
+#### 中序递归的思路
 
 ```js
 function traversal(curr, arr) {
@@ -215,6 +255,44 @@ var inorderTraversal = function(root) {
 ### letcode145:后序遍历
 
 ::: details
+
+
+#### 后序的迭代法
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+
+var postorderTraversal = function(root) {
+    if (!root) return [];
+    // 后序: 左 右 中
+    const stack = [root];
+    const res = [];
+    let cur = null;
+    do {
+        cur = stack.pop();
+        // 注意看，我先push 中间的
+        // 结果先 push 中，要实现 中 右 左 的反转
+        res.push(cur.val);
+        // 同时栈是先进后出，所以 左边先进，左边后出来。
+        cur.left && stack.push(cur.left);
+        cur.right && stack.push(cur.right);
+    } while (stack.length);
+    return res.reverse();
+};
+```
+
+#### 后序的递归法
 
 ```js
 var postorderTraversal = function(root) {

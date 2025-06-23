@@ -2,9 +2,38 @@
 
 ## 搭建开发环境
 
+### 安装依赖
+
 ::: details
 
-rollup.config.js
+```json
+{
+  "name": "vue2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "rollup -cw"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "rollup": "^4.35.0",
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-node-resolve": "^16.0.1"
+  }
+}
+```
+
+:::
+
+### rollup配置文件
+
+::: details
 
 ```js
 // rollup默认可以导出一个对象，作为打包的配置文件
@@ -29,8 +58,6 @@ export default {
     ]
 }
 ```
-
-`"dev": "rollup -cw"`
 
 :::
 

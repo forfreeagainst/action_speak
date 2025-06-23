@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel='icon' href='data:,'>  <!-- 空图标 -->
+</head>
+<body>
+    <script>
+        function myInstanceof(obj, fn) {
+            // obj.__proto__ === fn.prototype;
+            let proto = obj.__proto__;
+            while(proto !== null) {
+                if (proto === fn.prototype) {
+                    return true;
+                }
+                proto = proto.__proto__;
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>

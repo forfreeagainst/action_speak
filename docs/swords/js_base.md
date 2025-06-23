@@ -705,14 +705,59 @@ console.log('script end');// 5
 
 ## 前端模块化规范
 
+
+### 总结
+
 ::: details
 
+```md
 IIFE 立即执行函数表达式
 common.js:用于服务端，可以动态执行
 esModule: 静态执行，编译后就能知道依赖之间的关系，所以能被tree-shaking
 umd:
 amd:
 cmd:
+```
+
+:::
+
+### UMD
+
+::: details
+
+```md
+判断是否支持 CommonJS（Node.js） → typeof module === 'object' && module.exports
+
+判断是否支持 AMD（RequireJS） → typeof define === 'function' && define.amd
+
+判断是否支持 CMD（SeaJS） → 部分 UMD 实现也会兼容 CMD
+
+否则，挂载到全局变量（window 或 global）
+```
+
+```js
+(function(root, factory) {
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        console.log('是commonjs模块规范，nodejs环境')
+        module.exports = factory();
+    } else if (typeof define === 'function' && define.amd) {
+        console.log('是AMD模块规范，如require.js')
+        define(factory)
+    } else if (typeof define === 'function' && define.cmd) {
+        console.log('是CMD模块规范，如sea.js')
+        define(function(require, exports, module) {
+            module.exports = factory()
+        })
+    } else {
+        console.log('没有模块环境，直接挂载在全局对象上')
+        root.umdModule = factory();
+    }
+}(this, function() {
+    return {
+        name: '我是一个umd模块'
+    }
+}))
+```
 
 :::
 
