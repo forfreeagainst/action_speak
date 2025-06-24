@@ -1,6 +1,6 @@
 # 字符串
 
-## letcode344:反转字符串
+## leetcode344:反转字符串
 
 
 
@@ -38,7 +38,7 @@ var reverseString = function(s) {
 
 :::
 
-## letcode541:反转字符串II
+## leetcode541:反转字符串II
 
 ::: details
 
@@ -77,7 +77,7 @@ var reverseStr = function(s, k) {
 
 :::
 
-## letcode151:翻转字符串里的单词
+## leetcode151:翻转字符串里的单词
 
 ::: details
 
@@ -110,7 +110,7 @@ var reverseWords = function(s) {
 
 :::
 
-## letcode459重复的子字符串
+## leetcode459重复的子字符串
 
 给定一个非空的字符串 s ，检查是否可以通过由它的一个子串重复多次构成。
 

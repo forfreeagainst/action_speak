@@ -706,3 +706,43 @@ async function runParallel(maxConcurrency, source, iteratorFn) {
 ```
 
 :::
+
+## 手写数组的常用方法
+
+### 实现一个函数，将嵌套数组扁平化（手写flat函数，将arr转换为一维数组）
+
+::: details
+
+```js
+var arr = [
+  [1, 5, 9],
+  [2, 4, 6, 8],
+  [3, 6, 9, [1, 2, 3]]
+]
+// 输出结果： [1, 5, 9, 2, 4, 6, 8, 3, 6, 9, 1, 2, 3]
+
+Array.prototype.myFlatten = function() {
+  let res = [];
+  for(let item of this) {
+    if (Array.isArray(item)) {
+      res = res.concat(item.myFlatten());
+    } else {
+      res.push(item)
+    }
+  }
+  return res;
+}
+console.log(arr.myFlatten());
+```
+
+:::
+
+### 手写sort
+
+::: details
+
+```js
+
+```
+
+:::

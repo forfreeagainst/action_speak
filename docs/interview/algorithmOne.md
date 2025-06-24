@@ -1,4 +1,4 @@
-# letcode100道题
+# leetcode100道题
 
 ## :bulb: 两数之和（哈希表，数组）
 

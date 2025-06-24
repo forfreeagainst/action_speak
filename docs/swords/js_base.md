@@ -90,11 +90,16 @@ function sayHello() {
 ::: details
 
 * js脚本追求的是灵活性，它允许先执行后定义。
+* 性能优化：JavaScript 引擎在代码执行前会进行 预解析（Hoisting），将函数声明
+提前存入内存，这样在执行阶段可以直接调用，减少重复解析的开销
 * 函数嵌套，没有预解析，很难实现嵌套的效果。
 
 ```js
+// 即使 fib 函数在定义时 内部调用了自身，JavaScript 仍然可以正常解析，不会报错 fib is not defined。
+// 这是因为 函数声明会被提升（Hoisting），使得 fib 在函数体内部可用，即使它还没完全解析完成。
 // 用的预解析的结构
 function fib(n) { // 解析fib
+    if (n <= 1) return n; // 基准条件
     return fib(n - 1) + fib(n - 2); // fib没解析完成
 }
 // 用的预解析的结构
@@ -992,6 +997,50 @@ enum AllocationSpace {
 const,let存在块级作用域，不存在声明提升，且不允许重复声明
 
 :::
+
+##### 变量声明：const、var、let
+
+变量声明 ，变量/参数 ，字面量
+
+##### 区别
+
+::: details
+
+* 块级作用域
+
+```md
+var: 具有函数作用域或全局作用域。在函数内部声明的var变量，在整个函数内都可访问，即便在块级作用域
+(如for循环)内声明，也会提升到函数的顶部，这种现象称为变量提升。
+let 和const: 具有块级作用域。在块级作用域内声明的let 和 const 变量，只能在该块级作用域内访问，
+在块级作用域外部无法访问。
+```
+
+```js
+function play() {
+    console.log(i); // undefined
+    for(var i = 0; i < 3; i++) {
+    }
+    console.log(j); // ReferenceError: j is not defined
+    for(let j = 0; j < 3; j++) {
+    }
+}
+play();
+```
+
+* 变量提升
+
+```md
+var: 会发生变量提升，即变量可以在声明之前被使用，但是值为undefined.
+let 和 const ：不存在变量提升。在声明之前访问 let 或const 声明 的变量会导致ReferenceError错误，
+这被称为暂时性死区。
+```
+
+* 重复声明
+* 重新赋值
+
+:::
+
+##### 字面量
 
 ### 箭头函数和普通函数的区别？
 

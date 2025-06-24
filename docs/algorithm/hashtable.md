@@ -1,6 +1,6 @@
 # 哈希表
 
-## letcode242: 有效的字母异位词
+## leetcode242: 有效的字母异位词
 
 ::: details
 
@@ -47,7 +47,7 @@ var isAnagram = function(s, t) {
 
 :::
 
-## letcode349.两个数组的交集
+## leetcode349.两个数组的交集
 
 ::: details
 
@@ -80,7 +80,7 @@ var intersection = function(nums1, nums2) {
 
 :::
 
-## letcode1.两数之和
+## leetcode1.两数之和
 
 ::: details
 
@@ -118,7 +118,7 @@ var twoSum = function(nums, target) {
 
 :::
 
-## letcode454四数相加
+## leetcode454四数相加
 
 ::: details
 

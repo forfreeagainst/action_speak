@@ -356,48 +356,249 @@ SSO 一般都需要一个独立的认证中心 （passport）,子系统的登录
 
 ## js的继承方式？
 
-## es6+
-
-### 变量声明：const、var、let
-
-变量声明 ，变量/参数 ，字面量
-
-#### 区别
+### 简单说说js的继承方式？
 
 ::: details
 
-* 块级作用域
-
 ```md
-var: 具有函数作用域或全局作用域。在函数内部声明的var变量，在整个函数内都可访问，即便在块级作用域
-(如for循环)内声明，也会提升到函数的顶部，这种现象称为变量提升。
-let 和const: 具有块级作用域。在块级作用域内声明的let 和 const 变量，只能在该块级作用域内访问，
-在块级作用域外部无法访问。
+原型链继承的缺点：引用类型的属性会被所有的实例共享。换言之，如果一个实例改变了该属性，
+那么其他实例的该属性也会被改变。
+使用构造函数继承避免了引用类型的属性会被所有的实例共享
+构造函数继承，通过使用call或apply方法，我们可以在子类中 执行父类的构造函数，从而实现继承。
+构造函数继承的缺点是，方法都在构造函数中定义，每次创建实例都会创建一遍方法。同时不能继承
+基类的prototype上的属性。
 ```
-
-```js
-function play() {
-    console.log(i); // undefined
-    for(var i = 0; i < 3; i++) {
-    }
-    console.log(j); // ReferenceError: j is not defined
-    for(let j = 0; j < 3; j++) {
-    }
-}
-play();
-```
-
-* 变量提升
-
-```md
-var: 会发生变量提升，即变量可以在声明之前被使用，但是值为undefined.
-let 和 const ：不存在变量提升。在声明之前访问 let 或const 声明 的变量会导致ReferenceError错误，
-这被称为暂时性死区。
-```
-
-* 重复声明
-* 重新赋值
 
 :::
 
-#### 字面量
+### 原型链继承
+
+::: details
+
+常见应用：
+
+* Vue2重写了数组的7个变异方法（通过修改数组的原型来实现响应式）
+
+#### 典型的原型链继承Child.prototype = new Parent();
+
+```js
+function Parent () {
+    this.names = ['xianzao', 'zaoxian'];
+}
+
+function Child () {
+
+}
+
+Child.prototype = new Parent();
+
+var child1 = new Child();
+
+child1.names.push('test');
+
+console.log(child1.names); // ["xianzao", "zaoxian", "test"]
+
+var child2 = new Child();
+
+console.log(child2.names); // ["xianzao", "zaoxian", "test"]
+```
+
+:::
+
+### 构造函数继承
+
+::: details
+
+构造函数继承，通过使用call或apply方法，我们可以在子类中 执行父类的构造函数，从而实现继承。
+
+```js
+function Animal(name) {
+    this.favorite = ['篮球', '跑步']
+}
+Animal.prototype.hobby = ['吃饭', '睡觉', '打豆豆']
+
+function Dog() {
+    Animal.call(this);
+}
+
+function Cat() {
+    Animal.call(this);
+}
+
+const dogPlus = new Dog();
+const catPlus = new Cat();
+dogPlus.favorite.push('训练');
+// catPlus.favorite.push('极限运动');
+console.log("🚀 ~ dogPlus:", dogPlus)
+console.log("🚀 ~ catPlus:", catPlus)
+console.log(dogPlus.hobby, catPlus.hobby, '压根访问不到基类的hobby');
+console.log("🚀 ~ dogPlus.favorite:", dogPlus.favorite)
+console.log("🚀 ~ catPlus.favorite:", catPlus.favorite)
+```
+
+:::
+
+### 组合继承
+
+::: details
+
+原型链继承 + 构造函数继承
+
+```js
+function Parent() {
+    this.sayHello = function() {
+        console.log('你好')
+    }
+}
+Parent.prototype.desc = {
+    name: '无敌风火轮'
+}
+function Child1() {
+    Parent.call(this);
+}
+function Child2() {
+    Parent.call(this);
+}
+Child1.prototype = new Parent();
+Child2.prototype = new Parent();
+const child1 = new Child1();
+const child2 = new Child2();
+child1.desc.name = "冲";
+console.log(child1.desc, child2.desc);
+```
+
+```js
+function Animal(name) {
+    this.favorite = ['篮球', '跑步']
+}
+Animal.prototype.hobby = ['吃饭', '睡觉', '打豆豆']
+
+function Dog() {
+    Animal.call(this);
+}
+
+function Cat() {
+    Animal.call(this);
+}
+Dog.prototype = new Animal();
+Cat.prototype = new Animal();
+
+const dogPlus = new Dog();
+const catPlus = new Cat();
+dogPlus.favorite.push('训练');
+console.log("🚀 ~ dogPlus:", dogPlus)
+console.log("🚀 ~ catPlus:", catPlus)
+dogPlus.hobby.push('执行上下文有几种')
+console.log(dogPlus.hobby, catPlus.hobby, '这下能访问到基类的prototype上的属性hobby了');
+```
+
+:::
+
+### 寄生继承
+
+::: details
+
+```md
+
+Object.create() + 增强对象
+
+寄生继承是一种模式，通过增强对象的方式实现继承（不依赖构造函数或原型链）：
+
+特点：
+* 类似“工厂模式”，通过函数封装对象的创建和扩展。
+* 适合需要动态增强对象的场景，但无法复用方法（每次创建新方法）。
+```
+
+
+```js
+function createEnhancedObject(original) {
+    const clone = Object.create(original); // 基于原对象创建新对象
+    clone.newMethod = function() {         // 增强对象
+        console.log('Added method!');
+    };
+    return clone;
+}
+
+const parent = { hobby: ['吃饭'] };
+const child = createEnhancedObject(parent);
+child.newMethod(); // "Added method!"
+```
+
+:::
+
+### 寄生组合继承
+
+::: details
+
+```md
+
+Object.create(Parent.prototype)	
+
+最优解，属性独立、方法共享	现代开发推荐
+
+特点：
+* 只调用一次父类构造函数（Parent.call）。
+* 避免组合继承中重复调用 new Parent() 的性能问题。
+* 完美隔离引用类型属性（如 hobby）。
+```
+
+```js
+function Parent(name) {
+    this.name = name;
+    this.hobby = ['吃饭'];
+}
+Parent.prototype.sayHello = function() { console.log(this.name); };
+
+function Child(name) {
+    Parent.call(this, name); // 构造函数继承（实例属性）
+}
+
+// 关键步骤：用 Object.create() 继承原型方法
+Child.prototype = Object.create(Parent.prototype);
+Child.prototype.constructor = Child; // 修复构造函数指向
+
+const child1 = new Child('小明');
+child1.hobby.push('睡觉');
+console.log(child1.hobby); // ['吃饭', '睡觉']（独立）
+```
+
+```js
+function inherit(Child, Parent) {
+    Child.prototype = Object.create(Parent.prototype);
+    Child.prototype.constructor = Child;
+}
+```
+
+:::
+
+
+#### 原型继承
+
+::: details
+
+通过原型，对象可以共享属性和方法
+
+```js
+function Animal(name) {
+    this.name = name;
+    // this.hobby = ['吃饭', '睡觉', '打豆豆']
+}
+Animal.prototype.sayHello = function() {
+    console.log(`Hello, everyone! My Name is ${this.name}`);
+}
+// 这才叫原型属性 是 引用类型
+Animal.prototype.hobby = ['吃饭', '睡觉', '打豆豆']
+var dog = new Animal('小狗');
+var cat = new Animal('小猫');
+
+dog.sayHello();
+cat.sayHello();
+
+dog.hobby.push('训练')
+// console.log(dog.hobby === cat.hobby)
+console.log(dog.hobby); // ['吃饭', '睡觉', '打豆豆', '训练']
+console.log(cat.hobby); // ['吃饭', '睡觉', '打豆豆', '训练']
+
+```
+
+:::

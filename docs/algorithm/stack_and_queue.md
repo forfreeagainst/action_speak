@@ -7,7 +7,7 @@
 栈: stack FILO 先进后出
 ```
 
-## letcode232.用栈实现队列
+## leetcode232.用栈实现队列
 
 ```md
 将一个栈当作输入栈，用于压入 push 传入的数据；另一个栈当作输出栈，用于 pop 和 peek 操作。
@@ -82,7 +82,7 @@ MyQueue.prototype.empty = function() {
 
 :::
 
-## letcode225:用队列实现栈
+## leetcode225:用队列实现栈
 
 ::: details
 
@@ -92,7 +92,7 @@ MyQueue.prototype.empty = function() {
 
 :::
 
-## letcode20:有效的括号
+## leetcode20:有效的括号
 
 ::: details
 
@@ -121,7 +121,7 @@ var isValid = function(s) {
 
 :::
 
-## letcode1047.删除字符串中的所有相邻重复项
+## leetcode1047.删除字符串中的所有相邻重复项
 
 ::: details
 
@@ -146,7 +146,7 @@ var removeDuplicates = function(s) {
 
 :::
 
-## letcode150逆波兰表达式求值
+## leetcode150逆波兰表达式求值
 
 要注意转整数呀，同时除法的结果，暗藏杀机。
 
@@ -183,7 +183,7 @@ var evalRPN = function(tokens) {
 
 :::
 
-## letcode239:滑动窗口最大值
+## leetcode239:滑动窗口最大值
 
 ::: details
 
@@ -236,7 +236,7 @@ var maxSlidingWindow = function(nums, k) {
 
 :::
 
-## letcode347:前K个高频元素
+## leetcode347:前K个高频元素
 
 ::: details
 

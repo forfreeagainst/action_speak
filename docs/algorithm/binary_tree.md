@@ -3,7 +3,7 @@
 ## 二叉树概念
 
 
-```md
+```js
 
 满二叉树是一种特殊的二叉树，其所有非叶子节点都拥有两个子节点，
 而且所有叶子节点都位于同一层。如果一棵二叉树的深度为k，
@@ -165,7 +165,7 @@ console.log("🚀 ~ result:", result); // 正确输出: [1, 3, 2]
 
 :::
 
-### letcode144:前序遍历
+### leetcode144:前序遍历
 
 ::: details
 
@@ -208,7 +208,7 @@ var preorderTraversal = function(root) {
 
 :::
 
-### letcode94:中序遍历
+### leetcode94:中序遍历
 
 ::: details
 
@@ -252,7 +252,7 @@ var inorderTraversal = function(root) {
 
 :::
 
-### letcode145:后序遍历
+### leetcode145:后序遍历
 
 ::: details
 
@@ -311,3 +311,259 @@ var postorderTraversal = function(root) {
 :::
 
 
+## leetcode102二叉树的层序遍历(广度优先搜索)
+
+::: details
+
+```js
+var levelOrder = function(root) {
+    if (!root) return [];
+    const res = [];
+    const queue = [root];
+    let cur = null;
+    while(queue.length) {
+        res.push([]);
+        const len = queue.length;
+        for(let i = 0; i < len; i++) {
+            const cur = queue.shift();
+            res[res.length - 1].push(cur.val);
+            cur.left && queue.push(cur.left);
+            cur.right && queue.push(cur.right)
+        }
+    }
+    return res;
+};
+```
+
+:::
+
+## leetcode226翻转二叉树
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode101对称二叉树
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode104二叉树的最大深度
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode111二叉树的最小深度
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode222完全二叉树的节点个数（数量）
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode110平衡二叉树
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode257二叉树的所有路径
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode404左叶子之和
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode513找树左下角的值
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode112路径总和
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode106从中序与后序遍历序列构造二叉树
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode654最大二叉树
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode617合并二叉树
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode700二叉搜索树中的搜索
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode98验证二叉搜索树
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode530二叉搜索树的最小绝对差
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode501二叉搜索树中的众数
+
+::: details
+
+```js
+
+```
+
+:::
+
+
+## leetcode236. 二叉树的最近公共祖先
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode701. 二叉搜索树中的插入操作
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode450. 删除二叉搜索树中的节点
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode669. 修剪二叉搜索树
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode108. 将有序数组转换为二叉搜索树
+
+::: details
+
+```js
+
+```
+
+:::
+
+## leetcode538. 把二叉搜索树转换为累加树
+
+::: details
+
+```js
+
+```
+
+:::

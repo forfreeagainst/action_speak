@@ -13,7 +13,7 @@ function listNode(val, next) {
 
 :::
 
-## letcode203：移除链表元素
+## leetcode203：移除链表元素
 
 给你一个链表的头节点 head 和一个整数 val ，请你删除链表中所有满足 Node.val == val 的节点，并返回 新的头节点 。删除链表上的某个元素
 
@@ -54,7 +54,7 @@ var removeElements = function(head, val) {
 :::
 
 
-## letcode707. 设计链表
+## leetcode707. 设计链表
 
 * 获取第几个节点的值
 * 头部插入节点
@@ -199,7 +199,7 @@ MyLinkedList.prototype.deleteAtIndex = function(index) {
 
 :::
 
-## letcode206-反转链表
+## leetcode206-反转链表
 
 ::: details
 
@@ -250,7 +250,7 @@ var reverseList = function(head) {
 
 :::
 
-## letcode24.两两交换链表中的节点
+## leetcode24.两两交换链表中的节点
 
 ::: details
 
@@ -274,7 +274,7 @@ var swapPairs = function(head) {
 
 :::
 
-## letcode19.删除链表倒数第N个节点
+## leetcode19.删除链表倒数第N个节点
 
 ::: details
 
@@ -299,7 +299,7 @@ var removeNthFromEnd = function(head, n) {
 
 :::
 
-## letcode142.环形链表
+## leetcode142.环形链表
 
 ::: details
 
@@ -366,7 +366,7 @@ var detectCycle = function(head) {
 
 :::
 
-## letcode2：两数相加（letcode100热题）
+## leetcode2：两数相加（leetcode100热题）
 
 ::: details
 

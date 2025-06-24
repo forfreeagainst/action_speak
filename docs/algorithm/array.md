@@ -2,7 +2,7 @@
 
 ## 二分查找
 
-### letcode704
+### leetcode704
 
 给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。
 
@@ -73,7 +73,7 @@ var search = function(nums, target) {
 
 注意返回值
 
-### letcode27
+### leetcode27
 
 给你一个数组 nums 和一个值 val，你需要 原地 移除所有数值等于 val 的元素。元素的顺序可能发生改变。然后返回 nums 中与 val 不同的元素的数量。
 
@@ -146,7 +146,7 @@ var removeDuplicates = function(nums) {
 
 ## 双指针
 
-### letcode977
+### leetcode977
 
 给你一个按 非递减顺序 排序的整数数组 nums，返回 每个数字的平方 组成的新数组，要求也按 非递减顺序 排序。
 
@@ -248,7 +248,7 @@ var merge = function(nums1, m, nums2, n) {
 
 ## 滑动窗口
 
-### letcode209
+### leetcode209
 
 给定一个含有 n 个正整数的数组和一个正整数 target 。
 
@@ -352,7 +352,7 @@ var minSubArrayLen = function(target, nums) {
 
 ## 螺旋矩阵
 
-### letcode59
+### leetcode59
 
 给你一个正整数 n ，生成一个包含 1 到 n2 所有元素，且元素按顺时针顺序螺旋排列的 n x n 正方形矩阵 matrix 。
 
@@ -450,7 +450,7 @@ var generateMatrix = function(n) {
 
 :::
 
-## letcode15.三数之和
+## leetcode15.三数之和
 
 ::: details
 
@@ -513,7 +513,7 @@ var threeSum = function(nums) {
 :::
 
 
-## letcode18.四数之和
+## leetcode18.四数之和
 
 ::: details
 
