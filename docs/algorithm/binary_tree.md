@@ -320,7 +320,6 @@ var levelOrder = function(root) {
     if (!root) return [];
     const res = [];
     const queue = [root];
-    let cur = null;
     while(queue.length) {
         res.push([]);
         const len = queue.length;
@@ -342,7 +341,16 @@ var levelOrder = function(root) {
 ::: details
 
 ```js
-
+var invertTree = function(root) {
+    if (root === null) {
+        return null;
+    }
+    const left = invertTree(root.left);
+    const right = invertTree(root.right);
+    root.left = right;
+    root.right = left;
+    return root;
+};
 ```
 
 :::
@@ -351,9 +359,63 @@ var levelOrder = function(root) {
 
 ::: details
 
-```js
+### 递归法
 
+```js
+// left 左子树， right 右子树
+ function check(left, right) {
+    // 两个都是空节点
+    if (!left && !right) return true;
+    // 其中1个有节点，1个没节点，肯定不对称
+    if (!left || !right) return false;
+    // 都有节点
+    return left.val === right.val
+    && check(left.left, right.right) 
+    && check(left.right, right.left);
+}
+var isSymmetric = function(root) {
+    // 左子树-
+    // 右子树-
+    return check(root.left, root.right);
+};
 ```
+
+### 迭代法
+
+```js
+ function check(l, r) {
+    const queue = [];
+    queue.push(l);
+    queue.push(r);
+    while(queue.length) {
+        // 先push,先shift, 先进先出
+        const curL = queue.shift();
+        const curR = queue.shift();
+
+        // 如果都为空
+        if (!curL && !curR) continue;
+        // 如果一个有值，一个没有值，直接结束
+        if (!curL || !curR) return false;
+        // 如果节点不相等，直接结束
+        if (curL.val !== curR.val) return false;
+
+        queue.push(curL.left);
+        queue.push(curR.right);
+
+        queue.push(curL.right);
+        queue.push(curR.left);
+
+    }
+    // 全部检查通过，返回成功
+    return true;
+}
+var isSymmetric = function(root) {
+    // 左子树-
+    // 右子树-
+    return check(root.left, root.right);
+};
+```
+
 
 :::
 
@@ -361,18 +423,91 @@ var levelOrder = function(root) {
 
 ::: details
 
-```js
+### 笨方法，思路同letcode102
 
+```js
+var maxDepth = function(root) {
+    if (!root) return 0;
+    const queue = [root];
+    const res = [];
+    while(queue.length) {
+        res.push([]);
+        const len = queue.length;
+        for(let i = 0; i < len; i++) {
+            const cur = queue.shift();
+            res[res.length - 1].push(cur.val)
+            cur.left && queue.push(cur.left);
+            cur.right && queue.push(cur.right);
+        }
+    }
+    return res.length;
+};
+```
+
+优化下空间
+
+```js
+// 层序遍历，迭代法
+var maxDepth = function(root) {
+    if (!root) return 0;
+    const queue = [root];
+    let res = 0;
+    while(queue.length) {
+        res ++;
+        const len = queue.length;
+        for(let i = 0; i < len; i++) {
+            const cur = queue.shift();
+            cur.left && queue.push(cur.left);
+            cur.right && queue.push(cur.right);
+        }
+    }
+    return res;
+};
+```
+
+### 其他方法
+
+* 递归
+
+```js
+var maxDepth = function(root) {
+    if (root === null) return 0;
+    return 1 + Math.max(maxDepth(root.left), maxDepth(root.right))
+};
 ```
 
 :::
 
 ## leetcode111二叉树的最小深度
 
+给定一个二叉树，找出其最小深度。
+
+最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+
+说明：叶子节点是指没有子节点的节点。
+
+
 ::: details
 
 ```js
-
+var minDepth = function(root) {
+    if (!root) return 0;
+    const queue = [root];
+    let res = 0;
+    // 层序遍历
+    while(queue.length) {
+        res ++;
+        const len = queue.length;
+        for(let i = 0; i < len; i++) {
+            const cur = queue.shift();
+            // 发现没有 叶子节点，直接结束
+            if (!cur.left && !cur.right) return res;
+            cur.left && queue.push(cur.left);
+            cur.right && queue.push(cur.right);
+        }
+    }
+    return res;
+};
 ```
 
 :::
@@ -381,18 +516,128 @@ var levelOrder = function(root) {
 
 ::: details
 
-```js
+### 层序遍历，就完事了
 
+```js
+var countNodes = function(root) {
+    if (!root) return 0;
+    let res = 0;
+    const queue = [root];
+    while(queue.length) {
+        const len = queue.length;
+        for(let i = 0; i < queue.length; i++) {
+            const cur = queue.shift();
+            res ++;
+            if (cur.left) {
+                queue.push(cur.left);
+            }
+            if (cur.right) {
+                queue.push(cur.right);
+            }
+        }
+    }
+    return res;
+};
+```
+
+### 优化版
+
+### 其他版本
+
+```js
+var countNodes = function(root) {
+    //递归法计算二叉树节点数
+    // 1. 确定递归函数参数
+    const getNodeSum = function(node) {
+    //2. 确定终止条件
+        if(node === null) {
+            return 0;
+        }
+    //3. 确定单层递归逻辑
+        let leftNum = getNodeSum(node.left);
+        let rightNum = getNodeSum(node.right);
+        return leftNum + rightNum + 1;
+    }
+    return getNodeSum(root);
+};
+```
+
+```js
+var countNodes = function(root) {
+    //利用完全二叉树的特点
+    if(root === null) {
+        return 0;
+    }
+    let left = root.left;
+    let right = root.right;
+    let leftDepth = 0, rightDepth = 0;
+    while(left) {
+        left = left.left;
+        leftDepth++;
+    }
+    while(right) {
+        right = right.right;
+        rightDepth++;
+    }
+    if(leftDepth == rightDepth) {
+        return Math.pow(2, leftDepth+1) - 1;
+    }
+    return countNodes(root.left) + countNodes(root.right) + 1;
+};
 ```
 
 :::
 
-## leetcode110平衡二叉树
+## leetcode110平衡二叉树TODO
+
+```md
+- `Math.abs(leftHeight - rightHeight) <= 1`：检查**当前节点**是否平衡。
+- `isBalanced(root.left)`：检查**左子树**是否平衡。
+- `isBalanced(root.right)`：检查**右子树**是否平衡。
+- **必须三者同时满足**，整棵树才是平衡的。
+```
 
 ::: details
 
-```js
+### 笨方法，但是理解了什么才是真正的平衡二叉树
 
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+ function getHeight(root) {
+    if (!root) return 0;
+    const queue = [root];
+    let res = 0;
+    while(queue.length) {
+        const len = queue.length;
+        res ++;
+        for(let i = 0; i < len; i ++) {
+            const cur = queue.shift();
+            cur.left && queue.push(cur.left);
+            cur.right && queue.push(cur.right);
+        }
+    }
+    return res;
+ }
+var isBalanced = function(root) {
+    // 平衡二叉树， 左右子树的高度，不超过1
+    if (!root) return true;
+    const leftHeight = getHeight(root.left);
+    const rightHeight = getHeight(root.right);
+    return Math.abs(leftHeight - rightHeight) <= 1 
+        && isBalanced(root.left) 
+        && isBalanced(root.right);
+};
 ```
 
 :::

@@ -54,10 +54,8 @@ http://localhost:3000/getList
 
 for...in 循环语句只会输出 obj 对象中的可枚举属性。for of 和for in 
 
-
 javaScript:
 esModule和CommonJs区别？
-js继承
 跨域解决方案有哪些？
 遍历数组/对象？
 
@@ -100,7 +98,6 @@ document.styleSheets[0].addRule('div', 'border: 2px solid #f30 !imporant');
 * 拿个Vue2+webpack的开源项目，测试构建时长。
 * vite 多包下create-vite有很多个 template
 * 配置项目的lint规则
-* 二叉树的中序遍历，letcode简单题
 * 拖拽
 * Vue-I18n 跟ElementPlus国际化结合
 * 微前端

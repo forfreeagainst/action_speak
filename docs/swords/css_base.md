@@ -235,6 +235,54 @@ box-sizing:border-box;//sizing标定...的大小
 
 :::
 
+### 三栏布局：圣杯布局和双飞翼布局
+
+::: details
+
+* 传统 float 布局（圣杯/双飞翼）：必须 main 放前面，否则布局会乱
+* 现代 Flex/Grid 布局：可以自由调整顺序，main 放哪儿都行
+
+#### 圣杯布局
+
+```html
+<div class="container">
+  <div class="main">主要内容</div>  <!-- 优先渲染 -->
+  <div class="left">左侧边栏</div>
+  <div class="right">右侧边栏</div>
+</div>
+```
+
+#### 双飞翼布局
+
+```html
+<div class="container">
+  <div class="main">
+    <div class="content">主要内容</div>  <!-- 多一层嵌套 -->
+  </div>
+  <div class="left">左侧边栏</div>
+  <div class="right">右侧边栏</div>
+</div>
+```
+
+#### 为什么把main放前面
+
+```md
+（1）SEO 优化（搜索引擎优化）
+搜索引擎（如 Google）会优先抓取 HTML 中靠前的内容，认为它更重要。
+
+把主要内容放在前面，可以让搜索引擎更快识别页面的核心内容，提高排名。
+
+（2）无障碍访问（Accessibility）
+屏幕阅读器（Screen Reader）会按 HTML 顺序读取内容，main 放在前面可以
+让视障用户先听到主要内容，而不是侧边栏。
+
+（3）流式布局（Float 布局）依赖 HTML 顺序
+圣杯和双飞翼布局使用 float 实现，main 必须先渲染，才能让 left 和 right 
+通过 margin-left: -100% 等技巧正确定位。
+```
+
+:::
+
 ### 常用选择器和伪元素，优先级
 
 ::: details
