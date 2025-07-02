@@ -80,7 +80,7 @@ var intersection = function(nums1, nums2) {
 
 :::
 
-## leetcode1.两数之和
+## :star: leetcode1.两数之和
 
 ::: details
 

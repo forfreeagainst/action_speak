@@ -245,3 +245,69 @@ var maxSlidingWindow = function(nums, k) {
 ```
 
 :::
+
+## :star: leetcode155: 最小栈
+
+::: details
+
+```js
+// 先进后出
+// 栈顶是先出来的那个
+var MinStack = function() {
+    this.stack = [];
+    this.min_stack = [Infinity];
+};
+
+/** 
+ * @param {number} val
+ * @return {void}
+ */
+MinStack.prototype.push = function(val) {
+    this.stack.push(val);
+    // 将上一步得到的新最小值推入辅助栈
+    this.min_stack.push(Math.min(this.min_stack[this.min_stack.length - 1], val));
+};
+
+/**
+ * @return {void}
+ */
+MinStack.prototype.pop = function() {
+    this.stack.pop();
+    this.min_stack.pop();
+};
+
+/**
+ * @return {number}
+ */
+MinStack.prototype.top = function() {
+    return this.stack[this.stack.length - 1];
+};
+
+/**
+ * @return {number}
+ */
+MinStack.prototype.getMin = function() {
+    return this.min_stack[this.min_stack.length - 1];
+};
+
+/** 
+ * Your MinStack object will be instantiated and called as such:
+ * var obj = new MinStack()
+ * obj.push(val)
+ * obj.pop()
+ * var param_3 = obj.top()
+ * var param_4 = obj.getMin()
+ */
+```
+
+:::
+
+## :star: 394. 字符串解码
+
+::: details
+
+```js
+
+```
+
+:::

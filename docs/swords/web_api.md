@@ -314,6 +314,67 @@ console.log('pinia'.startsWith('pi')); // true
 
 ## 数组的常用方法
 
+::: details
+
+### 找符合条件
+
+#### find: 返回符合的第一项，否则返回undefined;
+
+```js
+const arr = [{name: 'webpack'}, {name: 'vite'}, {name: 'vite'}];
+const obj1 = arr.find(v => v.name === 'vite');  // {name: "vite"}
+const obj2 = arr.find(v => v.name === 'rollup'); // undefined
+console.log(obj1, obj2); // {name: 'vite'} undefined
+```
+
+#### filter: 返回所有符合条件的，否则返回[]
+
+```js
+const arr = [{name: 'webpack'}, {name: 'vite'}, {name: 'vite'}];
+const temp1 = arr.filter(v => v.name === 'vite'); // [{name: 'vite'}, {name: 'vite'}]
+const temp2 = arr.filter(v => v.name === 'rollup'); // []
+console.log(temp1, temp2);
+```
+
+#### findIndex: 找到第一个符合条件的索引，否则返回-1
+
+```js
+const arr = [{name: 'webpack'}, {name: 'vite'}, {name: 'vite'}];
+const temp1 = arr.findIndex(v => v.name === 'vite'); // 1
+const temp2 = arr.findIndex(v => v.name === 'rollup'); // -1
+console.log(temp1, temp2);
+```
+
+#### some：有一个符合条件就返回true, 都不符合返回 false
+
+```js
+const arr = [{name: 'webpack'}, {name: 'vite'}, {name: 'vite'}];
+const temp1 = arr.some(v => v.name === 'vite'); // true
+const temp2 = arr.some(v => v.name === 'rollup'); // false
+console.log(temp1, temp2);
+```
+
+#### every: 全部符合就返回true, 否则返回false
+
+```js
+const arr = [{name: 'vite'}, {name: 'vite'}];
+const temp1 = arr.every(v => v.name === 'vite'); // true
+const temp2 = arr.every(v => v.name === 'rollup'); // false
+console.log(temp1, temp2);
+```
+
+:::
+
+## 字符串的方法
+
+::: details
+
+```js
+
+```
+
+:::
+
 ## js本地存储的方式有哪些？
 
 * cookie

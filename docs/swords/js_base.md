@@ -1395,3 +1395,13 @@ class Vite implements Esbuild, Rollup {
 ```
 
 :::
+
+#### any 和unknown的区别
+
+::: details
+
+```md
+unknow是更安全的any,是需要类型守卫，才能进行操作的。
+```
+
+:::

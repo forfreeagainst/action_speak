@@ -127,7 +127,6 @@ types.ts: 定义数据类型
 offsetWidth/offsetHeight,clientWidth/clientHeight与
 scrollWidth/scrollHeight的区别（了解一下，图片懒加载有用，方式一为使用以上参数，或使用IntersectionObserver API，但是这API有兼容性问题）
 promise，async await  微任务，宏任务，事件循环（https://blog.csdn.net/weixin_46795923/article/details/123857728）
-双向绑定原理（v-model），响应式原理（Object.defineProperty，Proxy）
 判断两个对象相等？
 浏览器缓存（协商缓存，强缓存）
 HTTP HTTPS区别

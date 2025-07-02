@@ -9,42 +9,6 @@ const data: Tree[] = [
     label: "数组的方法(查找符合条件8,遍历是否数组连接7,增删截取排序9,扁平累加填充6,of和keys4)",
     children: [
       {
-        label: "find",
-        children: [
-          {label: "返回查找的符合条件的第一项，查找不到返回undefined"},
-          {label: "eg: const obj = arr.find(item => item.code === 'come on')"}
-        ]
-      },
-      {
-        label: "filter",
-        children: [
-          {"label": "过滤出符合条件的元素，返回数组形式"},
-          {"label": "eg: const filterCbfpList = cbfpList.filter(item => ['3','4'].includes(item.cbfpType))"}
-        ]
-      },
-      {
-        label: "findIndex",
-        children: [
-          {label: "返回符合条件元素的下标，没有符合的元素返回-1"},
-          {label: "eg: const arr= [33]; arr.findIndex(item => item > 12);"},
-          {label: "符合条件的下标"}
-        ]
-      },
-      {
-        label: "some",
-        children: [
-          {"label": "其中某一项符合条件，返回true,否则返回false"},
-          {"label": "eg: const isNRA = accList.some(item => item.identity === '2')"}
-        ]
-      },
-      {
-        label: "every",
-        children: [
-          {label: "都符合某个条件，返回true,否则返回false"},
-          {label: "eg: const isFileType = fileList.every(item => ['doc','txt'].includes(item.fileType))"}
-        ]
-      },
-      {
         label: "indexOf",
         children: [
           {label: "返回指定元素在数组中的索引，若无指定元素，返回-1"},
@@ -474,11 +438,3 @@ const temp ='54';
 log('asdfads'.split('',3));
 log('adsa 33'.toString());
 </script>
-
-
-<template>
-  <el-tree :data="data" @node-click="handleNodeClick" :default-expand-all="false">
-  </el-tree>
-</template>
-
-<style></style>
