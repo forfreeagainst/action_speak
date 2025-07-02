@@ -52,33 +52,18 @@ json-server 启动本地服务，mock数据
 http://localhost:3000/getList
 
 
-for...in 循环语句只会输出 obj 对象中的可枚举属性。for of 和for in 
 
 javaScript:
 esModule和CommonJs区别？
 跨域解决方案有哪些？
-遍历数组/对象？
 
 浏览器、网络：
 状态码有哪些？
 xss和csrf攻击的区别？
 
 vue2
-Vue的双向绑定原理？
-使用虚拟DOM和原生操作DOM的区别？
-Vue的生命周期
-create和mounted的区别？
-Vue2的组件通信方式有哪些？
-computed和watch的区别？
 说说vuex(使用场景以及优缺点)
-v-if和v-show的区别？
-说说nextTick
-说说Keep-alive
-data为什么是一个函数，而不是一个对象
-Vue的指令有哪些？
-Vue的修饰符有哪些
 Vue的路由传参有哪几种方式 
-
 
 找到权威的官网，视频只是用来参考的
 
@@ -114,6 +99,7 @@ forEach	🐢 最慢	数组、函数式编程风格	❌ 不支持
 推荐：
 
 默认用 for...of（平衡性能和可读性）。
+for...in 循环语句只会输出 obj 对象中的可枚举属性。for of 和for in 
 
 极端性能优化用 for 循环。
 

@@ -30,9 +30,6 @@ Vue, transition实现原理， 第三种，transitionstart,transitionend
 在标准的 JavaScript 中，检测普通变量的访问或修改是行不通的。然而，
 我们可以通过 getter 和 setter 方法来拦截对象属性的 get 和 set 操作。
 
-
-Vue中的生命周期钩子有哪些？并简单说明原理？
-
 Vue中的数据绑定有哪些方式？请详细说明？
 
 vue3的createApp做了啥？

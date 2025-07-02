@@ -27,6 +27,7 @@ export default defineConfig({
         { 
         text: '框架', 
         items: [
+          { text: 'Vue面试题', link: '/frame/vue_interview.md' },
           { text: 'Vue', link: '/frame/vue.md' },
           { text: "React", link: "/frame/react.md"},
           { text: 'vue源码', link: '/frame/vue_source.md' },
@@ -111,6 +112,7 @@ export default defineConfig({
         { 
         text: '框架', 
         items: [
+          { text: 'Vue面试题', link: '/frame/vue_interview.md' },
           { text: 'Vue', link: '/frame/vue.md' },
           { text: "React", link: "/frame/react.md"},
           { text: 'vue源码', link: '/frame/vue_source.md' },
