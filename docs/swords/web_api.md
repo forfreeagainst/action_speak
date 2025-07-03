@@ -369,6 +369,14 @@ console.log(temp1, temp2);
 
 ::: details
 
+#### repeat:重复某个字符
+
+```js
+console.log('abc'.repeat(3)); // abcabcabc
+```
+
+#### 
+
 ```js
 
 ```

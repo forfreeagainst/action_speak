@@ -92,7 +92,7 @@ MyQueue.prototype.empty = function() {
 
 :::
 
-## leetcode20:有效的括号
+## :star: leetcode20:有效的括号
 
 ::: details
 
@@ -236,12 +236,67 @@ var maxSlidingWindow = function(nums, k) {
 
 :::
 
-## leetcode347:前K个高频元素
+## :star: leetcode347:前K个高频元素
 
 ::: details
 
-```js
+给你一个整数数组 nums 和一个整数 k ，请你返回其中出现频率前 k 高的元素。你可以按 任意顺序 返回答案。
 
+输入: nums = [1,1,1,2,2,3], k = 2
+
+输出: [1,2]
+
+### O(n)的时间复杂度解法
+
+```js
+var topKFrequent = function(nums, k) {
+    // 1. 统计每个数字出现的频率 - O(n)
+    const frequencyMap = {};
+    for (const num of nums) {
+        frequencyMap[num] = (frequencyMap[num] || 0) + 1;
+    }
+    
+    // 2. 创建桶数组 - 索引代表频率，值是该频率的所有数字 - O(n)
+    const bucket = [];
+    for (const [num, freq] of Object.entries(frequencyMap)) {
+        if (!bucket[freq]) {
+            bucket[freq] = [];
+        }
+        bucket[freq].push(parseInt(num));
+    }
+    
+    // 3. 从高频率到低频率遍历桶，收集结果 - O(n)
+    const result = [];
+    for (let i = bucket.length - 1; i >= 0 && result.length < k; i--) {
+        if (bucket[i]) {
+            result.push(...bucket[i]);
+        }
+    }
+    
+    // 4. 如果结果超过k个，截取前k个
+    return result.slice(0, k);
+};
+```
+
+### 不考虑时间复杂度O(NLogN)
+
+```js
+var topKFrequent = function(nums, k) {
+    // 统计每个数字出现的频率
+    const frequencyMap = {};
+    for (const num of nums) {
+        frequencyMap[num] = (frequencyMap[num] || 0) + 1;
+    }
+    
+    // 将数字和频率转换为数组
+    const entries = Object.entries(frequencyMap);
+    
+    // 按频率降序排序
+    entries.sort((a, b) => b[1] - a[1]);
+    
+    // 取前k个元素
+    return entries.slice(0, k).map(entry => parseInt(entry[0]));
+};
 ```
 
 :::
@@ -302,12 +357,34 @@ MinStack.prototype.getMin = function() {
 
 :::
 
-## :star: 394. 字符串解码
+## :star: leetcode394. 字符串解码
 
 ::: details
 
 ```js
-
+var decodeString = function(s) {
+   const stack = [];
+   let str = "";
+   let count = 0;
+   for(let v of s) {
+        if (/\d/.test(v)) {
+            count = count * 10 + Number(v);
+        } else if (v === '[') {
+            stack.push({
+                str,
+                count
+            })
+            str = '';
+            count = 0;
+        } else if (v === ']') {
+            const {str: strTemp, count: countTemp} = stack.pop();
+            str = strTemp + str.repeat(countTemp);
+        } else {
+            str += v;
+        }
+   }
+   return str;
+};
 ```
 
 :::
