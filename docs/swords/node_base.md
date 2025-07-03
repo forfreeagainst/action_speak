@@ -9,7 +9,8 @@
 ```md
 node.js是跨平台的JavaScript运行时环境。（能创建服务器 Web 应用、命令行工具和脚本。）
 node.js是轻量级服务器。
-
+非堵塞 I/O
+适合I/O密集型应用（Web服务器、API服务），不适合CPU密集型应用（视频编码、复杂计算）
 node: 脚手架，lint工具，构建工具等等等，简直是工程化的利器。
 ```
 
@@ -602,5 +603,64 @@ eg: `"prepare": "husky install "`安装husky(git生命周期)
 #### 启动阶段（start）
 
 * 执行`npm start` 命令时触发，通常用于启动项目的主要服务或应用程序。
+
+## Node入门
+
+### 热启动node服务
+
+::: details
+
+```md
+npm install --save-dev nodemon
+npx nodemon server.js
+```
+
+:::
+
+### http
+
+::: details
+
+```js
+var http = require('http');
+
+http.createServer(function(req, res) {
+    // 案例一：
+
+    // 设置响应头
+    // 状态码200， 文件类型是html, 字符集和utf-8
+    // res.writeHead(200, {
+    //     "content-type": "text/html;charset=UTF8"
+    // });
+    // //   res.writeHead(200, { 'Content-Type': 'application/json' });
+    // // 给页面输出一句话并且结束响应
+    // res.end('Hello World， durant杜兰特');
+
+    // 案例二：
+
+    res.writeHead(200, {
+        "content-type": "text/html;charset='utf-8'"
+    })
+    // 看！+tab生成的html书写就行了
+    res.write("<head><meta charset='UTF-8'></head>")
+    res.write('你好，杜兰特durant');
+    res.end();
+}).listen(8086);
+```
+
+:::
+
+### url
+
+::: details
+
+```md
+URL.parse(input[, base])#>
+新增于: v22.1.0
+```
+
+:::
+
+
 
 

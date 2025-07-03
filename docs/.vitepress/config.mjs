@@ -62,6 +62,7 @@ export default defineConfig({
           { text: "主题皮肤", link: "/project/theme_skin.md"},
           {text: "视频合成", link: "/project/video_merger.md"},
           {text: "音乐软件", link: "/project/music_soft.md"},
+          {text: "语音克隆和文本转语音", link: "/project/voiceCloningAndTTS.md"}
         ]
       },
       { 
@@ -148,6 +149,7 @@ export default defineConfig({
           { text: "vue基建项目", link: "/project/vueInfrastructure.md"},
           { text: "视频合成", link: "/project/video_merger.md"},
           { text: "音乐软件", link: "/project/music_soft.md"},
+          {text: "语音克隆和文本转语音", link: "/project/voiceCloningAndTTS.md"}
         ]
       },
        { 
