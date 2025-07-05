@@ -417,7 +417,7 @@ SSO 一般都需要一个独立的认证中心 （passport）,子系统的登录
 
 ## 正则表达式的理解？应用场景？
 
-## web常见的攻击方式有哪些？如何防御？
+## web常见的攻击方式有哪些？如何防御？(web安全)
 
 * XSS(Cross Site Scripting) 跨脚本攻击
 * CSRF(Cross-site request forgery) 跨站请求伪造
@@ -671,3 +671,11 @@ console.log(cat.hobby); // ['吃饭', '睡觉', '打豆豆', '训练']
 ```
 
 :::
+
+## 事件代理
+
+## 跨域
+
+### 同源策略
+
+### jsonp实现原理

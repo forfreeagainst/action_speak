@@ -1,8 +1,7 @@
 # Node基础
 
-## Node.js前沿
 
-### 说说Node.js
+## 说说Node.js
 
 ::: details
 
@@ -16,15 +15,257 @@ node: 脚手架，lint工具，构建工具等等等，简直是工程化的利�
 
 :::
 
+## node版本管理工具nvm
+
+::: details
+
+```md
+下载 nvm-setup.exe 并安装
+
+* nvm version: 查看nvm版本
+* nvm list available：查看node的所有可用版本
+* nvm install 12.22.12
+* nvm use 12.22.12
+* nvm uninstall 12.22.12
+* nvm list / nvm ls: 查看已安装的所有版本
+* nvm current: 查看当前使用的版本
+
+低版本的node，会导致npm 和pnpm 使用不了。eg: node14,node12。
+```
+
+:::
+
+## npm镜像源管理工具nrm
+
+::: details
+
+```md
+* `npm install -g nrm`
+* 查看有哪些镜像源`nrm ls`
+* 查看当前镜像源`npm config get registry`
+* 切换npm的镜像源`nrm use npm`
+* 设置镜像源`npm config set registry=***`
+```
+
+:::
+
+## node模块
+
+### fs模块(操作文件)
+
+::: details
+
+#### fs.stat 的isFile、isDirectory检测是文件还是目录
+
+```js
+const fs = require('fs');
+fs.stat('hello.js', (error,stats) => {
+    console.log(stats.isFile(), stats.isDirectory());
+})
+```
+
+#### fs.mkdir：创建目录
+
+```js
+const fs = require('fs');
+fs.mkdir('logs', (error) => {
+    if (error) {
+        console.log('创建目录失败', error);
+    } else {
+        console.log('创建目录成功');
+    }
+})
+```
+
+#### fs.writeFile:往文件中，写入内容
+
+```js
+const fs = require('fs');
+// logs目录需要存在
+fs.writeFile('logs/hello.txt', '你好', (err) => {
+    if (err) {
+        console.log('err', err);
+    } else {
+        console.log('成功写入文件');
+    }
+})
+```
+
+#### fs.appendFile:往文件中追加内容
+
+```js
+const fs = require('fs');
+fs.appendFile('logs/hello.txt', '追加内容', (err) => {
+    if (err) {
+        console.log('error:', err);
+    } else {
+        console.log('追加内容成功');
+    }
+})
+```
+
+#### fs.readFile:读取文件内容
+
+```js
+const fs = require('fs');
+fs.readFile('logs/hello.txt', 'utf-8', (err, data) => {
+    if (err) {
+        console.log('error:', err);
+    } else {
+        // 读取内容
+        console.log(data);
+    }
+})
+```
+
+#### fs.readdir：返回该目录下的所有文件（数组形式返回）
+
+```js
+const fs = require('fs');
+// logs目录下的文件
+fs.readdir('logs', (err, files) => {
+    if (err) {
+        console.log(`err: ${err}`);
+    } else {
+        console.log(files); // [ 'hello.txt' ]
+    }
+})
+```
+
+#### fs.rename:1.文件重命名2.移动文件
+
+重命名
+
+```js
+const fs = require('fs');
+fs.rename('logs/hello1.txt', 'logs/hello2.txt', (err) => {
+    if (err) {
+        console.log(`err: ${err}`);
+    } else {
+        console.log('重命名成功');
+    }
+})
+```
+
+移动文件
+
+```js
+const fs = require('fs');
+// logs目录要有
+fs.rename('log2/hello.js', 'logs/hello.js', (err) => {
+    if (err) {
+        console.log(`err: ${err}`);
+    } else {
+        console.log('移动成功');
+    }
+})
+```
+
+#### fs.rmdir:如果目录有文件，就删除不了目录
+
+```js
+const fs = require('fs');
+// 如果目录有文件，就删除不了目录
+fs.rmdir('logs', (err) => {
+    if (err) {
+        console.log(err, '???');
+    } else {
+        console.log('删除目录成功');
+    }
+})
+```
+
+#### fs.unlink: 删除文件
+
+```js
+const fs = require('fs');
+fs.unlink('logs/hello2.txt', err=> {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log('删除文件');
+    }
+})
+```
+
+#### fs.fileReadStream：从文件流中 读取数据
+
+```js
+const fs = require('fs');
+// data.json
+// {
+//     "name": "durant",
+//     "log": "I counldn't find the checkpoints"
+// }
+const fileReadStream = fs.createReadStream('data.json');
+let count = 0;
+let str = '';
+// 从官网如何知道有data这个事件呢？
+// fs.ReadStream 的实例 是使用 createReadStream()函数 创建和返回的。
+// fs.ReadStream继承于 stream.Readable
+// 而stream.Readable 就有了 事件‘data’
+// Node.js 官方文档通常不会在子类文档中重复列出父类的所有属性和事件，
+// 而是通过 “继承自” 的说明引导用户查阅父类文档
+fileReadStream.on('data', (chunk) => {
+    console.log(`${++count}, ${chunk.length}`); // 1, 74
+    str += chunk;
+})
+fileReadStream.on('end', () => {
+    console.log('结束', count, str)
+    //     结束 1 {
+    //     "name": "durant",
+    //     "log": "I counldn't find the checkpoints"
+    // }
+})
+fileReadStream.on('error', err=> {
+    console.log('错误', err);
+})
+```
+
+#### fs.createWriteStream:通过文件流 写入文件
+
+```js
+const fs = require('fs');
+const data = 'When I was watching the tutorial';
+// 创建一个可以写入的流，写入到文件output.txt中
+const writeStream = fs.createWriteStream('output.txt');
+// 使用utf8编码写入数据
+writeStream.write(data, 'utf8');
+writeStream.end();
+writeStream.on('finish', () => {
+    console.log('写入完成')
+})
+writeStream.on('error', err => {
+    console.log(err, '发生错误了');
+})
+```
+
+#### 管道流：边读边写
+
+```js
+const fs = require('fs');
+// 创建一个可读流
+const readStream = fs.createReadStream('output.txt');
+// 创建一个可写流
+const writeStream = fs.createWriteStream('output-plus.txt');
+// 管道读写操作
+// 读取 文件内容，并将内容写入到 新文件中
+readStream.pipe(writeStream);
+```
+
+:::
+
+## npm知多少
+
 ### npx,npm区别？
 
 ::: details
+
 npm（Node Package Manager）:包管理工具，侧重于模块的安装或卸载。
 npx（Node Package eXecute）：包执行工具，侧重于执行命令。
 npx 执行命令发生了什么？当前项目的依赖找模块（node_modules的.bin可执行文件查找），
 全局环境找模块，没有的话，自动帮我们安装模块，
 执行完命令后，自动帮我们卸载模块。（一次性命令）
-
 
 :::
 
@@ -36,6 +277,10 @@ npx 执行命令发生了什么？当前项目的依赖找模块（node_modules�
 主版本号：重大的更新
 次版本号：功能的更新
 修订号：bug的修复
+
+^不允许更新主版本号
+~只允许更新修订号
+*允许更新所有版本号（主版本、次版本、修订号）。
 
 peerDependencies: 重要
 
@@ -58,11 +303,14 @@ Repository: 包的描述信息，会显示在npm官网所在包的 描述
 
 ::: details
 * npm init -y
-* npm install 包名 -D:
+* npm install 包名 -D: 开发依赖
+* npm install 包名 -S: 生产依赖
 * npm config list :用于列出所有的 npm 配置信息
 * 切换/设置镜像源: nrm
 * 发包：npm login, npm publish
 * npm ls -g：全局安装了哪些模块
+* npm info 包名：查看某包的信息
+* npm list: 查看当前package.json安装了哪些包
 
 
 :::
@@ -135,8 +383,6 @@ eg: 自己的也可以predev, dev, postdev。
 
 ## node.js模块
 
-### fs模块：操作文件
-
 ### path：文件路径
 
 ### http： http服务
@@ -198,19 +444,21 @@ graceful-fs, fs-extra, node:fs
 
 * Node版本的问题，eg：查看package.json，README.md，issue等可能出现node版本号
 
-## nvm管理node版本
+## 如何理解fs，graceful-fs,fs-extra?
 
-下载 nvm-setup.exe 并安装
+::: details
 
-* nvm version: 查看nvm版本
-* nvm list available：查看node的所有可用版本
-* nvm install 12.22.12
-* nvm use 12.22.12
-* nvm uninstall 12.22.12
-* nvm list / nvm ls: 查看已安装的所有版本
-* nvm current: 查看当前使用的版本
+```md
+Node.js 原生 `fs` 
+    → `graceful-fs`（增强健壮性） 
+        → `fs-extra`（扩展功能 + 继承 `graceful-fs` 的健壮性）
 
-低版本的node，会导致npm 和pnpm 使用不了。eg: node14,node12。
+如果你只需要更稳定的 fs → 用 graceful-fs。
+如果需要额外功能（如复制/删除目录） → 直接用 fs-extra（它已经内置了 graceful-fs 的优化）。
+fs-extra 是事实上的 Node.js 文件操作标准库，推荐优先使用。
+```
+
+:::
 
 ## node.js工具库
 
@@ -500,6 +748,19 @@ program
 program.parse(process.argv);
 ```
 
+### mkdirp:创建多层级目录
+
+```js
+const { mkdirp } = require('mkdirp')
+// 从D盘开始创建，多层级目录
+// made directories, starting with D:\tmp
+
+// return value is a Promise resolving to the first directory created
+mkdirp('/tmp/foo/bar/baz').then(made =>
+  console.log(`made directories, starting with ${made}`)
+)
+```
+
 ## package.json字段详解
 
 ### 参考
@@ -531,11 +792,7 @@ program.parse(process.argv);
 
 * 大事发生的
 
-### 切换npm的镜像源
 
-* `npm install -g nrm`
-* `nrm ls` 或 `npm config get registry`
-* `nrm use npm(切换npm的镜像源)` 或 `npm config set registry=***`
 
 ### package.json中unpkg用途？
 
