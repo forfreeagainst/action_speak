@@ -49,6 +49,39 @@ node: 脚手架，lint工具，构建工具等等等，简直是工程化的利�
 
 :::
 
+## 热启动node服务
+
+::: details
+
+```md
+npm install --save-dev nodemon
+npx nodemon server.js
+```
+
+:::
+
+## Buffer
+
+::: details
+
+### Buffer转string
+
+```js
+const fs = require('fs');
+fs.readFile('./data.json', (err, data) => {
+    if (err) {
+        console.log(err);
+        return;
+    }
+    console.log(data, typeof data); // object(buffer)
+    console.log(data.toString(), typeof data.toString()); // string
+    const obj = JSON.parse(data.toString())
+    console.log(obj, typeof obj); // object
+})
+```
+
+:::
+
 ## node模块
 
 ### fs模块(操作文件)
@@ -255,6 +288,242 @@ readStream.pipe(writeStream);
 
 :::
 
+### http模块
+
+::: details
+
+```js
+var http = require('http');
+
+http.createServer(function(req, res) {
+    // 案例一：
+
+    // 设置响应头
+    // 状态码200， 文件类型是html, 字符集和utf-8
+    // res.writeHead(200, {
+    //     "content-type": "text/html;charset=UTF8"
+    // });
+    // //   res.writeHead(200, { 'Content-Type': 'application/json' });
+    // // 给页面输出一句话并且结束响应
+    // res.end('Hello World， durant杜兰特');
+
+    // 案例二：
+
+    res.writeHead(200, {
+        "content-type": "text/html;charset='utf-8'"
+    })
+    // 看！+tab生成的html书写就行了
+    res.write("<head><meta charset='UTF-8'></head>")
+    res.write('你好，杜兰特durant');
+    res.end();
+}).listen(8086);
+```
+
+:::
+
+:star: 静态web服务器封装
+
+::: details
+
+```js
+const http = require('http');
+const fs = require('fs');
+// const path = require('path');
+const url = require('url')
+
+// 访问 http://localhost:1234/xxx
+// 访问：http://localhost:1234/a.html
+http.createServer((req, res) => {
+    // 我这里是 url.parse, 而不是JSON.parse(), 看错了
+    // url.parse() 解析 URL 字符串为对象
+    // JSON.parse() 解析 JSON 字符串为 JS 对象	
+    let urlObj = url.parse(req.url); // req.url (eg: / 或 aa.html)
+    let pathname = urlObj.pathname;  // 获取地址
+    if (pathname === '/favicon.ico') {
+        console.log('这个网站图标不理它');
+        return;
+    }
+    console.log("🚀 ~ fs.readFile ~ ./static${pathname}:", `./static${pathname}`)
+    // ./static/a.html存在文件
+    fs.readFile(`./static${pathname}`, (err, data) => {
+        if (err) {
+            res.writeHead(404, {'content-type': 'text/html;charset="utf-8"'});
+            res.end('404,这个页面不存在')
+            return;
+        }
+        // content-type需要根据文件类型，进行判断 TODO
+        res.writeHead(200, {'content-type': 'text/html;charset="utf-8"'}); // end是字符串才行，utf=8
+        res.end(data);
+    })
+}).listen(1234)
+```
+
+:::
+
+#### content-type常见的类型
+
+::: details
+
+```md
+text/javascript
+application/javascript; charset=utf-8
+image/png
+application/json; charset=utf-8
+text/plain; charset=utf-8
+```
+
+:::
+
+#### 路由指的就是针对不同请求的 URL，处理不同的业务逻辑。
+
+* 路由封装
+* ejs模板引擎
+* 获取get传值
+* 获取post传值
+
+::: details
+
+server.js
+
+```js
+const http = require('http');
+const url = require('url');
+const fs = require('fs');
+const ejs = require('ejs');
+
+function createRoutes(req, res, staticPath = 'static') {
+    const urlObj = url.parse(req.url, true);
+    const pathname = urlObj.pathname;
+    // console.log("🚀 ~ createRoutes ~ pathname:", pathname)
+    if (pathname === '/favicon.ico') return false; // 标记为未处理
+    try {
+        const data = fs.readFileSync(`./${staticPath}${pathname}`);
+        // err先不做处理，后续再处理
+        // 处理正常情况
+        if (data) {
+            res.writeHead(200, {"content-type": "text/html;charset='utf-8'"});
+            res.end(data);
+            return true; //标记为已处理
+        }
+    } catch (err) {
+        console.log(`catch:${err}`)
+        return false; // 标记为未处理
+    }
+}
+
+// const getUrl = 'localhost:1234/new?name=durant&page=35';
+http.createServer(async (req, res) => {
+    const handle = await createRoutes(req, res);
+    // Node.js 会抛出 ERR_HTTP_HEADERS_SENT 错误，
+    // 因为 HTTP 协议不允许对同一个请求多次发送响应头。
+    if (handle) return;
+    console.log('请求方式', req.method); // 'GET'
+    // 路由
+    const pathname = url.parse(req.url).pathname;
+    if (pathname === '/favicon.ico') return;
+    // http://localhost:1234/login
+    // 调试ejs模板引擎
+    if (pathname === '/login') {
+        const dataObj = {
+            log: 'When I was watching the tutorial',
+            result: "I countn't find the checkpoints"
+        }
+        ejs.renderFile('./static/login.ejs', dataObj, function(err, str){
+            if (err) {
+                console.log('渲染失败');
+                return;
+            }
+            res.writeHead(200, {'content-type': 'text/html;charset="utf-8"'});
+            res.end(str);
+        });
+    // http://localhost:1234/registry
+    } else if (pathname === '/registry') {
+        ejs.renderFile('./static/registry.ejs', {}, function(err, str){
+            res.writeHead(200, {'content-type': 'text/html;charset="utf-8"'});
+            res.end(str);
+        });
+    // 获取post传值
+    }else if (pathname === '/home') { 
+        // 获取post传值
+        let postData = '';
+        req.on('data', function(chunk) {
+            postData += chunk;
+        })
+        req.on('end', () => {
+            console.log("🚀 ~ req.on ~ postData:", postData)
+            res.end(postData);
+        })
+    // 获取get 传值
+    } else if (pathname === '/news') {
+        // true, 能让req.query转为对象
+        const query = url.parse(req.url, true).query; // 获取get 传值
+        console.log(`获取get传值`, query)
+        res.writeHead(200, {'content-type': 'text/html;charset="utf-8"'});
+        res.end(`get请求`);
+    // 如果有问题，统一这里处理
+    } else {
+        res.writeHead(404, {'content-type': 'text/html;charset="utf-8"'});//end是字符串才行，utf=8
+        res.end('404页面找不到');
+    }
+}).listen(1234);
+```
+
+./static/registry.ejs
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/home" method="post">
+        用户名<input type="text" name="username"/>
+        <br>
+        <br>
+        密码<input type="password" name="password">
+        <br>
+        <br>
+        <input type="submit" value="提交">
+    </form>
+</body>
+</html>
+```
+
+./static/login.ejs
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <%= log %><br>
+    <%= result %>
+</body>
+</html>
+```
+
+:::
+
+
+### url
+
+::: details
+
+```md
+URL.parse(input[, base])#>
+新增于: v22.1.0
+```
+
+:::
+
+
 ## npm知多少
 
 ### npx,npm区别？
@@ -355,18 +624,41 @@ console.log(all);
 
 :::
 
-
-## Q & A
-
 ### 执行npm install的时候发生了什么？
 
 ::: details
 
+```md
+安装 package.json 中所有 dependencies 和 devDependencies。
+
+如果存在 package-lock.json，严格按锁文件安装。
+
+如果定义了preinstall脚本和postinstall脚本，还会不一样，
+它会先执行preinstall,然后执行install, 最后执行postinstall.
+```
+
 :::
 
-### npm run xxx发生了什么
+### npm run start流程
 
 ::: details
+
+```md
+首先会从package.json的script去找对应的脚本命令，
+如何没找到，默认会执行node server.js,
+如果server.js不存在，就会报错。
+如果定义了prestart脚本和poststart脚本，还会不一样，
+它会先执行prestart,然后执行start, 最后执行poststart.
+```
+
+#### npm run xxx发生了什么
+
+```md
+首先会从package.json的script去找对应的脚本命令，
+如果没找到对应的脚本命令就会报错
+如果定义了preXXX脚本和postXXX脚本，还会不一样，
+它会先执行preXXX,然后执行XXX, 最后执行postXXX.
+```
 
 :::
 
@@ -384,8 +676,6 @@ eg: 自己的也可以predev, dev, postdev。
 ## node.js模块
 
 ### path：文件路径
-
-### http： http服务
 
 ### cmd： 命令行参数
 
@@ -790,10 +1080,6 @@ mkdirp('/tmp/foo/bar/baz').then(made =>
 2.避免意外更新：如果锁文件不存在或不满足`package.json`中的所有依赖项，Yarn或npm会查找
 最新的满足约束并更新锁文件。使用`--frozen-lockfile`可以避免这种情况。
 
-* 大事发生的
-
-
-
 ### package.json中unpkg用途？
 
 在`package.json`中并不存在`unpkg`这样一个直接的标准字段或配置项，但`unpkg`与`package.json`
@@ -861,62 +1147,7 @@ eg: `"prepare": "husky install "`安装husky(git生命周期)
 
 * 执行`npm start` 命令时触发，通常用于启动项目的主要服务或应用程序。
 
-## Node入门
 
-### 热启动node服务
-
-::: details
-
-```md
-npm install --save-dev nodemon
-npx nodemon server.js
-```
-
-:::
-
-### http
-
-::: details
-
-```js
-var http = require('http');
-
-http.createServer(function(req, res) {
-    // 案例一：
-
-    // 设置响应头
-    // 状态码200， 文件类型是html, 字符集和utf-8
-    // res.writeHead(200, {
-    //     "content-type": "text/html;charset=UTF8"
-    // });
-    // //   res.writeHead(200, { 'Content-Type': 'application/json' });
-    // // 给页面输出一句话并且结束响应
-    // res.end('Hello World， durant杜兰特');
-
-    // 案例二：
-
-    res.writeHead(200, {
-        "content-type": "text/html;charset='utf-8'"
-    })
-    // 看！+tab生成的html书写就行了
-    res.write("<head><meta charset='UTF-8'></head>")
-    res.write('你好，杜兰特durant');
-    res.end();
-}).listen(8086);
-```
-
-:::
-
-### url
-
-::: details
-
-```md
-URL.parse(input[, base])#>
-新增于: v22.1.0
-```
-
-:::
 
 
 

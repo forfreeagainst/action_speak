@@ -122,8 +122,7 @@ cli.ts: bin命令
 index.ts: ???? 
 types.ts: 定义数据类型
 
-事件代理（也叫事件委托）
-如何解决跨域问题
+
 offsetWidth/offsetHeight,clientWidth/clientHeight与
 scrollWidth/scrollHeight的区别（了解一下，图片懒加载有用，方式一为使用以上参数，或使用IntersectionObserver API，但是这API有兼容性问题）
 promise，async await  微任务，宏任务，事件循环（https://blog.csdn.net/weixin_46795923/article/details/123857728）
@@ -131,5 +130,4 @@ promise，async await  微任务，宏任务，事件循环（https://blog.csdn.
 浏览器缓存（协商缓存，强缓存）
 HTTP HTTPS区别
 权限控制，后端根据用户身份所拥有的权限，来返回不同的路由表，再根据路由表。动态添加路由（addRoute 或addRoutes）
-npm run start（流程）
 v-for如果使用index作为key会导致什么
