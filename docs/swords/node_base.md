@@ -700,23 +700,185 @@ graceful-fs, fs-extra, node:fs
 
 :::
 
-## node.js框架
+## express(node.js框架)
 
-### express
+### express封装了什么
 
-#### express封装了什么
+* 封装一个类似express框架的路由
+* 配置静态web服务目录（提供静态资源访问）
+
+::: details
+
+依赖
+
+```md
+"ejs": "^3.1.10"
+```
+
+server.js
+
+```js
+// const express = require('express');
+
+// const app = express();
+
+// app.get('/', function(req, res) {
+//     console.log(res, '???')
+// })
+
+const http = require('http');
+const ejs = require('ejs');
+const myExpress = require('./myExpress.js');
+// console.log("🚀 ~ myExpress:", myExpress)
+
+// myExpress 即 function(req, res) {自定义逻辑}
+http.createServer(myExpress).listen(1234); // 先创建服务，再注册路由
+myExpress.static('/static'); // 配置静态web目录
+// 注册路由
+myExpress.get('/registry', function(req, res) {
+    ejs.renderFile('./static/registry.ejs', {}, function(err, str){
+        res.send(str);
+    });
+})
+
+myExpress.post('/home', function(req, res) {
+    res.send(req.body)
+})
+```
+
+myExpress.js
+
+```js
+const url = require('url');
+const path = require('path');
+const fs = require('fs');
+
+let myExpress = () => {
+    const G = {
+        _get: {}, // get路由
+        _post: {}, // post路由
+        staticPath: 'static', // 静态web目录
+    };
+
+    const app = function(req, res) {
+        // 扩展res的方法
+        res.send = (data) => {
+            res.writeHead(200, {'content-type': 'text/html;charset="utf-8"'});
+            res.end(data);
+        }
+        // 配置静态web服务
+        const pathnameTemp = url.parse(req.url, true).pathname
+        if (pathnameTemp === '/favicon.ico') return;
+        const extname = path.extname(pathnameTemp);
+        console.log("🚀 ~ app ~ extname:", extname); // .ico、.css、空
+        if (extname) {
+            try {
+                const data = fs.readFileSync(`./${G.staticPath}${pathnameTemp}`);
+                if (data) {
+                    const bufferData = fs.readFileSync('./mime.json');
+                    const contentTypeObj = JSON.parse(bufferData.toString());
+                    const mime = contentTypeObj[extname];
+                    // console.log("🚀 ~ app ~ mime:", mime)
+                    res.writeHead(200, {'content-type': `${mime};charset="utf-8"`});
+                    res.end(data);
+                }
+            } catch(err) {
+                // 报错了，如果没有释放资源res.end(), 访问页面时，还会一直转圈
+                console.log('???', err);
+            }
+            return;
+        }
+        // /login 路由类逻辑
+        const pathname = url.parse(req.url, true).pathname;
+        console.log(pathname, 'pathname')
+        // 请求方式
+        const method = req.method.toLowerCase();
+        console.log("🚀 ~ app ~ method:", method)
+
+        // 找不到对应的回调执行
+        if (!G[`_${method}`][pathname]) {
+            res.writeHead(404, {'content-type': 'text/html;charset="utf-8"'});
+            res.end('404页面不存在');
+            return;
+        }
+        // get请求方式
+        if (method === 'get') {
+            G._get[pathname](req, res);
+        // post 请求方式
+        } else if (method === 'post') {
+            // 获取post传值，并放入req.body
+            let postData = '';
+            req.on('data', (chunk) => {
+                postData += chunk;
+            })
+            req.on('end', () => {
+                req.body = postData;
+                console.log("🚀 ~ req.on ~ req.body:", req.body)
+                G._post[pathname](req, res);
+            })
+        } else {
+
+        }
+    }
+    // app.get('/login', function(req, res) {});
+    app.get = function(str, callback) {
+        G._get[str] = callback;
+    }
+    app.post = function(str, callback) {
+        G._post[str] = callback;
+    }
+    app.static = function(staticPath) {
+        G.staticPath = staticPath;
+    }
+    return app;
+}
+module.exports = myExpress(); // 调用了这个函数，返回这个函数function(req, res) {}
+```
+
+./static/registry.ejs
+
+```md
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./reset.css">
+</head>
+<body>
+    <form action="/home" method="post">
+        用户名<input type="text" name="username"/>
+        <br>
+        <br>
+        密码<input type="password" name="password">
+        <br>
+        <br>
+        <input type="submit" value="提交">
+    </form>
+</body>
+</html>
+```
+
+./static/reset.css
+
+```md
+* {
+    padding: 0;
+    margin: 0;
+    background-color: skyblue;
+}
+```
+
+:::
+
+### express脚手架
 
 ::: details
 
 :::
 
-#### express脚手架
-
-::: details
-
-:::
-
-#### 常用API
+### 常用API
 
 * res.status() 设置响应码
 * res.get() / res.set() 设置响应头字段
@@ -729,6 +891,8 @@ graceful-fs, fs-extra, node:fs
 * req.fresh() 获取请求是否过期
 * req.query() 获取get请求的query参数
 * req.body() 获取body请求的body参数
+
+## koa(node.js框架)
 
 ## 安装依赖失败
 
