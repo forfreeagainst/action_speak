@@ -914,6 +914,238 @@ fs-extra 是事实上的 Node.js 文件操作标准库，推荐优先使用。
 
 :::
 
+## MongoDB
+
+### 简单聊聊MongoDB
+
+::: details
+
+```md
+内存 => 断电后丢失数据 => 磁盘 => 文件系统呢？操作不方便 => 数据库
+
+SQL确实非常规范，十几年前就是规范之神，但不一定在十几年后，依然被人认为规范。
+非关系型数据库，noSQL, no only SQL
+```
+
+:::
+
+### 安装MongoDB
+
+::: details
+
+```md
+C:\Program Files\MongoDB\Server\6.0\
+D:\work_space\MongoDB\data\
+D:\work_space\MongoDB\log\
+
+C:\Program Files\MongoDB\Server\6.0\bin 加入到系统环境变量中
+window + R => cmd => 回车 => mongod --version  # 检查服务端是否安装 => db version v6.0.24
+compass图形化界面 => 直接New Connection => 填完信息 => save and connect => Open MongoDB shell
+=> MongoDB服务启动成功
+window + R => services.msc => 可以找到MongoDB Server
+```
+
+:::
+
+### 常见的MongoDB命令
+
+::: details
+
+| 命令 | 含义 |
+| --- | --- |
+| show dbs; | 查询所有的数据库 |
+| use 数据库名; | 切换到指定数据库 |
+| show collections; | 显示所有的表（集合）|
+| db.webpack.insertOne({say: '我是webpack'}); |  往webpack表（集合）插入一条数据 |
+| db.webpack.drop(); | 删除某个表（集合）|
+| use jsDb;db.dropDatabase(); | 切换到某个数据库，删除某个数据库 | 
+| cls | 清屏 |
+
+:::
+
+### 简单练习
+
+::: details
+
+```md
+use nba
+db.player.insertMany( [
+    { _id: 1, name: "kevin durant", age: 35, fmvp: 2 },
+    { _id: 2, name: "curry", age: 33, fmvp: 1 },
+    { _id: 3, name: "james", age: 40, fmvp: 4 },
+    { _id: 4, name: "维金斯", age: 30, fmvp: 0 },
+    { _id: 5, name: "卡哇伊", age: 32, fmvp: 2 },
+    { _id: 6, name: "哈登", age: 33, fmvp: 0 },
+    { _id: 7, name: "kevin durant", age: 35, fmvp: 2 }
+])
+
+1.查询所有记录
+`db.player.find({})`
+`SELECT * FROM inventory`
+
+2.过滤掉 当前聚集集合中 的某列的 重复数据
+`db.player.distinct('name')`
+[ 'curry', 'james', 'kevin durant', '卡哇伊', '哈登', '维金斯' ]
+
+3.查询age=35的记录
+`db.player.find({age:35})`
+`SELECT * FROM inventory WHERE status = "D"`
+
+4.查询age>35的记录
+`db.player.find({age: {$gt:35}})`
+
+5.查询age<32的记录
+`db.player.find({age: {$lt: 32}})`
+
+6.查询age>=40的记录
+`db.player.find({age: {$gte: 40}})`
+
+7.查询age<=30的记录
+`db.player.find({age: {$lte: 30}})`
+
+8.查询age>=32并且age<=35的记录
+`db.player.find({age: {$lte: 35,$gte: 32}})`
+
+9.查询name中包含'durant'的数据
+`db.player.find({name: /durant/})`
+
+10.查询name中以'kevin'开头的数据（以什么结尾呢）
+`db.player.find({name: /^kevin/})`
+`db.player.find({name: /durant$/})`
+
+11.查询指定列name、age数据
+`db.player.find({}, {name: 1, age:1})` 
+或 `db.player.find({}, {name: true, age:true})`
+`SELECT _id, name, age FROM player;`
+
+12.查询指定列name、age数据 ，并且age>35
+`db.player.find({age: {$gt: 35}}, {name: 1, age:1})`
+或 `db.player.find({age: {$gt: 35}}, {name: true, age:true})`
+
+13.按照年龄排序
+`db.player.find({}).sort({age: 1})` 升序 1
+`db.player.find({}).sort({age: -1})` 降序 -1
+
+14.查询name=james age=40的数据
+`db.player.find({name: 'james', age: 40})`
+
+15.查询前2条数据
+`db.player.find({}).limit(2)`
+
+16.查询5条以后的数据
+`db.player.find({}).skip(5)`
+
+17.查询在3-4之间的数据
+`db.player.find({}).skip(2).limit(2);`
+
+18.查询年龄是30岁，或者年龄是40岁的数据
+`db.player.find({$or: [ {age: 40}, {age: 30}]})`
+`SELECT * FROM player WHERE age = 40 OR age = 30;`
+
+19.查询第一条数据
+`db.player.findOne();` 与db.collection.find()方法相同的操作，限制为1    
+
+20.查询某个结果集的记录条数（统计数量）
+`db.player.find({}).count();`
+
+21.把james的年龄改为41。
+`db.player.updateOne({name: 'james'}, {$set: {age: 41}});`
+`db.player.find({age:41})` 验证一下
+
+22.把所有叫'kevin durant'的年龄改为36
+`db.player.updateMany({name: 'kevin durant'}, {$set: {age: 36}});`
+`db.player.find({name: 'kevin durant'});` 验证一下
+
+23.把第一个叫'kevin durant'的数据替换为{age: 45}
+`db.player.replaceOne({name: 'kevin durant'}, {age: 45})`
+`db.player.find({})` 验证一下 {_id: 1, age: 45}
+
+24.删除所有年龄大于35的球员
+`db.player.deleteMany({age: {$gt: 35}})`
+`db.player.find({})` 验证一下
+
+25.删除年龄小于35的第一个球员
+`db.player.deleteOne({age: {$lt: 35}})`
+`db.player.find({})` 验证一下
+
+```
+
+:::
+
+### 索引
+
+数据太多，查询好慢 => 使用索引 => 加快查询速度，修改速度慢了
+
+::: details
+
+```md
+1.创建name的升序索引
+`db.player.createIndex({name: 1})`
+
+2.查询player的所有索引
+`db.player.getIndexes();`
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { name: 1 }, name: 'name_1' }
+]
+
+3.删除name的升序索引
+`db.player.dropIndex({name: 1})`
+
+4.删除_id索引之外的所有索引
+`db.player.dropIndexes()`
+
+5.测试使用指定索引(age升序索引)的执行时间executionTimeMillis
+`db.people.find({}).hint( { age: 1 } ).explain("executionStats")`
+
+6.创建复合索引(name升序，age升序)
+`db.player.createIndex({name: 1, age: 1})`
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { name: 1, age: 1 }, name: 'name_1_age_1' }
+]
+
+7.创建唯一索引（age）
+`db.player.createIndex({age: 1}, {unique: 1})`
+`db.player.insertOne({age: 33})` 集合有年龄为33的记录，则报错
+```
+
+:::
+
+### 管理员
+
+::: details
+
+```md
+所有数据库，使用超级管理员root
+某个数据库，单独的管理员（不是所有的数据库都想让别人看见的哦）
+```
+
+:::
+
+
+## MySQL
+
+### 简单聊聊MySQL
+
+::: details
+
+```md
+
+```
+
+:::
+
+### 安装MySQL
+
+::: details
+
+```md
+
+```
+
+:::
+
 ## node.js工具库
 
 ### EsModule的TypeScript工具库
