@@ -880,17 +880,172 @@ module.exports = myExpress(); // 调用了这个函数，返回这个函数funct
 
 ### 常用API
 
+::: details
+
+```md
 * res.status() 设置响应码
+res.writeHead(状态码, {contentType: 'text/html;charset="utf-8";'})
 * res.get() / res.set() 设置响应头字段
 * res.send() 发送响应数据
+res.end(***)
 * res.sendFile() 发送文件资源
 * res.render() 响应视图模板
+ejs.renderFile('./', () => {})
 * res.acctachment() 响应附件下载
 * req.get() 获取请求头
 * req.path() 获取请求路径
 * req.fresh() 获取请求是否过期
 * req.query() 获取get请求的query参数
+url.parse(req.url, true).query();
 * req.body() 获取body请求的body参数
+```
+
+:::
+
+
+### express常见语法
+
+* 获取动态路由
+* 获取get传值
+* ejs：模板字符串 → 解析成语法树 → 生成JS代码 → 动态执行 → 输出HTML
+
+::: details
+
+server.js
+
+```js
+const express = require('express')
+const app = express();
+
+// 设置模板引擎
+app.set('view engine', "ejs"); // 无需const ejs = require('ejs');
+app.set('views', __dirname + '/views');
+
+// 获取get传值 localhost:1235/news/list?page=1&pageSize=5
+app.get('/news/list', (req, res) => {
+    const query = req.query; // 不用express框架，就是url.parse(req.url, true).query
+    res.send(query);
+})
+
+// 动态路由 http://localhost:1235/news/23435
+app.get('/news/:id', (req, res) => {
+    const id = req.params.id; // 获取动态路由
+    res.send(id);
+})
+
+// ejs模板渲染
+app.get('/list', async (req, res) => {
+    res.render('list', {
+        query: 23, // template里面的值必须是 基础类型
+        news: ['疯魔灭神铠', '星辰塔']
+    })
+    // 等价于
+    // const data = await ejs.renderFile('./views/list.ejs', {query: 999})
+    // res.send(data);
+})
+
+app.listen(1235);
+```
+
+./views/list.ejs
+
+```md
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!--公共组件header-->
+    <%- include('header.ejs') %>
+    <%= query %><br>
+    <ul>
+    <% news.forEach(function(item){ %>
+        <%= item%>
+    <% }); %>
+    </ul>
+</body>
+</html>
+```
+
+./views/header.ejs
+
+```md
+<header>
+    我是语义化标签的头部内容
+</header>
+```
+
+:::
+
+* ejs修改后缀名
+* 静态文件
+
+::: details
+
+server.js
+
+```js
+const express = require('express')
+const app = express();
+const ejs = require('ejs');
+
+// 不喜欢ejs这个后缀名，改为html
+app.engine('html', ejs.__express); // 两个下划线哦
+// console.log("🚀 ~ ejs._express:", ejs.__express)
+app.set('views', __dirname + '/views');
+app.set('view engine', 'html');
+// 底层肯定还是ejs.renderFile(),后缀名变化不影响文件里的内容
+
+// 静态文件配置
+app.use(express.static('static'));
+// 底层G.staticPath, 读取的时候 fs.readFileSync(`${G.staticPath}帮我们自动拼接`)
+// 同时还要根据我们的文件后缀名，配置不同的content-type
+
+// ejs模板渲染
+// http://localhost:1235/app
+app.get('/app', async (req, res) => {
+    res.render('app', {
+        news: ['疯魔灭神铠', '星辰塔']
+    })
+})
+
+app.listen(1235);
+```
+
+./views/app.html
+
+```md
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./bgc.css">
+</head>
+<body>
+    我是html文件
+    <ul>
+    <% news.forEach(function(item){ %>
+        <%= item%>
+    <% }); %>
+    </ul>
+</body>
+</html>
+```
+
+./static/bgc.css
+
+```css
+body {
+    background-color: pink;
+}
+```
+
+:::
 
 ## koa(node.js框架)
 
@@ -1119,10 +1274,184 @@ db.player.insertMany( [
 ```md
 所有数据库，使用超级管理员root
 某个数据库，单独的管理员（不是所有的数据库都想让别人看见的哦）
+
+root超级管理员，dbOwner:某个数据库的管理员
+
+1.数据库用户角色：read、readWrite;
+2.数据库管理角色：dbAdmin、dbOwner、userAdmin；
+3.集群管理角色：clusterAdmin、clusterManager、clusterMonitor、hostManager；
+4.备份恢复角色：backup、restore；
+5.所有数据库角色：readAnyDatabase、readWriteAnyDatabase、userAdminAnyDatabase、
+dbAdminAnyDatabase
+6.超级用户角色：root
+```
+本地连接：mongodb://localhost:27017
+
+:::
+
+精细步骤
+
+::: details
+
+```md
+1.第一步创建超级管理用户
+`use admin`
+`db.createUser({
+    user: '小驼峰的第二个英文名', 
+    pwd: "小驼峰的第二个英文名123", 
+    roles: [{role: 'root', db: 'admin'}]
+})`
+`show users` 查看用户，后续可验证一下
+
+2.第二步修改 Mongodb 数据库配置文件
+window + R => services.msc => 搜索MongoDB服务 => 查看属性 => --config 后面的东西
+=> C:\Program Files\MongoDB\Server\6.0\bin\mongod.cfg
+磁盘找到该文件，修改如下（以管理员身份运行，不然无法修改）（注意#security的#号要去掉）
+security:
+  authorization: enabled
+
+3.第三步重启MongoDB服务
+window + R => services.msc => 搜索MongoDB服务 => 右键 => 重新启动
+
+4.第四步用超级管理员账户连接数据库
+使用compass重新连接，没有权限。 => Authentication => 
+填写用户名，填写密码，填写Authentication Database
+(创建用户时roles的db是啥，{role: 'root', db: 'admin'})
+Authentication Mechanism 选了SCRAM-SHA-256.
+
+<!-- shell命令没有试过，因为没有安装 mongodbshell
+mongo admin -u 用户名 -p 密码
+mongo IP:端口号/test -u 用户名 -p 密码-->
+
+5.单独给某个数据库，创建一个用户。
+`use nba` nba是其中的一个数据库
+`db.createUser({
+    user: 'durant', 
+    pwd: '123456', 
+    roles: [{role: 'dbOwner', db: 'nba'}]
+})`
+
+
+6.查看当前库下的用户
+`show users`
+
+7.删除用户
+`db.dropUser('durant');` durant是用户名
+
+8.修改用户密码
+`db.updateUser("durant", {pwd: "123456"})`
+
+9.密码认证
+`db.auth('durant', "123456")`
+{ ok: 1 } 验证成功
+Authentication failed. 验证失败
+
+10.连接数据库的时候需要配置账户密码
+使用compass可视化会自动生成
+const url = "mongodb://admin:123456@localhost:27017/"
+const url = 'mongodb://admin:123456@localhost:27017/';
+
 ```
 
 :::
 
+### 表（集合）与表（集合）之间的关系
+
+::: details
+
+```md
+* 一对一：
+* 一对多：
+* 多对多：1个人收藏多见商品，1件商品被多个人收藏。
+中间表（临时表）： id, userId, cartId, create_time, update_time
+```
+
+:::
+
+### aggregate聚合管道(高级查询)
+
+::: details
+
+db.collection.aggregate() Stages，实际应用：表的关联查询，聚合统计
+
+```md
+常见的聚合操作
+
+db.user.insertMany([{name: 'durant', skill: "死神降临", id: 1}, {name: 'curry', skill: "摇头库", id: 2}])
+db.goods.insertMany([{id:1, name: '酸奶', price: 10}, {id: 2, name: '荔枝', price: 5}, {id: 3, name: '火神源晶', price: 50}])
+db.cart.insertMany([{userId: 1, goodsId: 1, share: 10}, {userId: 1, goodsId: 3, share: 20}, {userId: 2, goodsId: 3, share: 30}])
+
+1.查询用户表的列（name）
+`db.user.aggregate([{$project: {name: 1}}])`
+
+2.查询用户表中拥有死神降临技能的 用户
+`db.user.aggregate([{$match: {skill: '死神降临'}}])`
+
+3.统计收藏表中，每个商品的分享次数
+`db.cart.aggregate([{$group: {_id: "$goodsId", total: {$sum: "$share"} } }])`
+
+4.商品价格 由高到低
+`db.goods.aggregate([{$sort: {price: -1}}])`
+
+5.第一件商品
+`db.goods.aggregate([{$limit: 1}])`
+
+6.除去第一件商品
+`db.goods.aggregate([{$skip: 1}])`
+
+```
+
+lookup表关联
+
+```md
+用户收藏了哪些商品（用户表关联 收藏表）
+`db.user.aggregate([{$lookup: {from: 'cart', localField: 'id', foreignField: 'userId', as: 'items'} }])`
+
+收藏表关联商品表
+`db.cart.aggregate([{$lookup: {from: 'goods', localField: "goodsId", foreignField: "id", as: "items"}}])`
+```
+
+:::
+
+### Node.js操作MongoDB数据库
+
+```js
+// npm i mongodb -S
+
+const { MongoClient, ServerApiVersion } = require("mongodb");
+
+// const url = 'mongodb://localhost:27017'; 没有秘密的
+const url = "mongodb://用户名:密码@localhost:27017"; // 有密码的
+
+const dbname = 'nba';
+
+const client = new MongoClient(url, {
+  serverApi: {
+    version: ServerApiVersion.v1,  // 使用 Stable API v1
+    strict: true,                 // 严格模式（禁用非API命令）
+    deprecationErrors: true,      // 将废弃操作报错（而非警告）
+  }
+});
+// const client = new MongoClient(url)
+
+async function main() {
+    try {
+        await client.connect(); // client.connect() 不再传入回调
+        console.log('连接成功');
+        
+        const db = client.db(dbname);
+        const data = await db.collection('user').find({}).toArray();
+        console.log(data, '查询成功');
+        
+    } catch (err) {
+        console.error('操作失败:', err);
+    } finally {
+        await client.close();
+        console.log('连接关闭');
+    }
+}
+main();
+```
 
 ## MySQL
 
