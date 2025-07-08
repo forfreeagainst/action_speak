@@ -706,6 +706,7 @@ graceful-fs, fs-extra, node:fs
 
 * 封装一个类似express框架的路由
 * 配置静态web服务目录（提供静态资源访问）
+* 中间件
 
 ::: details
 
@@ -1046,6 +1047,116 @@ body {
 ```
 
 :::
+
+### express中间件
+
+定义
+
+::: details
+
+匹配路由之前或者匹配路由完成做的一系列的操作。AOP的实现方式。
+
+* 应用级中间件
+* 路由级中间件
+* 错误处理中间件
+* 内置中间件
+* 第三方中间件
+
+:::
+
+简单实践
+
+::: details
+
+server.js
+
+```js
+const express = require('express');
+const app = express();
+const ejs = require('ejs');
+const bodyParser = require('body-parser'); // 获取post传值
+
+// 设置模板引擎
+app.engine('html', ejs.__express); // 两个下划线哦
+app.set('views', __dirname + '/views');
+app.set('view engine', 'html');
+
+// 内置中间件
+app.use(express.static('static'));
+
+// 第三方中间件
+// npm install body-parser
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded())
+// parse application/json
+app.use(bodyParser.json())
+
+// 全局级中间件
+app.use((res, req, next) => {
+    console.log('全局中间件')
+    next();
+})
+
+// 路由级中间件
+app.get('/ccc', (req, res, next) => {
+    console.log('路由级中间件，几乎不用');
+    next();
+})
+
+// http://localhost:4321/ccc
+app.get('/ccc/', (req, res, next) => {
+    res.render('form');
+})
+
+// 表单提交成功，注意 请求方式 是 post
+app.post('/home', (req, res, next) => {
+    res.send(req.body); // 使用第三方中间件，获取 post传值，好快
+})
+
+// 错误级中间件
+app.use((req, res) => {
+    res.status(404);
+    res.send("以上中间件都失效了, 错误级中间件")
+})
+
+app.listen(4321);
+```
+
+./views/form.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./bgc.css">
+</head>
+<body>
+    <form action="/home" method="post">
+        用户名<input type="text" name="username"/>
+        <br>
+        <br>
+        密码<input type="password" name="password">
+        <br>
+        <br>
+        <input type="submit" value="提交">
+    </form>
+</body>
+</html>
+```
+
+./static/bgc.css
+
+```css
+body{
+    background-color: pink;
+}
+```
+
+:::
+
 
 ## koa(node.js框架)
 
