@@ -871,12 +871,6 @@ module.exports = myExpress(); // 调用了这个函数，返回这个函数funct
 
 :::
 
-### express脚手架
-
-::: details
-
-:::
-
 ### 常用API
 
 ::: details
@@ -1155,7 +1149,9 @@ body{
 
 :::
 
-#### cookie和session
+### cookie和session
+
+::: details
 
 ```md
 * 第三方中间件cookie-parser
@@ -1173,7 +1169,11 @@ Cookie 数据存放在客户的浏览器上，Session 数据放在服务器上�
 个 cookie。Session 没有这方面的限制。Session 是基于 Cookie 进行工作的。
 ```
 
+:::
+
 使用cookie-parser
+
+::: details
 
 ```js
 const express = require('express');
@@ -1208,7 +1208,11 @@ app.get('/getCookie', (req, res) => {
 app.listen(5432);
 ```
 
+:::
+
 cookie的第三个参数，配置
+
+::: details
 
 ```md
 domain: 多个域名共享同一个cookie， .jd.com (eg: aaa.jd.com, bbb.jd.com) 
@@ -1221,7 +1225,11 @@ httpOnly: 是微软对 COOKIE 做的扩展。如果在 COOKIE 中设置了“htt
 过程序（JS 脚本、applet 等）将无法读取到 COOKIE 信息，防止 XSS 攻击产生
 ```
 
+:::
+
 使用express-session
+
+::: details
 
 ```js
 const express = require('express');
@@ -1269,6 +1277,456 @@ app.get('/loginOut', (req, res) => {
 
 app.listen(5432);
 ```
+
+:::
+
+一台服务器无法响应大量用户的请求 => 负载均衡nginx + 多台服务器 => 在一台服务器的session,如果存在内存
+=> 其他服务器无法共享 => 那就存在redis,数据库(MySQL, MongoDB)
+
+::: details
+
+```md
+* `npm i express-session connect-mongo` MongoDB
+* `npm install redis connect-redis express-session` redis
+* `npm i connect-mysql` MySQL没啥人用
+```
+
+```js
+// npm i connect-mongo
+
+const express = require('express');
+const app = express();
+var session = require('express-session')
+const MongoStore = require('connect-mongo');
+
+app.use(session({
+    secret: 'keyboard cat', // 服务端生成 session的签名
+    name: 'diy', // 修改session对应cookie的名称, 仅浏览器的cookie的key值发生改变
+    resave: false, // 强制保存 session,即使它并没有变化（默认配置，就完事了）
+    saveUninitialized: true, // 强制将未初始化的 session 存储 （默认配置，就完事了）
+    cookie: { 
+        maxAge: 1000 * 60 * 10, // 多久后失效
+        secure: false, // false, http协议也可以访问cookie 
+    },
+    rolling: true, // 每次请求后，都会重新设置cookie, 重新刷新失效时间(maxAge)
+    store: MongoStore.create({ 
+        // mongoUrl: 'mongodb://127.0.0.1:27017/dbname',
+        // use nba;
+        // db.getUsers()
+        // 查看 用户名和密码
+        mongoUrl: 'mongodb://durant:123456@127.0.0.1:27017/nba',
+        touchAfter: 24 * 3600, // 不管发出了多少请求，在24小时内只更新一次session，除非你改动了session
+    })
+}))
+
+// localhost:5432/setSession
+app.get('/setSession', (req, res) => {
+    req.session.diyname = 'durant';
+    req.session.age = '35';
+    res.send('登录后，设置session');
+})
+
+app.get('/getSession', (req, res) => {
+    if (req.session.diyname || req.session.age) {
+        res.send(`${req.session.diyname} --${req.session.age} --'登录了'`);
+    } else {
+        res.send('没有登录');
+    }
+})
+
+app.get('/loginOut', (req, res) => {
+    // 设置session的过期时间为0， 它会把所有session都销毁
+    // req.session.cookie.maxAge = 0
+
+    // 销毁指定session
+    // req.session.diyname = '';
+
+    // 销毁所有session destroy
+    req.session.destroy();
+    res.send('销毁session');
+})
+
+app.listen(5432);
+
+```
+
+:::
+
+### express路由模块化(express.Router)
+
+1个文件不好维护，团队不好协作开发
+
+::: details
+
+server.js
+
+```js
+const express = require('express')
+const app = express();
+
+// user路由
+const user = require('./routes/user');
+app.use('/app', user);
+
+app.get('/app', (req, res) => {
+    res.send('首页');
+})
+
+// http://localhost:4321/app
+// localhost:4321/app/user
+// http://localhost:4321/app/user/add
+app.listen(4321);
+```
+
+./routes/user.js
+
+```js
+const express = require('express')
+const router = express.Router()
+
+const userAdd = require('./user/add');
+
+router.get('/user', (req, res) => {
+    res.send('用户界面')
+})
+
+// 继续嵌套路由
+router.use('/user', userAdd);
+
+module.exports = router;
+```
+
+./routes/user/add.js
+
+```js
+const express = require('express');
+const router = express.Router();
+
+router.get('/add', (req, res) => {
+    res.send('添加用户')
+})
+
+module.exports = router;
+```
+
+:::
+
+### express应用程序生成器（项目生成器）（express脚手架）
+
+::: details
+
+```md
+`npm install -g express-generator`
+bash环境 `express --view=ejs myapp` ejs模板引擎
+`node bin/www` 启动服务
+
+跟自己脚手架的差距
+多个了打印日志
+```
+
+:::
+
+### 上传文件模块multer的使用
+
+::: details
+
+单个文件上传
+
+server.js
+
+```js
+// npm i multer
+// npm i mkdirp
+// https://www.npmjs.com/package/multer
+const express = require('express');
+const app = express();
+const ejs = require('ejs');
+const multer  = require('multer')
+
+// ejs 模板引擎
+app.engine('html', ejs.__express); // 两个下划线哦
+app.set('views', __dirname + '/views');
+app.set('view engine', 'html');
+
+// http://localhost:4321/uploadFiles
+app.get('/uploadFiles', (req, res) => {
+    res.render('uploadFiles');
+})
+
+// 请求方式是post, 上传单个文件
+const storage = multer.diskStorage({
+    // 文件保存路径，注意路径必须存在
+    destination: function(req, file, cb) {
+        cb(null, 'public/upload/'); // public/upload 文件夹要有
+    },
+    // 修改文件名称
+    filename: function(req, file, cb) {
+        const fileFormat = (file.originalname).split('.');
+        cb(null, Date.now() + '.' + fileFormat[fileFormat.length - 1])
+    }
+})
+const upload = multer({storage})
+app.post('/uploadComplete', upload.single('avatar'),(req, res) => {
+    console.log(req.file);
+    console.log(req.body);
+    res.send(`上传成功`);
+})
+
+app.listen(4321);
+```
+
+./views/uploadFiles.html
+
+```md
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/uploadComplete" enctype="multipart/form-data" method="post">
+        <div class="form-group">
+            头像：<input type="file" name="avatar">
+            <br><br>
+            <!-- 照片：<input type="file" name="picture"> -->
+            <br><br>
+            <input type="submit" value="提交">
+        </div>
+    </form>
+</body>
+</html>
+```
+
+多个文件上传
+
+server.js
+
+```js
+const express = require('express');
+const app = express();
+const ejs = require('ejs');
+const multer  = require('multer');
+const path = require('path');
+const { mkdirp } = require('mkdirp');
+
+// ejs 模板引擎
+app.engine('html', ejs.__express); // 两个下划线哦
+app.set('views', __dirname + '/views');
+app.set('view engine', 'html');
+
+// 2024-12-12
+function getFormattedDate() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+  
+    return `${year}-${month}-${day}`;
+}
+
+// http://localhost:4321/uploadFiles
+app.get('/uploadFiles', (req, res) => {
+    res.render('uploadFiles');
+})
+
+// 请求方式是post, 上传单个文件
+const storage = multer.diskStorage({
+    // 文件保存路径，注意路径必须存在
+    destination: async (req, file, cb) => {
+        // 1.获取当前日期
+        const day = getFormattedDate();
+        // 创建图片保存的路径
+        const dir = path.join('public/upload', day);
+        // 创建目录
+        await mkdirp(dir)
+        cb(null, dir); // public/upload/日期 文件夹要有
+    },
+    // 修改文件名称
+    filename: function(req, file, cb) {
+        const fileFormat = (file.originalname).split('.');
+        cb(null, Date.now() + '.' + fileFormat[fileFormat.length - 1])
+    }
+})
+const upload = multer({storage})
+const multiUpload = upload.fields([
+    {name: 'avatar',maxCount: 1},
+    {name: 'picture', maxCount: 1}
+])
+app.post('/uploadComplete', multiUpload,(req, res) => {
+    console.log(req.file);
+    console.log(req.body);
+    res.send(`上传成功`);
+})
+
+app.listen(4321);
+```
+
+./views/uploadFiles.html
+
+```md
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/uploadComplete" enctype="multipart/form-data" method="post">
+        <div class="form-group">
+            头像：<input type="file" name="avatar">
+            <br><br>
+            照片：<input type="file" name="picture">
+            <br><br>
+            <input type="submit" value="提交">
+        </div>
+    </form>
+</body>
+</html>
+```
+
+:::
+
+### moogoose
+
+封装node.js操作mongoDB，让集合的字段类型更加规范等(npm install mongoose)
+
+::: details
+
+使用mongoose简单操作数据库
+
+```js
+// https://mongoosejs.com/docs/guide.html
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
+
+main().catch(err => console.log(err));
+
+async function main() {
+    // 连接数据库
+    // use blogApp
+    //     db.createUser({
+    //     user: 'durant', 
+    //     pwd: '123456', 
+    //     roles: [{role: 'dbOwner', db: 'blogApp'}]
+    // })
+    // db.getUsers();
+    // 因为我设置了超级管理员，但是每个表，也要添加相应的管理员，不然无法操作
+    await mongoose.connect('mongodb://durant:123456@localhost/blogApp');
+
+    // 定义Schema（定义集合的数据类型）
+    const blogSchema = new Schema({
+        title: String,
+        author: String,
+        desc: String
+    });
+
+    // 创建数据模型
+    const Blog = mongoose.model('Blog', blogSchema);
+
+    // 查询数据
+    const blogData = await Blog.find({author: 'durant'});
+    console.log("🚀 ~ main ~ blogData:", blogData)
+
+    // 创建数据
+    const blogObj = new Blog({ 
+        title: '超越极限',
+        author: "durant",
+        desc: "不相信长夜将至，因为手把就在自己手中"
+    });
+    blogObj.save();
+
+    // 修改数据，要有await, await相当于save了
+    // 同时要注意 搜索条件，没有修改数据，它是不会报错的。
+    // await Blog.updateMany({author: 'durant'}, {$set: {author: 'kevin durant'}});
+
+    // 删除数据
+    // await Blog.deleteMany({author: 'kevin durant'});
+}
+```
+
+:::
+
+### moogose模板化
+
+::: details
+
+server.js
+
+```js
+// https://mongoosejs.com/docs/guide.html
+const blogModel = require('./model/blog.js');
+const peopleModel = require('./model/people.js');
+
+async function main() {
+    // const people = new peopleModel({
+    //     teacher: 'james',
+    //     age: 40
+    // })
+    // people.save()
+
+    console.time('blog');
+    const blogData = await blogModel.find({});
+    // console.log(blogData, '??');
+    console.timeEnd('blog'); // 26.492ms
+
+    console.time('people');
+    const peopleData = await peopleModel.find({});
+    // console.log(peopleData, '??');
+    console.timeEnd('people'); // 1.728ms，应该是单例模式，不会再重新连接数据库了
+}
+main()
+```
+
+./model/db.js
+
+```js
+// https://mongoosejs.com/docs/guide.html
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://durant:123456@localhost/blogApp');
+
+module.exports = mongoose;
+```
+
+./model/blog.js
+
+```js
+const mongoose = require('./db.js');
+
+const BlogSchema = mongoose.Schema({
+    title: String,
+    author: {
+        type: String,
+        default: 'kevin durant'
+    },
+    desc: String
+})
+
+module.exports = mongoose.model('Blog', BlogSchema);
+```
+
+./model/people.js
+
+```js
+const mongoose = require('mongoose');
+
+const PeopleSchema = mongoose.Schema({
+    teacher: String,
+    age: Number,
+    info: {
+        type: String,
+        default: '未知'
+    }
+})
+
+module.exports = mongoose.model("People", PeopleSchema);
+```
+
+:::
 
 ## koa(node.js框架)
 
