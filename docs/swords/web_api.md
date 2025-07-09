@@ -679,3 +679,7 @@ console.log(cat.hobby); // ['吃饭', '睡觉', '打豆豆', '训练']
 ### 同源策略
 
 ### jsonp实现原理
+
+### 浏览器如何实现不同页面的数据共享
+
+* cookie(eg:express第三方中间件cookie-parser)

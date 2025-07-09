@@ -15,7 +15,7 @@ node: 脚手架，lint工具，构建工具等等等，简直是工程化的利�
 
 :::
 
-## node版本管理工具nvm
+### node版本管理工具nvm
 
 ::: details
 
@@ -35,7 +35,7 @@ node: 脚手架，lint工具，构建工具等等等，简直是工程化的利�
 
 :::
 
-## npm镜像源管理工具nrm
+### npm镜像源管理工具nrm
 
 ::: details
 
@@ -49,7 +49,7 @@ node: 脚手架，lint工具，构建工具等等等，简直是工程化的利�
 
 :::
 
-## 热启动node服务
+### 热启动node服务
 
 ::: details
 
@@ -60,11 +60,11 @@ npx nodemon server.js
 
 :::
 
-## Buffer
+### Buffer
 
 ::: details
 
-### Buffer转string
+#### Buffer转string
 
 ```js
 const fs = require('fs');
@@ -84,7 +84,7 @@ fs.readFile('./data.json', (err, data) => {
 
 ## node模块
 
-### fs模块(操作文件)
+### :star: fs模块(操作文件)
 
 ::: details
 
@@ -288,7 +288,7 @@ readStream.pipe(writeStream);
 
 :::
 
-### http模块
+### :star: http模块
 
 ::: details
 
@@ -321,7 +321,7 @@ http.createServer(function(req, res) {
 
 :::
 
-:star: 静态web服务器封装
+`静态web服务器封装`
 
 ::: details
 
@@ -512,7 +512,7 @@ http.createServer(async (req, res) => {
 :::
 
 
-### url
+### :star: url
 
 ::: details
 
@@ -520,6 +520,31 @@ http.createServer(async (req, res) => {
 URL.parse(input[, base])#>
 新增于: v22.1.0
 ```
+
+:::
+
+### :star: path：文件路径
+
+### :star: cmd： 命令行参数
+
+### :star: process: 进程，（内存管理的，）
+
+::: details
+
+* stdin: 标准输入
+* stderr：标准输出
+
+:::
+
+### :star: child_process: 
+
+### 其他库封装
+
+::: details
+
+commander, inquirer, readline
+
+graceful-fs, fs-extra, node:fs
 
 :::
 
@@ -670,33 +695,6 @@ console.log(all);
 npm 会按顺序执行 pre<command> → <command> → post<command>。
 eg: 自己的也可以predev, dev, postdev。
 ```
-
-:::
-
-## node.js模块
-
-### path：文件路径
-
-### cmd： 命令行参数
-
-### process: 进程，（内存管理的，）
-
-::: details
-
-* stdin: 标准输入
-* stderr：标准输出
-
-:::
-
-### child_process: 
-
-### 其他库封装
-
-::: details
-
-commander, inquirer, readline
-
-graceful-fs, fs-extra, node:fs
 
 :::
 
@@ -1157,6 +1155,120 @@ body{
 
 :::
 
+#### cookie和session
+
+```md
+* 第三方中间件cookie-parser
+* 第三方中间件express-session
+
+cookie特点：
+* 设置cookie, 如果cookie没有过期的话，关闭浏览器后重新打开，cookie不会销毁
+
+
+session 是另一种记录客户状态的机制，不同的是 Cookie 保存在客户端浏览器中，而
+session 保存在服务器上。
+Cookie 数据存放在客户的浏览器上，Session 数据放在服务器上。Session 相比 Cookie 要
+更安全一些。由于 Session 保存到服务器上，所以当访问量增多的时候，会比较占用服务器
+的性能。单个 cookie 保存的数据大小不能超过 4K，很多浏览器都限制一个站点最多保存 20
+个 cookie。Session 没有这方面的限制。Session 是基于 Cookie 进行工作的。
+```
+
+使用cookie-parser
+
+```js
+const express = require('express');
+const app = express();
+var cookieParser = require('cookie-parser')
+
+// 如果使用加密cookie, 记得要配置密钥!!!
+app.use(cookieParser('miYao'))
+
+// localhost:5432
+app.get('/', function (req, res) {
+  res.send('首页')
+})
+
+// http://localhost:5432/setCookie
+app.get('/setCookie', (req, res) => {
+    // 第二个参数，中文，还是引用类型，都是乱码
+    // cookie 第三个参数, 也可以ctrl+左键，查看方法里面有哪些选项
+    // https://www.npmjs.com/package/cookie
+    // res.cookie('nickname', 'haohao');
+    res.cookie('secretBase', 'miao', {signed: true})
+    res.send('设置cookie');
+})
+// http://localhost:5432/getCookie
+app.get('/getCookie', (req, res) => {
+    // 使用res.send()的时候
+    // ${基础类型} ok
+    // ${引用类型} 不ok
+    res.send(`${req.cookies.nickname}, ${req.signedCookies.secretBase}`)
+})
+
+app.listen(5432);
+```
+
+cookie的第三个参数，配置
+
+```md
+domain: 多个域名共享同一个cookie， .jd.com (eg: aaa.jd.com, bbb.jd.com) 
+path: /app, 该路由下才有cookie
+maxAge: 设置在多久后失效(eg:删除cookie, 使其快速失效{maxAge:0})
+expire: 在某个时间点后，cookie就失效
+secure: true, 在http中，cookie是失效的，在https是有效的
+signed: 加密cookie
+httpOnly: 是微软对 COOKIE 做的扩展。如果在 COOKIE 中设置了“httpOnly”属性，则通
+过程序（JS 脚本、applet 等）将无法读取到 COOKIE 信息，防止 XSS 攻击产生
+```
+
+使用express-session
+
+```js
+const express = require('express');
+const app = express();
+var session = require('express-session')
+
+app.use(session({
+    secret: 'keyboard cat', // 服务端生成 session的签名
+    name: 'diy', // 修改session对应cookie的名称, 仅浏览器的cookie的key值发生改变
+    resave: false, // 强制保存 session,即使它并没有变化（默认配置，就完事了）
+    saveUninitialized: true, // 强制将未初始化的 session 存储 （默认配置，就完事了）
+    cookie: { 
+        maxAge: 1000 * 60 * 10, // 多久后失效
+        secure: false, // false, http协议也可以访问cookie 
+    },
+    rolling: true, // 每次请求后，都会重新设置cookie, 重新刷新失效时间(maxAge)
+}))
+
+// localhost:5432/setSession
+app.get('/setSession', (req, res) => {
+    req.session.diyname = 'durant';
+    req.session.age = '35';
+    res.send('登录后，设置session');
+})
+
+app.get('/getSession', (req, res) => {
+    if (req.session.diyname || req.session.age) {
+        res.send(`${req.session.diyname} --${req.session.age} --'登录了'`);
+    } else {
+        res.send('没有登录');
+    }
+})
+
+app.get('/loginOut', (req, res) => {
+    // 设置session的过期时间为0， 它会把所有session都销毁
+    // req.session.cookie.maxAge = 0
+
+    // 销毁指定session
+    // req.session.diyname = '';
+
+    // 销毁所有session destroy
+    req.session.destroy();
+    res.send('销毁session');
+})
+
+app.listen(5432);
+```
 
 ## koa(node.js框架)
 
