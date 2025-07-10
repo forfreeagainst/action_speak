@@ -1943,6 +1943,218 @@ module.exports = mongoose.model('Blog', BlogSchema);
 
 :::
 
+### mongoose多表查询
+
+使用聚合管道
+
+::: details
+
+server.js
+
+```js
+const UserModel = require('./model/user');
+const BookModel = require('./model/book');
+const OrderModel = require('./model/order');
+
+async function main() {
+    // const users = new UserModel({
+        // name: 'durant',
+        // level: "封王极限",
+        // nickname: '死神',
+        // age: 35,
+        // name: 'curry',
+        // level: "封王不朽",
+        // nickname: '摇头库',
+        // age: 33,
+        // name: 'james',
+        // level: "封王军主",
+        // nickname: '全力詹',
+        // age: 40
+    // })
+    // users.save()
+
+    // const books = new BookModel({
+        // bookName: '被讨厌的勇气',
+        // author: "岸键一郎",
+        // desc: "缺少改变的勇气，",
+        // price: 40
+        // bookName: '传习录',
+        // author: '王阳明',
+        // desc: "心外无物，破山中贼易",
+        // price: 50
+        // bookName: '皇明祖训',
+        // author: "朱元璋",
+        // desc: "诸位藩王尽可勤王",
+        // price: 70
+    // })
+    // books.save();
+
+
+    // db.orders.drop(); 删掉集合的数据
+
+    // const orders = new OrderModel({
+    //     userId: "686f653f3566d543a1ca4ef8",
+    //     bookId: "686f6467284122f92fbcf8a6",
+    //     orderStatus: "已下单"
+    // })
+    // orders.save();
+
+
+    // 值得注意的是Schema的_id定义
+    // userId: Schema.Types.ObjectId,
+    // bookId: Schema.Types.ObjectId,
+    const result = await OrderModel.aggregate([
+        {
+            $lookup: {
+                from: "books",
+                localField: "bookId",
+                foreignField: "_id",
+                as: "items"
+            }
+        },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'userId',
+                foreignField: '_id',
+                as: 'userDesc'
+            }
+        }
+    ]);
+    // console.log("🚀 ~ main ~ result:", result)
+        console.log("🚀 ~ main ~ result:", JSON.stringify(result))
+}
+
+main();
+```
+
+./model/user.js
+
+```js
+
+const mongoose = require('./db');
+const {Schema} = mongoose;
+
+const UserSchema = Schema({
+    name: String,
+    level: String,
+    nickname: String,
+    age: Number
+})
+
+module.exports = mongoose.model('User', UserSchema);
+```
+
+./model/book.js
+
+```js
+// 书的信息， 用户的信息， 订单信息
+// 某用户买了一堆书
+
+const mongoose = require('./db');
+const {Schema} = mongoose;
+
+const BookSchema = Schema({
+    bookName: String,
+    author: String,
+    desc: String,
+    price: Number
+})
+
+module.exports = mongoose.model('Book', BookSchema);
+```
+
+./model/order.js
+
+```js
+const mongoose = require('./db');
+const {Schema} = mongoose;
+
+const OrderSchema = Schema({
+    userId: Schema.Types.ObjectId,
+    bookId: Schema.Types.ObjectId,
+    orderStatus: {
+        type: String,
+        enum: ['已下单', '已取消']
+    }
+    // orderTime: {
+    //     type: Date,
+    //     default: Date.now()
+    // }
+})
+
+module.exports = mongoose.model('Order', OrderSchema);
+```
+
+:::
+
+使用Populate(找不到 哪里有问题)
+
+::: details
+
+```js
+const UserModel = require('./model/user');
+const BookModel = require('./model/book');
+const OrderModel = require('./model/order');
+
+async function main() {
+    // const orders = new OrderModel({
+    //     userId: "686f65a0025dbb4cb0a81f50",
+    //     bookId: "686f650d761ad000e413f57c",
+    //     orderStatus: "已下单"
+    // })
+    // orders.save();
+    // return;
+
+    const result = await OrderModel.find({}).populate('users').populate('books');
+    console.log(result[0].userId);
+    // const result = await OrderModel.find({})
+    // .populate({
+    //     path: "books",
+    //     select: "bookname"
+    // }).populate({
+    //     path: 'users',
+    //     select: "name"
+    // })
+    // const result = await OrderModel.findOne({ _id: '686f668a0ff7a5d8f001ee4d' }).populate('book');
+    console.log(result)
+    // const temp = await UserModel.find({_id: '686f653f3566d543a1ca4ef8'});
+    // console.log(temp)
+    //     const temp2 = await BookModel.find({_id: '686f6467284122f92fbcf8a6'});
+    // console.log(temp2)
+}
+
+main();
+```
+
+./model/order.js
+
+```js
+const mongoose = require('./db');
+const {Schema} = mongoose;
+
+const OrderSchema = Schema({
+    userId: { type: Schema.Types.ObjectId, ref: 'User' },  // 可以单独 populate
+    bookId: { type: Schema.Types.ObjectId, ref: 'Book' }, // 可以单独 populate
+    orderStatus: {
+        type: String,
+        enum: ['已下单', '已取消']
+    },
+// 检查 Book 模型定义
+// const BookModel = mongoose.model('Book', BookSchema); // 必须和 ref: "Book" 一致
+// 检查 User 模型定义
+// const UserModel = mongoose.model('User', UserSchema); // 必须和 ref: "User" 一致
+    books: [
+        {type: Schema.Types.ObjectId, ref: "Book"}
+    ],
+    users: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+})
+
+module.exports = mongoose.model('Order', OrderSchema);
+```
+
+:::
+
 ## koa(node.js框架)
 
 ## 安装依赖失败
@@ -2349,6 +2561,68 @@ async function main() {
     }
 }
 main();
+```
+
+:::
+
+## express+mongoose实战
+
+::: details
+
+* 数据库的导入与导出
+
+```md
+// express生成图形验证码
+npm install --save svg-captcha
+
+服务器使用iframe进行局部刷新
+
+express-session
+
+md5加密，权限判断（后端-中间件，前端-拦截器）
+
+Restful API 从以下几个方面考虑
+1.建议使用更安全的https
+2.尽量部署在专属域名下
+3.应该将api的版本号放入URL
+4.在Restful架构中 ，每个网址代表一种资源（resource）,所以网址中建议不能有动词，只能有名词，
+而且所用的名词往往与数据库的集合相对应。一般来说，数据库中的表都是同种记录的“集合”（collection）,
+所以API中的名词也应该使用复数。使用 /users/123， 而非/getUser?id=123
+http请求数据的7种方式：（GET/ POST / PUT / DELETE/PATCH / HEAD / OPTIONS）
+GET (SELECT): 从服务器取出资源（一项或多项）
+POST(CREATE): 在服务器新建一个资源
+PUT(UPDATE):在服务器更新资源（客户端提供改变后的完整资源）
+DELETE(DELETE):从服务器删除资源
+
+res.send() res.json() res.jsonp()
+
+解决跨域：
+1.express使用`npm i cors`
+
+如何把本地的程序上传到远程服务器
+1.ftp
+2.直接复制
+3.svn
+4.git
+
+
+如何让远程电脑运行node.js程序
+1.在远程电脑安装node.js,安装MongoDB
+2.就可以通过ip地址访问这个程序
+
+通过域名来访问node.js程序？
+域名和服务器关联起来（域名解析）
+1.配置域名解析
+通过添加域名解析可将域名指向一个公网 IP 地址，将域名解析到当前实例后，即可通过域名访问实例中部署的网站。
+2.用户直接访问域名 相当于就是访问这个IP地址
+
+用户输入www.durant.com 实际访问 111.111.111.111
+
+通过ping命令可以知道当前域名 指向哪个服务器 eg: ping www.baidu.com
+
+如何让一个服务器放 n 个node.js网站
+nginx转发
+
 ```
 
 :::
