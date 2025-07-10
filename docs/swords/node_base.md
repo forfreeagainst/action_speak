@@ -1728,6 +1728,221 @@ module.exports = mongoose.model("People", PeopleSchema);
 
 :::
 
+### moogoose预定义模式修饰符和Getter/Setter自定义修饰符
+
+::: details
+
+```md
+default: 默认值
+require: 必填
+数字专用：min, max, 
+枚举：enum
+minlength：最小长度
+maxlength: 最大长度
+trim: 去左右两边的空格
+match：正则表达式
+validate：校验函数
+
+自定义修复符：
+Setter(写入数据库，补充前缀等)，
+Getter(不建议用，没必要，替代方案：前端可拼接等)
+```
+
+server.js
+
+```js
+// https://mongoosejs.com/docs/guide.html
+// const blogModel = require('./model/blog.js');
+const peopleModel = require('./model/people.js');
+
+async function main() {
+    const people = new peopleModel({
+        teacher: 'james',
+        birthday: '20001',
+        spot: '  adaa33  ',
+        age: 38,
+        add: '天气晴'
+    })
+    people.save()
+
+    const peopleData = await peopleModel.find({});
+    console.log(peopleData[0].spot); // adaa
+    // console.log("🚀 ~ main ~ peopleData:", peopleData)
+}
+main()
+```
+
+./model/people.js
+
+```js
+const mongoose = require('mongoose');
+
+const PeopleSchema = mongoose.Schema({
+    teacher: {
+        type: String,
+        // enum: [3, 4]
+        enum: ['james', 'durant']
+    },
+    age: {
+        type: Number,
+        min: 10,
+        max:40
+    },
+    birthday: {
+        type: String,
+        // (.*) 2000后面的所有内容
+        match: /^2000(.*)/
+    },
+    spot: {
+        type: String,
+        validate: {
+            validator: function(v) {
+                return v.length > 5;
+            },
+            message: props => `${props.value} 长度要大于5 !`
+        },
+        trim: true,
+        // 不建议使用，访问属性的时候，才触发get。数据库查询的时候，一点变化都没有
+        // console.log(peopleData[0].spot); // adaa
+        get: (val) => val.slice(0, 4)
+    },
+    info: {
+        type: String,
+        default: '未知'
+    },
+    add: {
+        type: String,
+        set: (val) => '补充' + val
+    }
+})
+
+// 定义模型：模型名 'People' → 对应集合 'people'
+module.exports = mongoose.model("People", PeopleSchema);
+```
+
+./model/db.js
+
+```js
+// https://mongoosejs.com/docs/guide.html
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://durant:123456@localhost/blogApp');
+
+module.exports = mongoose;
+```
+
+:::
+
+### mongoose设置索引和mongoose的静态方法和实例方法
+
+::: details
+
+```md
+db.peoples.getIndexes(); // 获取索引
+index: true  // 普通索引
+unique: true // 唯一索引
+```
+
+类的静态方法和实例方法
+
+```js
+class Animal {
+    constructor() {
+    }
+    // 静态方法有static
+    static sayHello() {
+        console.log('你好')
+    }
+    // 实例方法
+    sayNight() {
+        console.log('晚安，this指向new BlogModel(传入的数据)');
+    }
+}
+// 静态方法，不通过实例也能调用
+Animal.sayHello();
+// Animal.sayNight(); // 直接调用，失败
+const dog = new Animal();
+dog.sayNight();
+```
+
+函数的静态方法和实例方法
+
+```js
+function Person() {
+    this.instanceFn = function() {
+        console.log('实例方法');
+    }
+}
+Person.staticFn = function() {
+    console.log('静态方法');
+}
+Person.staticFn();
+
+// Person.instanceFn(); // 无法调用
+const obj = new Person();
+obj.instanceFn();
+```
+
+扩展mongoose的静态方法和实例方法
+
+server.js
+
+```js
+// https://mongoosejs.com/docs/guide.html
+const blogModel = require('./model/blog.js');
+
+async function main() {
+    // const blog = new blogModel({
+    //     title: '近日有台风',
+    //     author: '小猪',
+    //     idCard: '1001',
+    //     desc: '注意安全'
+    // })
+    // blog.save()
+    const res = await blogModel.findByIdCard('1001')
+    console.log("🚀 ~ main ~ res:", res)
+    // blogModel.sayHello();  // 无法调用
+    const obj = new blogModel();
+    obj.sayHello();
+}
+main()
+```
+
+./model/blog.js
+
+```js
+const mongoose = require('./db.js');
+
+const BlogSchema = mongoose.Schema({
+    title: String,
+    // 索引能加快查询速度，但增加和修改的速度会变慢
+    author: {
+        type: String,
+        unique: true // 唯一索引
+    },
+    idCard: {
+        type: String,
+        index: true // 普通索引
+    },
+    desc: String
+})
+
+// 定义静态方法
+BlogSchema.statics.findByIdCard = async function(idCard) {
+    const data = await this.find({idCard})
+    return data;
+}
+
+// 定义实例方法（几乎不用）
+BlogSchema.methods.sayHello = function() {
+    console.log('你好呀');
+}
+
+module.exports = mongoose.model('Blog', BlogSchema);
+```
+
+:::
+
 ## koa(node.js框架)
 
 ## 安装依赖失败
@@ -2096,6 +2311,8 @@ lookup表关联
 
 ### Node.js操作MongoDB数据库
 
+::: details
+
 ```js
 // npm i mongodb -S
 
@@ -2133,6 +2350,8 @@ async function main() {
 }
 main();
 ```
+
+:::
 
 ## MySQL
 
