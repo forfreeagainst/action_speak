@@ -350,6 +350,122 @@ var minSubArrayLen = function(target, nums) {
 
 :::
 
+### :star: leetcode438找到字符串中所有字母异位词
+
+```md
+给定两个字符串 s 和 p，找到 s 中所有 p 的 异位词 的子串，返回这些子串的起始索引。不考虑答案输出的顺序。
+输入: s = "cbaebabacd", p = "abc"
+输出: [0,6]
+解释:
+起始索引等于 0 的子串是 "cba", 它是 "abc" 的异位词。
+起始索引等于 6 的子串是 "bac", 它是 "abc" 的异位词。
+```
+
+::: details
+
+初始版本
+
+```js
+/**
+ * @param {string} s
+ * @param {string} p
+ * @return {number[]}
+ */
+var findAnagrams = function(s, p) {
+    const sLen = s.length;
+    const pLen = p.length;
+    if (sLen < pLen) return [];
+
+    const res = [];
+    // 26个字母
+    const sCount = new Array(26).fill(0);
+    const pCount = new Array(26).fill(0);
+    const aCode = 'a'.charCodeAt();
+    // p是字串， p的长度
+    for(let i = 0; i < pLen; i ++) {
+        sCount[s[i].charCodeAt() - aCode] ++;
+        pCount[p[i].charCodeAt() - aCode] ++;
+    }
+    
+    // 索引0，开始找，就能找到一样的子串
+    if (sCount.toString() === pCount.toString()) {
+        res.push(0);
+    }
+
+    // sLen - pLen 防止越界，右边的字符串增加， i + pLen;
+    for(let i = 0; i < sLen - pLen; i ++) {
+        // 左边字符串减少 i , 从索引0，开始去除
+        sCount[s[i].charCodeAt() - aCode] --;
+        // 右边字符串增加 i + len
+        sCount[s[i + pLen].charCodeAt() - aCode] ++;
+        if (sCount.toString() === pCount.toString()) {
+            res.push(i + 1);
+        }
+    }
+    // 思路：p字符串计数不变， s字符串计数，不断移动，开始变化。
+    return res;
+};
+```
+
+优化版，还没理解
+
+```js
+var findAnagrams = function(s, p) {
+    const sLen = s.length, pLen = p.length;
+
+    if (sLen < pLen) return [];
+
+    const ans = [];
+    const count = Array(26).fill(0);
+    const aCode = 'a'.charCodeAt();
+    for (let i = 0; i < pLen; ++i) {
+        // 一个加，一个减
+        ++count[s[i].charCodeAt() -aCode];
+        --count[p[i].charCodeAt() -aCode];
+    }
+
+    let differ = 0;
+    for (let j = 0; j < 26; ++j) {
+        if (count[j] !== 0) {
+            ++differ;
+        }
+    }
+    // 一个加，一个减，还是原始模样，说明一样，添加索引0
+    if (differ === 0) {
+        ans.push(0);
+    }
+
+    for (let i = 0; i < sLen - pLen; ++i) {
+        // 窗口中字母 s[i] 的数量与字符串 p 中的数量从不同变得相同
+        if (count[s[i].charCodeAt() -aCode] === 1) {
+            --differ;
+        // 窗口中字母 s[i] 的数量与字符串 p 中的数量从相同变得不同
+        } else if (count[s[i].charCodeAt() -aCode] === 0) {  
+            ++differ;
+        }
+        --count[s[i].charCodeAt() -aCode];
+
+        // 窗口中字母 s[i+pLen] 的数量与字符串 p 中的数量从不同变得相同
+        if (count[s[i + pLen].charCodeAt() -aCode] === -1) {  
+            --differ;
+        // 窗口中字母 s[i+pLen] 的数量与字符串 p 中的数量从相同变得不同
+        } else if (count[s[i + pLen].charCodeAt() -aCode] === 0) {  
+            ++differ;
+        }
+        ++count[s[i + pLen].charCodeAt() -aCode];
+
+        if (differ === 0) {
+            ans.push(i + 1);
+        }
+    }
+
+    return ans;
+};
+```
+
+
+:::
+
 ## 螺旋矩阵
 
 ### leetcode59
@@ -578,3 +694,10 @@ var findKthLargest = function(nums, k) {
 ```
 
 ### 快排？
+
+## 补充
+
+```md
+冒泡排序
+数组排序
+```

@@ -7,7 +7,8 @@
 *   项目使用sass
 *   mixin.scss文件，我要写一堆方法get-background,get-fontColor，对应不同主题的键值对(background、font-color)
 
-```variable.scss
+```css
+/* variable.scss */
 $themes: (
   default-theme: (
     background-color: orange,
@@ -20,7 +21,10 @@ $themes: (
 )
 ```
 
-```mixin.scss
+mixin.scss
+
+```css
+/* mixin.scss */
 @mixin get-backcolor($color) {
   @each $key, $value in $themes {
     [data-skin='#{$key}'] & {
@@ -39,7 +43,9 @@ $themes: (
 
 书写哪些需要换肤的css样式，然后全局引入此样式
 
-```index.scss
+index.scss
+
+```css
 @import "./variable.scss";
 @import "./mixin.scss";
 button {
@@ -56,7 +62,9 @@ window.document.documentElement.setAttribute("data-skin", 'holiday-theme');
 
 ## **2. css3的var:推荐使用**
 
-```style
+style
+
+```css
 <style>
 /*夏天的颜色*/
 body.summer{
@@ -72,7 +80,9 @@ body.summer{
 </style>
 ```
 
-```body
+body
+
+```md
 <body>
   <div class="season-panel">
   </div>

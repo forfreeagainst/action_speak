@@ -2649,6 +2649,59 @@ nginx转发
 
 :::
 
+### MySQL常见命令
+
+::: details
+
+数据类型
+
+```md
+存储一般为二进制和非二进制（正常文本）。
+如果很大的map3,mp4等静态资源，一般使用CDN引入。
+
+数据类型：
+字符串类型
+char:定长，搜索速度快，适用于长度变化不大的数据（但也会消耗一点点多余的空间）。
+varchar: 不定长
+
+日期和时间类型
+
+数值类型
+
+枚举与集合类型
+
+空间数据类型
+```
+
+MySQL命令
+
+```md
+show character set;显示字符集
+
+删除数据库的语句(危险语句，删库跑路):
+DROP DATABASE IF EXISTS 库名;
+
+查看所有的数据库：
+SHOW DATABASES;
+创建数据库的语句：
+CREATE DATABASE IF NOT EXISTS 库名;
+切换到某个数据库库:
+use 库名;
+
+删除表:
+DROP TABLE IF EXISTS 表名;
+创建表：(注意：每个列都要有类型，用小括号包起来)
+CREATE TABLE 表名(
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  userAcc VARCHAR(100),
+  userPwd VARCHAR(200)
+);
+插入数据:
+INSERT 表名 values(1, 'admin', '111222');
+```
+
+:::
+
 ## node.js工具库
 
 ### EsModule的TypeScript工具库
